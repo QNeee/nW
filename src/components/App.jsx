@@ -15,11 +15,13 @@ export const App = () => {
       dispatch(refresh())
   }, [dispatch, logged])
   return (
+
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={!token ? < AuthPage /> : <Navigate to='/home' />} />
-        <Route path="home" element={token ? <Home /> : <Navigate to='/' />} />
+      <Route path="/" element={!token ? < AuthPage /> : <Navigate to='/home' />} />
+      <Route path="/home" element={<Layout />}>
+        <Route index element={token ? <Home /> : <Navigate to='/' />} />
       </Route>
     </Routes>
+
   );
 };

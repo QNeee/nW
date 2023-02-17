@@ -1,8 +1,27 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "Redux/authOperations";
-
-
+import {
+    Modal,
+    Wrapper,
+    InputContainer,
+    Text,
+    LoginButtonWrapper,
+    Input,
+    LogoContainer,
+    AuthContainer,
+    H1,
+    P,
+    H3,
+    LoginForm,
+    Label,
+    LoginFormContainer,
+    Button,
+    ButtonWrapper,
+    CloseSvg,
+    Backdrop,
+} from './AuthPage.styled';
+import close from '../../images/close.svg';
 export const AuthPage = () => {
     const dispatch = useDispatch();
     const [modal, setModal] = useState(false);
@@ -40,23 +59,44 @@ export const AuthPage = () => {
     const onClickModal = () => {
         setModal(true);
     }
-    return <div>
+    const closeModal = () => {
+        setModal(false);
+    }
+    return <AuthContainer>
+        <LogoContainer>
+            <H1>Network</H1>
+            <P>Keep in touch with loved ones</P>
+        </LogoContainer>
         <div>
-            <h1>Network</h1>
+            {!modal && <LoginFormContainer><LoginForm onSubmit={onSubmit}>
+                <Label>Email
+                    <Input type="email" name="email" value={form.email} onChange={inputHandler} autoComplete="off" />
+                </Label>
+                <Label>Password
+                    <Input type="password" name="password" value={form.password} onChange={inputHandler} autoComplete="off" />
+                </Label>
+                <LoginButtonWrapper>
+                    <Button type="submit">Login</Button>
+                    <Button type="button" onClick={onClickModal}>Register</Button>
+                </LoginButtonWrapper>
+            </LoginForm></LoginFormContainer>}
+
+            {modal && <Modal><CloseSvg onClick={closeModal}>
+                <img src={close} alt="close" />
+            </CloseSvg><H3>Register</H3><Wrapper onSubmit={onSubmit}>
+                    <InputContainer>
+                        <Label>Email
+                            <Input type="email" name="email" value={form.email} onChange={inputHandler} autoComplete="off" />
+                        </Label>
+                        <Label>Password
+                            <Input type="password" name="password" value={form.password} onChange={inputHandler} autoComplete="off" />
+                        </Label>
+                        <Label>Nickname
+                            <Input type="text" name="nickName" value={form.nickName} onChange={inputHandler} autoComplete="off" />
+                        </Label>
+                    </InputContainer>
+                    <Button type="submit">Register</Button>
+                </Wrapper></Modal>}
         </div>
-        <div>
-            {!modal && <form onSubmit={onSubmit}>
-                <input type="email" name="email" value={form.email} onChange={inputHandler} autoComplete="off" />
-                <input type="password" name="password" value={form.password} onChange={inputHandler} autoComplete="off" />
-                <button type="submit">Login</button>
-                <button type="button" onClick={onClickModal}>Register</button>
-            </form>}
-            {modal && <form onSubmit={onSubmit}>
-                <input type="email" name="email" value={form.email} onChange={inputHandler} autoComplete="off" />
-                <input type="password" name="password" value={form.password} onChange={inputHandler} autoComplete="off" />
-                <input type="text" name="nickName" value={form.nickName} onChange={inputHandler} autoComplete="off" />
-                <button type="submit">Login</button>
-            </form>}
-        </div>
-    </div>
+    </AuthContainer>
 }

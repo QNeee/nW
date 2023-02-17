@@ -27,6 +27,7 @@ const networkSlice = createSlice({
             state.error = null;
 
         }).addCase(register.fulfilled, (state, action) => {
+            console.log(action.payload.headers)
             state.loading = false;
 
         }).addCase(register.rejected, (state, action) => {
