@@ -1,11 +1,10 @@
 import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login, register } from "Redux/authOperations";
 import {
     Modal,
     Wrapper,
     InputContainer,
-    Text,
     LoginButtonWrapper,
     Input,
     LogoContainer,
@@ -17,9 +16,7 @@ import {
     Label,
     LoginFormContainer,
     Button,
-    ButtonWrapper,
     CloseSvg,
-    Backdrop,
 } from './AuthPage.styled';
 import close from '../../images/close.svg';
 export const AuthPage = () => {
