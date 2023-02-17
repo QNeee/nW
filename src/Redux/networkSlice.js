@@ -62,7 +62,6 @@ const networkSlice = createSlice({
             state.error = null;
         })
             .addCase(refresh.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.loading = false;
                 state.auth.user.email = action.payload.response.email;
                 state.auth.user.nickName = action.payload.response.nickName;
@@ -79,43 +78,11 @@ const networkSlice = createSlice({
 const persistConfig = {
     key: 'local-key',
     storage,
-    whitelist: ['token'],
+    whitelist: ['token', 'isLoggedIn'],
 };
 export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
-// export const { setIconData } = kapustaSlice.actions;
-// export const getIsLoggedIn = state => state.kapusta.isLoggedIn;
-// export const getTransation = state => state.kapusta.auth.userData.transactions;
-// export const getSid = state => state.kapusta.sid;
-// export const getUserIncomes = state =>
-//     state.kapusta.auth.userData.incomes.incomes;
-// export const getUserExpenses = state =>
-//     state.kapusta.auth.userData.expenses.expenses;
-// export const getState = state => state.kapusta;
-// export const getLoading = state => state.kapusta.loading;
-// export const getAccessToken = state => state.kapusta.accessToken;
-// export const getRefresh = state => state.kapusta.refresh;
-// export const getError = state => state.kapusta.error;
-// export const getUserMail = state => state.kapusta.auth.user.email;
-
-// export const getExpensesCategory = state =>
-//     state.kapusta.auth.userData.category.expense;
-
-// export const getIncomeCategory = state =>
-//     state.kapusta.auth.userData.category.income;
-
-// export const getSummaryExpenses = state =>
-//     state.kapusta.auth.userData.expenses.monthsStats;
-
-// export const getSummaryIncome = state =>
-//     state.kapusta.auth.userData.incomes.monthsStats;
-
-// export const getUserBalance = state => state.kapusta.auth.userData.balance;
-// export const getDataByPeriod = state => state.kapusta.auth.userData.periodData;
-
-// export const { setDateInput } = kapustaSlice.actions;
-// export const getDateInput = state => state.kapusta.dateInput;
-
-// export const getIconsData = state => state.kapusta.auth.userData.iconsData;
+export const getIsLoggedIn = state => state.network.isLoggedIn;
+export const getToken = state => state.network.token;
