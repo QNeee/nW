@@ -7,7 +7,7 @@ justify-content: center;
 margin-top: 200px;
 `;
 export const LogoContainer = styled.div`
-margin-left:-100px;
+
 `;
 export const LoginFormContainer = styled.div`
 padding:35px;

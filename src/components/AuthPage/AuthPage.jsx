@@ -65,7 +65,7 @@ export const AuthPage = () => {
     return <AuthContainer>
         <LogoContainer>
             <H1>Network</H1>
-            <P>Keep in touch with loved ones</P>
+            <P>helps to keep in touch with family and friends.</P>
         </LogoContainer>
         <div>
             {!modal && <LoginFormContainer><LoginForm onSubmit={onSubmit}>
