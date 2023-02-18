@@ -1,5 +1,4 @@
 import { Aside, PhotoDiv, LinkWrapper, SideLink } from "./Sidebar.styled"
-import { Link } from "react-router-dom";
 export const Sidebar = () => {
     return <Aside>
         <PhotoDiv>

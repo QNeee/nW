@@ -1,30 +1,31 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-axios.defaults.baseURL = 'localhost:10000/api';
+axios.defaults.baseURL = 'http://localhost:10000/api';
 const setToken = token => {
     if (token) {
         return axios.defaults.headers.common.authorization = `Bearer ${token}`;
     }
     axios.defaults.headers.common.authorization = '';
 };
-export const register = createAsyncThunk('auth/register', async (data, { dispatch, rejectWithValue }) => {
+export const getAllUsers = createAsyncThunk('users', async (_, { getState, rejectWithValue }) => {
     try {
-        const result = await axios.post('auth/register', data);
-        // if (result.id) {
-        //     dispatch(login(data));
-        // }
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get('users');
         return result;
     } catch (error) {
 
         return rejectWithValue(error);
     }
 })
-export const login = createAsyncThunk('auth/login', async (data, { rejectWithValue }) => {
+export const getUserById = createAsyncThunk('users', async (id, { getState, rejectWithValue }) => {
     try {
-        const result = await axios.post('/auth/login', data);
-        setToken(result.data.token);
-        return result.data;
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get(`users/${id}`);
+        return result;
     } catch (error) {
+
         return rejectWithValue(error);
     }
 })
@@ -47,7 +48,7 @@ export const refresh = createAsyncThunk('auth/refresh', async (_, thunkAPI) => {
     if (token === null) return state;
     setToken(token);
     try {
-        const { data } = await axios.post('/auth/current');
+        const { data } = await axios.post('/auth/current')
         return data;
     } catch (error) {
         console.log(error);
