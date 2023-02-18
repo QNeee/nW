@@ -22,7 +22,7 @@ export const NavItem = styled(NavLink)`
  margin-right:20px; 
 text-decoration:none;
 color:white;
-  &.active, :hover {
+  :hover {
   background-color:white;
     color:blue;
   }

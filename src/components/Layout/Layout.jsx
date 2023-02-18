@@ -12,7 +12,7 @@ export const Layout = () => {
     return <><Header>
         <h1>Network</h1>
         <Nav>
-            <NavItem to={"/"}>Main</NavItem>
+            <NavItem to={"/home"}>Main</NavItem>
             <NavItem to={"/home/profile"}>Profile</NavItem>
             <button type='button' onClick={onClick}>Exit</button>
         </Nav>

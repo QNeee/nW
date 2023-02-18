@@ -10,6 +10,7 @@ import { Friends } from "./Friends/Friends";
 import { Messages } from "./Messages/Messages";
 import { Photos } from "./Photos/Photos";
 import { Profile } from "./Profile/Profile";
+import { People } from "./People/People";
 export const App = () => {
   const token = useSelector(getToken);
   const logged = useSelector(getIsLoggedIn)
@@ -22,7 +23,8 @@ export const App = () => {
 
     <Routes>
       <Route path="/" element={!token ? < AuthPage /> : <Navigate to='/home' />} />
-      <Route path="/home" element={<Layout />}>
+      <Route path="/home" element={token ? <Layout /> : <Navigate to='/' />}>
+        <Route index element={<People />} />
         <Route path="friends" element={<Friends />} />
         <Route path="messages" element={<Messages />} />
         <Route path="photos" element={<Photos />} />

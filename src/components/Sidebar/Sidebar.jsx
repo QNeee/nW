@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 export const Sidebar = () => {
     return <Aside>
         <PhotoDiv>
-
         </PhotoDiv>
+        <h3>Nickname</h3>
         <LinkWrapper>
             <SideLink to="/home/friends">Friends</SideLink>
             <SideLink to="/home/messages">messages</SideLink>

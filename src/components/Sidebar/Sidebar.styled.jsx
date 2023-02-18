@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 export const PhotoDiv = styled.div`height:200px;`;
 export const Aside = styled.aside`width:400px;text-align:center;border-right:1px solid black;overflow:hidden;`;
-export const LinkWrapper = styled.div`display:flex;flex-direction:column;margin-top:200px;`;
+export const LinkWrapper = styled.div`display:flex;flex-direction:column;margin-top:80px;`;
 export const H1 = styled.h1`display:inline-block;
   max-width:150px;
   overflow:hidden;`
