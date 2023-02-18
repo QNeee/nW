@@ -1,9 +1,9 @@
 
 import { useEffect } from "react";
-import { Link, useLocation, Outlet } from "react-router-dom";
-import { getInboxMessageById, getOutboxMessageById } from "Redux/messageOperaions";
+import { useLocation } from "react-router-dom";
+import { getInboxMessageById } from "Redux/messageOperaions";
 import { useDispatch, useSelector } from "react-redux";
-import { getInboxContent, getOutboxContent } from "Redux/networkSlice";
+import { getInboxContent } from "Redux/networkSlice";
 
 export const InboxContent = () => {
     const dispatch = useDispatch();

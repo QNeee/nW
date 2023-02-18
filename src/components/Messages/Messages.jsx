@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMessages, sendMessage } from "Redux/messageOperaions";
+import { sendMessage } from "Redux/messageOperaions";
 import { getUserId, getUserMessagesCount, getUserNickName } from "Redux/networkSlice";
 import { getUserById } from "Redux/userOperaions";
 import { Link, useLocation, Outlet } from "react-router-dom";

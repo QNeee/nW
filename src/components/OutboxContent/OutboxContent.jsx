@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getOutboxMessageById } from "Redux/messageOperaions";
 import { useDispatch, useSelector } from "react-redux";
 import { getOutboxContent } from "Redux/networkSlice";

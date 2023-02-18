@@ -2,7 +2,7 @@
   "name": "react-homework-template",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://goitacademy.github.io/react-homework-template/",
+  "homepage": "https://QNeee.github.io/nW/",
   "dependencies": {
     "@emotion/styled": "^11.10.5",
     "@hookform/resolvers": "^2.9.10",
@@ -36,9 +36,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint:js": "eslint src/**/*.{js,jsx}"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
