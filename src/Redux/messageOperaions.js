@@ -86,16 +86,18 @@ export const getInboxMessageById = createAsyncThunk('messages/inbox/:id', async 
         return rejectWithValue(error);
     }
 })
-export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread', async (data, { getState, rejectWithValue }) => {
+export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread', async (data, { getState, dispatch, rejectWithValue }) => {
     try {
         const read = data.read;
         const dataToPatch = { read };
         const state = getState();
         setToken(state.network.token);
         const result = await axios.patch(`messages/inbox/${data._id}`, dataToPatch);
+        dispatch(getAllInboxMessage());
         return result;
     } catch (error) {
 
         return rejectWithValue(error);
     }
 })
+
