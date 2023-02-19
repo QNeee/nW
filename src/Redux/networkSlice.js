@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, getUnreadMessages, changeStatusReadMessage } from './messageOperaions';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage } from './messageOperaions';
 import { getUserById } from './userOperaions';
 
 
@@ -119,17 +119,6 @@ const networkSlice = createSlice({
 
             })
             .addCase(getAllInboxMessage.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            }).addCase(getUnreadMessages.pending, (state, action) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getUnreadMessages.fulfilled, (state, action) => {
-                console.log(action.payload.data)
-                state.auth.userData.unReadMessages = action.payload.data;
-            })
-            .addCase(getUnreadMessages.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             }).addCase(changeStatusReadMessage.pending, (state, action) => {

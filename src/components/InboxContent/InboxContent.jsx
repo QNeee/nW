@@ -15,7 +15,7 @@ export const InboxContent = () => {
     useEffect(() => {
         if (id)
             dispatch(getInboxMessageById(id));
-        dispatch(getUnreadMessages('false'))
+        dispatch(getAllInboxMessage('false'));
     }, [dispatch, id])
     return <ContentContainer>
         {Object.values(inboxContent).length > 0 && <p>{inboxContent.message.content}</p>}

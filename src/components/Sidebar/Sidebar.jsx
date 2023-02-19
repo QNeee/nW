@@ -2,12 +2,12 @@ import { getUserInbox, getUserNickName, getUserUnreadMessages } from "Redux/netw
 import { Aside, PhotoDiv, LinkWrapper, SideLink } from "./Sidebar.styled"
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getAllInboxMessage, getUnreadMessages } from "Redux/messageOperaions";
+import { getAllInboxMessage } from "Redux/messageOperaions";
 export const Sidebar = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getAllInboxMessage());
-        dispatch(getUnreadMessages('false'));
+        dispatch(getAllInboxMessage('false'));
     }, [dispatch])
     const userNickname = useSelector(getUserNickName);
     const unreadMessage = useSelector(getUserUnreadMessages);

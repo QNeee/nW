@@ -54,10 +54,15 @@ export const getOutboxMessageById = createAsyncThunk('messages/outbox/:id', asyn
         return rejectWithValue(error);
     }
 })
-export const getAllInboxMessage = createAsyncThunk('messages/inbox', async (_, { getState, rejectWithValue }) => {
+export const getAllInboxMessage = createAsyncThunk('messages/inbox', async (status, { getState, rejectWithValue }) => {
     try {
         const state = getState();
         setToken(state.network.token);
+        if (status) {
+            console.log('dasd');
+            const result = await axios.get(`messages/inbox/?readStatus=${status}`);
+            return result;
+        }
         const result = await axios.get('messages/inbox');
         return result;
     } catch (error) {
@@ -75,17 +80,6 @@ export const getInboxMessageById = createAsyncThunk('messages/inbox/:id', async 
         setToken(state.network.token);
         const result = await axios.get(`messages/outbox/${id}`);
         dispatch(changeStatusReadMessage(readMessage));
-        return result;
-    } catch (error) {
-
-        return rejectWithValue(error);
-    }
-})
-export const getUnreadMessages = createAsyncThunk('messages/inbox/readStatus===false', async (readStatus, { getState, rejectWithValue }) => {
-    try {
-        const state = getState();
-        setToken(state.network.token);
-        const result = await axios.get(`messages/inbox/?readStatus=${readStatus}`);
         return result;
     } catch (error) {
 
