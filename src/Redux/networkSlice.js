@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage } from './messageOperaions';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, getUnreadMessages, changeStatusReadMessage } from './messageOperaions';
 import { getUserById } from './userOperaions';
 
 
@@ -14,6 +14,7 @@ const initialState = {
             messageContent: { inbox: [], outbox: [], archive: [] },
             messagesCount: { inbox: 0, outbox: 0, archive: 0 },
             friends: [],
+            unReadMessages: [],
         },
     },
     isLoggedIn: false,
@@ -114,11 +115,33 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllInboxMessage.fulfilled, (state, action) => {
-
                 state.auth.userData.messages.inbox = action.payload.data
 
             })
             .addCase(getAllInboxMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getUnreadMessages.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUnreadMessages.fulfilled, (state, action) => {
+                console.log(action.payload.data)
+                state.auth.userData.unReadMessages = action.payload.data;
+            })
+            .addCase(getUnreadMessages.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(changeStatusReadMessage.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(changeStatusReadMessage.fulfilled, (state, action) => {
+                console.log(action.payload);
+                // state.auth.userData.unReadMessages = action.payload.data;
+                // console.log(state.auth.userData.unReadMessages);
+            })
+            .addCase(changeStatusReadMessage.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             }).addCase(getInboxMessageById.pending, (state, action) => {
@@ -177,4 +200,5 @@ export const getUserOutbox = state => state.network.auth.userData.messages.outbo
 export const getUserInbox = state => state.network.auth.userData.messages.inbox
 export const getInboxContent = state => state.network.auth.userData.messageContent.inbox
 export const getOutboxContent = state => state.network.auth.userData.messageContent.outbox
+export const getUserUnreadMessages = state => state.network.auth.userData.unReadMessages;
 export const getUserMessagesCount = state => state.network.auth.userData.messagesCount

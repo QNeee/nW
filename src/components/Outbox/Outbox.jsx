@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllOutboxMessages } from "Redux/messageOperaions";
 import { getUserOutbox } from "Redux/networkSlice";
 import { Link, useLocation, Outlet } from "react-router-dom";
-import { OutboxContainer, OutboxFlex } from "./Outbox.styled";
+import { OutboxContainer } from "./Outbox.styled";
 export const Outbox = () => {
     const dispatch = useDispatch();
     const userOutbox = useSelector(getUserOutbox);

@@ -65,12 +65,40 @@ export const getAllInboxMessage = createAsyncThunk('messages/inbox', async (_, {
         return rejectWithValue(error);
     }
 })
-export const getInboxMessageById = createAsyncThunk('messages/inbox/:id', async (id, { getState, rejectWithValue }) => {
+export const getInboxMessageById = createAsyncThunk('messages/inbox/:id', async (id, { getState, dispatch, rejectWithValue }) => {
     try {
+        const readMessage = {
+            _id: id,
+            read: { marked: "true" }
+        }
         const state = getState();
         setToken(state.network.token);
         const result = await axios.get(`messages/outbox/${id}`);
+        dispatch(changeStatusReadMessage(readMessage));
+        return result;
+    } catch (error) {
 
+        return rejectWithValue(error);
+    }
+})
+export const getUnreadMessages = createAsyncThunk('messages/inbox/readStatus===false', async (readStatus, { getState, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get(`messages/inbox/?readStatus=${readStatus}`);
+        return result;
+    } catch (error) {
+
+        return rejectWithValue(error);
+    }
+})
+export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread', async (data, { getState, rejectWithValue }) => {
+    try {
+        const read = data.read;
+        const dataToPatch = { read };
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.patch(`messages/inbox/${data._id}`, dataToPatch);
         return result;
     } catch (error) {
 
