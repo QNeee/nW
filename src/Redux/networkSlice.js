@@ -93,7 +93,6 @@ const networkSlice = createSlice({
             .addCase(getAllOutboxMessages.fulfilled, (state, action) => {
                 state.loading = false;
                 state.auth.userData.messages.outbox = action.payload.data
-
             })
             .addCase(getAllOutboxMessages.rejected, (state, action) => {
                 state.loading = false;
@@ -138,9 +137,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(sendMessage.fulfilled, (state, action) => {
-                // console.log(action.payload);
-                // state.auth.user.nickName = action.payload.response.nickName;
-                // state.token = action.payload.response.token;
+                // state.auth.userData.messages.outbox = [...state.auth.userData.messages.outbox, action.payload.data.message]
             })
             .addCase(sendMessage.rejected, (state, action) => {
                 state.loading = false;

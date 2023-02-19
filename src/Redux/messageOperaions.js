@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
+import { getUserById } from './userOperaions';
 axios.defaults.baseURL = 'http://localhost:10000/api';
 const setToken = token => {
     if (token) {
@@ -18,11 +19,12 @@ export const getAllMessages = createAsyncThunk('messages', async (_, { getState,
         return rejectWithValue(error);
     }
 })
-export const sendMessage = createAsyncThunk('messages/send', async (data, { getState, rejectWithValue }) => {
+export const sendMessage = createAsyncThunk('messages/send', async (data, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
         setToken(state.network.token);
         const result = await axios.post('messages/send', data);
+        dispatch(getUserById(state.network.auth.user.id));
         return result;
     } catch (error) {
 

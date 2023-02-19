@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { getOutboxMessageById } from "Redux/messageOperaions";
 import { useDispatch, useSelector } from "react-redux";
 import { getOutboxContent } from "Redux/networkSlice";
+import { ContentContainer, Div } from "./OutboxContent.styled";
 
 export const OutboxContent = () => {
     const dispatch = useDispatch();
@@ -15,7 +16,8 @@ export const OutboxContent = () => {
         if (id)
             dispatch(getOutboxMessageById(id))
     }, [dispatch, id])
-    return <div>
-        {Object.values(outBoxContent).length > 0 && <p>{outBoxContent.message.content}</p>}
-    </div>
+    return <ContentContainer>
+        {Object.values(outBoxContent).length > 0 && <Div>{outBoxContent.message.content}</Div>}
+        <button type="button">Delete Message</button>
+    </ContentContainer>
 }

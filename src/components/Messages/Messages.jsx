@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "Redux/messageOperaions";
 import { getUserId, getUserMessagesCount, getUserNickName } from "Redux/networkSlice";
 import { getUserById } from "Redux/userOperaions";
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import { useState } from "react";
+import { FormDiv, LinkDiv, MessageLink, MainContainer } from "./Messages.styled";
+import "../../index.css"
 export const Messages = () => {
     const [form, setForm] = useState({ nickName: '', content: '' });
     const inputHandler = (e) => {
@@ -32,14 +34,19 @@ export const Messages = () => {
             receiver: form.nickName
         }
         dispatch(sendMessage(newMessage));
+        setForm({ nickName: '', content: '' });
     }
-    return <div><Link to='/home/messages/outbox'>Outbox {messagesCount.outbox}</Link>
-        <Link to='/home/messages/inbox'>Inbox {messagesCount.inbox}</Link>
-        Send Message
-        {pathname === "/home/messages" && <form onSubmit={onSubmit}>
-            <label>NickName
-                <input type="text" name="nickName" onChange={inputHandler} value={form.nickName} autoComplete="off" /></label>
-            <label>Content<input type="text" name="content" onChange={inputHandler} value={form.content} autoComplete="off" /></label>
-            <button type="submit">Send Message</button>
-        </form>}<Outlet /></div>
+    return <MainContainer><LinkDiv><MessageLink to='/home/messages/outbox'>Outbox {messagesCount.outbox}</MessageLink>
+        <MessageLink to='/home/messages/inbox'>Inbox {messagesCount.inbox}</MessageLink></LinkDiv>
+        {pathname === "/home/messages" && <FormDiv><form className="decor" onSubmit={onSubmit}>
+            <div className="form-left-decoration"></div>
+            <div className="form-right-decoration"></div>
+            <div className="circle"></div>
+            <div className="form-inner">
+                <input type="text" name="nickName" onChange={inputHandler} value={form.nickName} autoComplete="off" placeholder="Nickname" />
+                <textarea type="text" name="content" onChange={inputHandler} value={form.content} autoComplete="off" placeholder="message" ></textarea>
+                <button className="gradient-button" type="submit" value="Отправить" >Send</button>
+            </div>
+        </form></FormDiv>}<Outlet />
+    </MainContainer>
 }
