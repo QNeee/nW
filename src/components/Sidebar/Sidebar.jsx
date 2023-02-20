@@ -23,7 +23,6 @@ export const Sidebar = () => {
         <LinkWrapper>
             <SideLink to="/home/friends">Friends</SideLink>
             <SideLink to="/home/messages">messages {unreadMessages.length > 0 && unreadMessages.length}</SideLink>
-            <SideLink to="/home/photos">photos</SideLink>
         </LinkWrapper>
     </Aside>
 }

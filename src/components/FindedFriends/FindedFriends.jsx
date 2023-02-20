@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addFriend, getAllFriends } from "Redux/friendsOperations";
+import { addFriend } from "Redux/friendsOperations";
 import { getFindFriend, getUserFriends } from "Redux/networkSlice";
 export const FindedFriends = () => {
     const dispatch = useDispatch();

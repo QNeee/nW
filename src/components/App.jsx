@@ -7,7 +7,6 @@ import { Layout } from "./Layout/Layout";
 import { AuthPage } from "./AuthPage/AuthPage";
 import { Friends } from "./Friends/Friends";
 import { Messages } from "./Messages/Messages";
-import { Photos } from "./Photos/Photos";
 import { Profile } from "./Profile/Profile";
 import { People } from "./People/People";
 import { Outbox } from "./Outbox/Outbox";
@@ -17,6 +16,7 @@ import { InboxContent } from "./InboxContent/InboxContent";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { UserFriends } from "./UserFriends/UserFriends";
 import { FindedFriends } from "./FindedFriends/FindedFriends";
+import { Profiles } from "./Profiles/Profiles";
 export const App = () => {
   const token = useSelector(getToken);
   const logged = useSelector(getIsLoggedIn)
@@ -45,8 +45,9 @@ export const App = () => {
             <Route path=":id" element={<InboxContent />} />
           </Route>
         </Route>
-        <Route path="photos" element={<Photos />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile" element={<Profile />} >
+          <Route path=":id" element={<Profiles />} />
+        </Route>
       </Route>
     </Routes>
 
