@@ -2,8 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, getUnreadMessages } from './messageOperaions';
-import { getUserById } from './userOperaions';
+import { addFriend, getAllFriends } from './friendsOperations';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage } from './messageOperaions';
+import { getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
 
 const initialState = {
@@ -14,6 +15,8 @@ const initialState = {
             messageContent: { inbox: [], outbox: [], archive: [] },
             messagesCount: { inbox: 0, outbox: 0, archive: 0 },
             friends: [],
+            findFriend: [],
+            allUsers: [],
             unReadMessages: [],
         },
     },
@@ -153,6 +156,34 @@ const networkSlice = createSlice({
             .addCase(sendMessage.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }).addCase(getAllUsers.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllUsers.fulfilled, (state, action) => {
+                console.log(action.payload);
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getAllUsers.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(getUserByNickName.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserByNickName.fulfilled, (state, action) => {
+                console.log(action.payload);
+                state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getUserByNickName.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
             .addCase(getUserById.pending, (state, action) => {
                 state.loading = true;
@@ -164,6 +195,32 @@ const networkSlice = createSlice({
                 // state.token = action.payload.response.token;
             })
             .addCase(getUserById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getAllFriends.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllFriends.fulfilled, (state, action) => {
+                state.auth.userData.friends = action.payload.data;
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getAllFriends.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(addFriend.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addFriend.fulfilled, (state, action) => {
+                console.log(action.payload);
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(addFriend.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -189,4 +246,6 @@ export const getUserInbox = state => state.network.auth.userData.messages.inbox
 export const getInboxContent = state => state.network.auth.userData.messageContent.inbox
 export const getOutboxContent = state => state.network.auth.userData.messageContent.outbox
 export const getUserUnreadMessages = state => state.network.auth.userData.unReadMessages;
+export const getFindFriend = state => state.network.auth.userData.findFriend;
+export const getUserFriends = state => state.network.auth.userData.friends;
 export const getUserMessagesCount = state => state.network.auth.userData.messagesCount

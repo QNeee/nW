@@ -14,6 +14,9 @@ import { Outbox } from "./Outbox/Outbox";
 import { Inbox } from "./Inbox/Inbox";
 import { OutboxContent } from "./OutboxContent/OutboxContent";
 import { InboxContent } from "./InboxContent/InboxContent";
+import { Searchbar } from "./Searchbar/Searchbar";
+import { UserFriends } from "./UserFriends/UserFriends";
+import { FindedFriends } from "./FindedFriends/FindedFriends";
 export const App = () => {
   const token = useSelector(getToken);
   const logged = useSelector(getIsLoggedIn)
@@ -28,7 +31,12 @@ export const App = () => {
       <Route path="/" element={!token ? < AuthPage /> : <Navigate to='/home' />} />
       <Route path="/home" element={token ? <Layout /> : <Navigate to='/' />}>
         <Route index element={<People />} />
-        <Route path="friends" element={<Friends />} />
+        <Route path="friends" element={<Friends />} >
+          <Route index element={<UserFriends />} />
+          <Route path="find" element={<Searchbar />} >
+            <Route index element={<FindedFriends />} />
+          </Route>
+        </Route>
         <Route path="messages" element={<Messages />} >
           <Route path="outbox" element={<Outbox />} >
             <Route path=":id" element={<OutboxContent />} />

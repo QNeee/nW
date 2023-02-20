@@ -11,8 +11,11 @@ export const Inbox = () => {
     useEffect(() => {
         dispatch(getAllInboxMessage())
     }, [dispatch])
+    const unreadInbox = userInbox.filter(item => item.read.marked === false);
+    const readInbox = userInbox.filter(item => item.read.marked === true);
+    const inbox = [...unreadInbox, ...readInbox]
     return <div>
-        {pathname === "/home/messages/inbox" && userInbox.map(item => <InboxContainer key={item._id}><div><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></div><div><Link to={`/home/messages/inbox/${item._id}`}>message</Link></div><div>{item.sendedTime}</div></InboxContainer>)}
+        {pathname === "/home/messages/inbox" && inbox.map(item => <InboxContainer prop={item.read.marked} key={item._id}><div><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></div><div><Link to={`/home/messages/inbox/${item._id}`}>message</Link></div><div>{item.sendedTime}</div></InboxContainer>)}
         <Outlet />
     </div>
 }
