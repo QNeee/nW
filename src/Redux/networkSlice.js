@@ -162,7 +162,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllUsers.fulfilled, (state, action) => {
-                console.log(action.payload);
+
+                state.auth.userData.allUsers = action.payload.data;
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
                 // state.token = action.payload.response.token;
@@ -191,7 +192,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getUserById.fulfilled, (state, action) => {
-                state.auth.userData.info = action.payload.data;
+                state.auth.userData.info = [action.payload.data];
                 state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
                 // state.token = action.payload.response.token;
@@ -239,6 +240,7 @@ export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
+export const getAllUsersData = state => state.network.auth.userData.allUsers;
 export const getIsLoggedIn = state => state.network.isLoggedIn;
 export const getUserInfo = state => state.network.auth.userData.info;
 export const getToken = state => state.network.token;

@@ -16,10 +16,10 @@ export const Sidebar = () => {
         dispatch(getAllInboxMessage());
     }, [dispatch, userId])
     return <Aside>
-        <PhotoDiv>
-            <img src={userInfo.avatarURL} alt={userInfo.nickName} />
-        </PhotoDiv>
-        <h3>{userInfo.nickName}</h3>
+
+        {userInfo.map(item => <div key={item._id}><PhotoDiv>
+            <img src={item.avatarURL} alt={userInfo.nickName} />
+        </PhotoDiv> <h3>{item.nickName}</h3></div>)}
         <LinkWrapper>
             <SideLink to="/home/friends">Friends</SideLink>
             <SideLink to="/home/messages">messages {unreadMessages.length > 0 && unreadMessages.length}</SideLink>
