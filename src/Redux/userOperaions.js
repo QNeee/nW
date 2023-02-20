@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-import { getUserFriends } from './networkSlice';
 axios.defaults.baseURL = 'http://localhost:10000/api';
 const setToken = token => {
     if (token) {

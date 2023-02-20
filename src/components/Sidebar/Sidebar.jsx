@@ -1,8 +1,9 @@
-import { getUserId, getUserInbox, getUserInfo, getUserNickName, getUserUnreadMessages } from "Redux/networkSlice"
+import { getUserId, getUserInbox, getUserInfo } from "Redux/networkSlice"
 import { Aside, PhotoDiv, LinkWrapper, SideLink } from "./Sidebar.styled"
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getAllInboxMessage, getUnreadMessages } from "Redux/messageOperaions";
+import { useLocation } from "react-router-dom";
+import { getAllInboxMessage } from "Redux/messageOperaions";
 import { getUserById } from "Redux/userOperaions";
 export const Sidebar = () => {
     const dispatch = useDispatch();
@@ -10,11 +11,13 @@ export const Sidebar = () => {
     const userId = useSelector(getUserId);
     const userInfo = useSelector(getUserInfo);
     const unreadMessages = inboxMessages.filter(item => item.read.marked === false);
+    const { pathname } = useLocation();
     useEffect(() => {
-        if (userId)
+        if (userId && pathname === '/home/messages') {
             dispatch(getUserById(userId));
-        dispatch(getAllInboxMessage());
-    }, [dispatch, userId])
+            dispatch(getAllInboxMessage());
+        }
+    }, [dispatch, userId, pathname])
     return <Aside>
 
         {userInfo.map(item => <div key={item._id}><PhotoDiv>

@@ -1,7 +1,6 @@
-import { Searchbar } from "components/Searchbar/Searchbar"
 import { useEffect } from "react";
-import { Link, useLocation, Outlet } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { getAllFriends } from "Redux/friendsOperations";
 export const Friends = () => {
     const dispatch = useDispatch();

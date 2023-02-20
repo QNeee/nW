@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUserByNickName } from "Redux/userOperaions";
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 export const Searchbar = () => {
     const [form, setForm] = useState({ nickName: '' })
     const dispatch = useDispatch();

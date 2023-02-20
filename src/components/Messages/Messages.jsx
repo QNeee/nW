@@ -1,8 +1,6 @@
-import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "Redux/messageOperaions";
-import { getUserId, getUserMessagesCount, getUserNickName } from "Redux/networkSlice";
-import { getUserById } from "Redux/userOperaions";
+import { getUserNickName } from "Redux/networkSlice";
 import { useLocation, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { FormDiv, LinkDiv, MessageLink, MainContainer } from "./Messages.styled";
@@ -18,14 +16,8 @@ export const Messages = () => {
         }));
     }
     const dispatch = useDispatch();
-    const userId = useSelector(getUserId);
-    const messagesCount = useSelector(getUserMessagesCount);
     const userNickName = useSelector(getUserNickName);
     const { pathname } = useLocation();
-    useEffect(() => {
-        if (userId !== null)
-            dispatch(getUserById(userId));
-    }, [dispatch, userId])
     const onSubmit = (e) => {
         e.preventDefault();
         const newMessage = {
@@ -36,8 +28,8 @@ export const Messages = () => {
         dispatch(sendMessage(newMessage));
         setForm({ nickName: '', content: '' });
     }
-    return <MainContainer><LinkDiv><MessageLink to='/home/messages/outbox'>Outbox {messagesCount.outbox}</MessageLink>
-        <MessageLink to='/home/messages/inbox'>Inbox {messagesCount.inbox}</MessageLink></LinkDiv>
+    return <MainContainer><LinkDiv><MessageLink to='/home/messages/outbox'>Outbox</MessageLink>
+        <MessageLink to='/home/messages/inbox'>Inbox</MessageLink></LinkDiv>
         {pathname === "/home/messages" && <FormDiv><form className="decor" onSubmit={onSubmit}>
             <div className="form-left-decoration"></div>
             <div className="form-right-decoration"></div>
