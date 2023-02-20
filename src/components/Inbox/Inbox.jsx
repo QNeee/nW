@@ -9,9 +9,8 @@ export const Inbox = () => {
     const userInbox = useSelector(getUserInbox);
     const { pathname } = useLocation();
     useEffect(() => {
-        if (pathname === '/home/messages/inbox')
-            dispatch(getAllInboxMessage())
-    }, [dispatch, pathname])
+        dispatch(getAllInboxMessage())
+    }, [dispatch])
     const unreadInbox = userInbox.filter(item => item.read.marked === false);
     const readInbox = userInbox.filter(item => item.read.marked === true);
     const inbox = [...unreadInbox, ...readInbox]

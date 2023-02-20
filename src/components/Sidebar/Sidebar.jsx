@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getAllInboxMessage } from "Redux/messageOperaions";
-import { getUserById } from "Redux/userOperaions";
 export const Sidebar = () => {
     const dispatch = useDispatch();
     const inboxMessages = useSelector(getUserInbox);
@@ -13,10 +12,8 @@ export const Sidebar = () => {
     const unreadMessages = inboxMessages.filter(item => item.read.marked === false);
     const { pathname } = useLocation();
     useEffect(() => {
-        if (userId && pathname === '/home/messages') {
-            dispatch(getUserById(userId));
+        if (pathname === '/home/messages' && userId)
             dispatch(getAllInboxMessage());
-        }
     }, [dispatch, userId, pathname])
     return <Aside>
 
