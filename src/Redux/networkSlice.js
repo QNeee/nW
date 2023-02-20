@@ -14,6 +14,7 @@ const initialState = {
             messages: { inbox: [], outbox: [], archive: [] },
             messageContent: { inbox: [], outbox: [], archive: [] },
             messagesCount: { inbox: 0, outbox: 0, archive: 0 },
+            info: [],
             friends: [],
             findFriend: [],
             allUsers: [],
@@ -190,6 +191,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getUserById.fulfilled, (state, action) => {
+                state.auth.userData.info = action.payload.data;
                 state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
                 // state.token = action.payload.response.token;
@@ -238,6 +240,7 @@ export const networkReducer = persistReducer(
     networkSlice.reducer
 );
 export const getIsLoggedIn = state => state.network.isLoggedIn;
+export const getUserInfo = state => state.network.auth.userData.info;
 export const getToken = state => state.network.token;
 export const getUserId = state => state.network.auth.user.id;
 export const getUserNickName = state => state.network.auth.user.nickName;

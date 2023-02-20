@@ -1,20 +1,25 @@
-import { getUserInbox, getUserNickName, getUserUnreadMessages } from "Redux/networkSlice"
+import { getUserId, getUserInbox, getUserInfo, getUserNickName, getUserUnreadMessages } from "Redux/networkSlice"
 import { Aside, PhotoDiv, LinkWrapper, SideLink } from "./Sidebar.styled"
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAllInboxMessage, getUnreadMessages } from "Redux/messageOperaions";
+import { getUserById } from "Redux/userOperaions";
 export const Sidebar = () => {
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getAllInboxMessage());
-    }, [dispatch])
-    const userNickname = useSelector(getUserNickName);
     const inboxMessages = useSelector(getUserInbox);
+    const userId = useSelector(getUserId);
+    const userInfo = useSelector(getUserInfo);
     const unreadMessages = inboxMessages.filter(item => item.read.marked === false);
+    useEffect(() => {
+        if (userId)
+            dispatch(getUserById(userId));
+        dispatch(getAllInboxMessage());
+    }, [dispatch, userId])
     return <Aside>
         <PhotoDiv>
+            <img src={userInfo.avatarURL} alt={userInfo.nickName} />
         </PhotoDiv>
-        <h3>{userNickname}</h3>
+        <h3>{userInfo.nickName}</h3>
         <LinkWrapper>
             <SideLink to="/home/friends">Friends</SideLink>
             <SideLink to="/home/messages">messages {unreadMessages.length > 0 && unreadMessages.length}</SideLink>
