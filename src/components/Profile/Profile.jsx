@@ -10,9 +10,9 @@ export const Profile = () => {
     const id = useSelector(getUserId);
     const { pathname } = useLocation();
     useEffect(() => {
-        if (id)
+        if (id && pathname === '/home/profile')
             dispatch(getUserById(id))
-    }, [dispatch, id])
+    }, [dispatch, id, pathname])
     const userInfo = useSelector(getUserInfo);
     return <Container>
         {pathname === '/home/profile' && userInfo.map(item => <div key={item._id}>
