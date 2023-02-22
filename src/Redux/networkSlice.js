@@ -21,6 +21,7 @@ const initialState = {
             unReadMessages: [],
             readMessages: [],
             page: 1,
+            totalHits: null
         },
     },
     isLoggedIn: false,
@@ -121,7 +122,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllInboxMessage.fulfilled, (state, action) => {
-                state.auth.userData.messages.inbox = action.payload.data;
+                state.auth.userData.messages.inbox = action.payload.data.messages;
+                state.auth.userData.totalHits = action.payload.data.totalHits;
             })
             .addCase(getAllInboxMessage.rejected, (state, action) => {
                 state.loading = false;
@@ -131,9 +133,9 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getNextInboxLimit.fulfilled, (state, action) => {
-                // state.auth.userData.unReadMessages = action.payload.data.messages.inboxMessagesUnread;
                 state.auth.userData.messages.inbox = action.payload.data.messages;
                 state.auth.userData.page = action.payload.data.page;
+                state.auth.userData.totalHits = action.payload.data.totalHits;
             })
             .addCase(getNextInboxLimit.rejected, (state, action) => {
                 state.loading = false;
@@ -143,9 +145,9 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getPrevInboxLimit.fulfilled, (state, action) => {
-                // state.auth.userData.unReadMessages = action.payload.data.messages.inboxMessagesUnread;
                 state.auth.userData.messages.inbox = action.payload.data.messages;
                 state.auth.userData.page = action.payload.data.page;
+                state.auth.userData.totalHits = action.payload.data.totalHits;
             })
             .addCase(getPrevInboxLimit.rejected, (state, action) => {
                 state.loading = false;

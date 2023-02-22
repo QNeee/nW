@@ -10,15 +10,8 @@ export const Inbox = () => {
     const skip = 5;
     const dispatch = useDispatch();
     const userInbox = useSelector(getUserInbox);
-    console.log(userInbox);
     const readMessage = userInbox.filter(item => item.read.marked === true);
     const unReadMessage = userInbox.filter(item => item.read.marked === false);
-
-    // const unReadMessage = userInbox.map(item => item.read.marked === false);
-    // const userUnreadInbox = useSelector(getUserUnreadMessages);
-    // const userReadInbox = useSelector(getReadMessages);
-    // console.log(userUnreadInbox);
-    // console.log(userReadInbox);
     dataToSet = [...unReadMessage, ...readMessage];
     dataToSet.length = 5;
     const { pathname } = useLocation();
