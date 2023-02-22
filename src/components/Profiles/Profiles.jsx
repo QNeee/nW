@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import { getUserInfo } from "Redux/networkSlice";
 import { getUserById } from "Redux/userOperaions";
 import { Container, MessageCount } from "./Profiles.styled";

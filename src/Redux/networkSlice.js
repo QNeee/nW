@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends } from './friendsOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage } from './messageOperaions';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, getNextInboxLimit, getPrevInboxLimit } from './messageOperaions';
 import { getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
 
@@ -19,6 +19,8 @@ const initialState = {
             findFriend: [],
             allUsers: [],
             unReadMessages: [],
+            readMessages: [],
+            page: 1,
         },
     },
     isLoggedIn: false,
@@ -119,10 +121,33 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllInboxMessage.fulfilled, (state, action) => {
-                state.auth.userData.messages.inbox = action.payload.data
-
+                state.auth.userData.messages.inbox = action.payload.data;
             })
             .addCase(getAllInboxMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getNextInboxLimit.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getNextInboxLimit.fulfilled, (state, action) => {
+                // state.auth.userData.unReadMessages = action.payload.data.messages.inboxMessagesUnread;
+                state.auth.userData.messages.inbox = action.payload.data.messages;
+                state.auth.userData.page = action.payload.data.page;
+            })
+            .addCase(getNextInboxLimit.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getPrevInboxLimit.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getPrevInboxLimit.fulfilled, (state, action) => {
+                // state.auth.userData.unReadMessages = action.payload.data.messages.inboxMessagesUnread;
+                state.auth.userData.messages.inbox = action.payload.data.messages;
+                state.auth.userData.page = action.payload.data.page;
+            })
+            .addCase(getPrevInboxLimit.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             }).addCase(changeStatusReadMessage.pending, (state, action) => {
@@ -240,6 +265,7 @@ export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
+export const getPage = state => state.network.auth.userData.page;
 export const getAllUsersData = state => state.network.auth.userData.allUsers;
 export const getIsLoggedIn = state => state.network.isLoggedIn;
 export const getUserInfo = state => state.network.auth.userData.info;
@@ -251,6 +277,7 @@ export const getUserInbox = state => state.network.auth.userData.messages.inbox
 export const getInboxContent = state => state.network.auth.userData.messageContent.inbox
 export const getOutboxContent = state => state.network.auth.userData.messageContent.outbox
 export const getUserUnreadMessages = state => state.network.auth.userData.unReadMessages;
+export const getReadMessages = state => state.network.auth.userData.readMessages;
 export const getFindFriend = state => state.network.auth.userData.findFriend;
 export const getUserFriends = state => state.network.auth.userData.friends;
 export const getUserMessagesCount = state => state.network.auth.userData.messagesCount

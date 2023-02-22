@@ -54,19 +54,33 @@ export const getOutboxMessageById = createAsyncThunk('messages/outbox/:id', asyn
         return rejectWithValue(error);
     }
 })
-export const getAllInboxMessage = createAsyncThunk('messages/inbox', async (status, { getState, rejectWithValue }) => {
+export const getAllInboxMessage = createAsyncThunk('messages/inbox', async (data, { getState, rejectWithValue }) => {
     try {
         const state = getState();
         setToken(state.network.token);
-        if (status) {
-            console.log('dasd');
-            const result = await axios.get(`messages/inbox/?readStatus=${status}`);
-            return result;
-        }
         const result = await axios.get('messages/inbox');
         return result;
     } catch (error) {
-
+        return rejectWithValue(error);
+    }
+})
+export const getNextInboxLimit = createAsyncThunk('messages/inbox/limit++', async (data, { getState, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get(`messages/inbox/?page=${data.page}&skip=${data.skip}`);
+        return result;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+})
+export const getPrevInboxLimit = createAsyncThunk('messages/inbox/limit--', async (data, { getState, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get(`messages/inbox/?page=${data.page}&skip=${data.skip}`);
+        return result;
+    } catch (error) {
         return rejectWithValue(error);
     }
 })
