@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { refresh } from "Redux/authOperations";
 import { useDispatch, useSelector } from "react-redux";
-import { getIsLoggedIn, getToken } from "Redux/networkSlice";
+import { getIsLoggedIn, getToken, getUserEmail } from "Redux/networkSlice";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "./Layout/Layout";
 import { AuthPage } from "./AuthPage/AuthPage";
@@ -17,9 +17,11 @@ import { Searchbar } from "./Searchbar/Searchbar";
 import { UserFriends } from "./UserFriends/UserFriends";
 import { FindedFriends } from "./FindedFriends/FindedFriends";
 import { Profiles } from "./Profiles/Profiles";
+import { Verification } from "./Verification/Verification";
 export const App = () => {
   const token = useSelector(getToken);
-  const logged = useSelector(getIsLoggedIn)
+  const logged = useSelector(getIsLoggedIn);
+  const email = useSelector(getUserEmail);
   const dispatch = useDispatch();
   useEffect(() => {
     if (logged)
@@ -28,7 +30,10 @@ export const App = () => {
   return (
 
     <Routes>
-      <Route path="/" element={!token ? < AuthPage /> : <Navigate to='/home' />} />
+      <Route path="/" element={!token ? < AuthPage /> : <Navigate to='/home' />} >
+        <Route path="register" element={<AuthPage />} />
+      </Route>
+      <Route path="/verification" element={email ? <Verification /> : <Navigate to='/' />} />
       <Route path="/home" element={token ? <Layout /> : <Navigate to='/' />}>
         <Route index element={<People />} />
         <Route path="friends" element={<Friends />} >

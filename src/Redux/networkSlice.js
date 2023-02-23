@@ -24,6 +24,7 @@ const initialState = {
             totalHits: null
         },
     },
+    email: null,
     isLoggedIn: false,
     token: null,
     error: null,
@@ -39,7 +40,7 @@ const networkSlice = createSlice({
 
         }).addCase(register.fulfilled, (state, action) => {
             state.loading = false;
-
+            state.email = action.payload.data.newUser.email;
         }).addCase(register.rejected, (state, action) => {
             state.error = action.payload;
             state.loading = false;
@@ -261,12 +262,15 @@ const networkSlice = createSlice({
 const persistConfig = {
     key: 'local-key',
     storage,
-    whitelist: ['token', 'isLoggedIn'],
+    whitelist: ['token', 'isLoggedIn', 'email'],
 };
 export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
+export const getUserEmail = state => state.network.email;
+export const getError = state => state.network.error;
+export const gettotalHits = state => state.network.auth.userData.totalHits;
 export const getPage = state => state.network.auth.userData.page;
 export const getAllUsersData = state => state.network.auth.userData.allUsers;
 export const getIsLoggedIn = state => state.network.isLoggedIn;

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "Redux/authOperations";
 import {
     Modal,
@@ -19,45 +19,88 @@ import {
     CloseSvg,
 } from './AuthPage.styled';
 import close from '../../images/close.svg';
+import { getError } from "Redux/networkSlice";
+import Notiflix from 'notiflix';
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 export const AuthPage = () => {
+    const { pathname } = useLocation();
+    const navigate = useNavigate();
+    const error = useSelector(getError);
     const dispatch = useDispatch();
-    const [modal, setModal] = useState(false);
-    const [form, setForm] = useState({
+    const [formRegister, setFormRegister] = useState({
         email: '', password: '', nickName: ''
     });
-    const inputHandler = (e) => {
+    const [formLogin, setFormLogin] = useState({
+        email: '', password: ''
+    });
+    const inputHandlerRegister = (e) => {
         const { name, value } = e.target;
-        setForm(prev => ({
+        setFormRegister(prev => ({
             ...prev,
             [name]: value,
 
         }));
     }
-    const onSubmit = (e) => {
+    const inputHandlerLogin = (e) => {
+        const { name, value } = e.target;
+        setFormLogin(prev => ({
+            ...prev,
+            [name]: value,
+
+        }));
+    }
+    const onSubmit = async (e) => {
         e.preventDefault();
-        if (!modal) {
+        if (pathname === '/') {
             const newUser = {
-                email: form.email,
-                password: form.password
+                email: formLogin.email,
+                password: formLogin.password
             }
-            dispatch(login(newUser));
-            setForm({ email: '', password: '' });
+            const loginUser = await dispatch(login(newUser));
+            if (!loginUser.error) {
+                setFormLogin({ email: '', password: '' });
+                return Notiflix.Notify.success('Hello');
+            }
+
         } else {
             const newUser = {
-                email: form.email,
-                password: form.password,
-                nickName: form.nickName
+                email: formRegister.email,
+                password: formRegister.password,
+                nickName: formRegister.nickName
             }
-            dispatch(register(newUser));
-            setForm({ email: '', password: '', nickName: '' });
+            const registration = await dispatch(register(newUser));
+            if (!registration.error) {
+                setFormRegister({ email: '', password: '', nickName: '' });
+                Notiflix.Notify.success('Registration Success');
+                navigate('/verification')
+            }
         }
 
     }
     const onClickModal = () => {
-        setModal(true);
+        navigate('/register')
     }
     const closeModal = () => {
-        setModal(false);
+        navigate('/')
+    }
+    useEffect(() => {
+        if (error)
+            checkErrors()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [error])
+    const checkErrors = () => {
+
+        if (pathname === '/') {
+            if (error.response.status === 400) return Notiflix.Notify.failure(error.response.data.status.map(item => item.message).join(''));
+            if (error.response.status === 404) return Notiflix.Notify.failure(error.response.data.message);
+            if (error.response.status === 403) return Notiflix.Notify.failure(error.response.data.message);
+        }
+        if (pathname === '/register') {
+            if (error.response.status === 400) return Notiflix.Notify.failure(error.response.data.status.map(item => item.message).join(''));
+            if (error.response.status === 409) return Notiflix.Notify.failure(error.response.data.message);
+        }
+
     }
     return <AuthContainer>
         <LogoContainer>
@@ -65,12 +108,12 @@ export const AuthPage = () => {
             <P>helps to keep in touch with family and friends.</P>
         </LogoContainer>
         <div>
-            {!modal && <LoginFormContainer><LoginForm onSubmit={onSubmit}>
+            {pathname === '/' && <LoginFormContainer><LoginForm onSubmit={onSubmit}>
                 <Label>Email
-                    <Input type="email" name="email" value={form.email} onChange={inputHandler} autoComplete="off" />
+                    <Input type="email" name="email" value={formLogin.email} onChange={inputHandlerLogin} autoComplete="off" />
                 </Label>
                 <Label>Password
-                    <Input type="password" name="password" value={form.password} onChange={inputHandler} autoComplete="off" />
+                    <Input type="password" name="password" value={formLogin.password} onChange={inputHandlerLogin} autoComplete="off" />
                 </Label>
                 <LoginButtonWrapper>
                     <Button type="submit">Login</Button>
@@ -78,18 +121,18 @@ export const AuthPage = () => {
                 </LoginButtonWrapper>
             </LoginForm></LoginFormContainer>}
 
-            {modal && <Modal><CloseSvg onClick={closeModal}>
+            {pathname === '/register' && <Modal><CloseSvg onClick={closeModal}>
                 <img src={close} alt="close" />
             </CloseSvg><H3>Register</H3><Wrapper onSubmit={onSubmit}>
                     <InputContainer>
                         <Label>Email
-                            <Input type="email" name="email" value={form.email} onChange={inputHandler} autoComplete="off" />
+                            <Input type="email" name="email" value={formRegister.email} onChange={inputHandlerRegister} autoComplete="off" />
                         </Label>
                         <Label>Password
-                            <Input type="password" name="password" value={form.password} onChange={inputHandler} autoComplete="off" />
+                            <Input type="password" name="password" value={formRegister.password} onChange={inputHandlerRegister} autoComplete="off" />
                         </Label>
                         <Label>Nickname
-                            <Input type="text" name="nickName" value={form.nickName} onChange={inputHandler} autoComplete="off" />
+                            <Input type="text" name="nickName" value={formRegister.nickName} onChange={inputHandlerRegister} autoComplete="off" />
                         </Label>
                     </InputContainer>
                     <Button type="submit">Register</Button>
