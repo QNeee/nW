@@ -8,4 +8,9 @@ display: flex;
 justify-content: space-between;
 outline:1px solid black;
 `;
-
+export const Container = styled.div`
+margin-top:80px;
+display: flex;
+justify-content: center;
+align-items: center;
+`;

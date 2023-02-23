@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends } from './friendsOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, getNextInboxLimit, getPrevInboxLimit } from './messageOperaions';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, getNextInboxLimit, getPrevInboxLimit, deleteMessage } from './messageOperaions';
 import { getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
 
@@ -11,6 +11,7 @@ const initialState = {
     auth: {
         user: { email: null, nickName: null, id: null },
         userData: {
+            allMessages: [],
             messages: { inbox: [], outbox: [], archive: [] },
             messageContent: { inbox: [], outbox: [], archive: [] },
             messagesCount: { inbox: 0, outbox: 0, archive: 0 },
@@ -18,8 +19,6 @@ const initialState = {
             friends: [],
             findFriend: [],
             allUsers: [],
-            unReadMessages: [],
-            readMessages: [],
             page: 1,
             totalHits: null
         },
@@ -29,15 +28,22 @@ const initialState = {
     token: null,
     error: null,
     loading: false,
+    modal: { id: '', open: false }
 };
 const networkSlice = createSlice({
     name: 'network',
     initialState,
-    reducers: {},
+    reducers: {
+        setModal: (state, action) => {
+            console.log(action.payload);
+            state.modal.id = action.payload.id;
+            state.modal.open = action.payload.open;
+        }
+    },
     extraReducers: builder => {
         builder.addCase(register.pending, (state, action) => {
             state.error = null;
-
+            state.loading = true;
         }).addCase(register.fulfilled, (state, action) => {
             state.loading = false;
             state.email = action.payload.data.newUser.email;
@@ -55,6 +61,7 @@ const networkSlice = createSlice({
             state.auth.user.email = action.payload.user.email;
             state.auth.user.nickName = action.payload.user.nickName;
             state.auth.user.id = action.payload.user.id;
+            state.email = null;
         }).addCase(login.rejected, (state, action) => {
             state.error = action.payload;
             state.loading = false;
@@ -89,6 +96,7 @@ const networkSlice = createSlice({
             })
             .addCase(getAllMessages.fulfilled, (state, action) => {
                 state.loading = false;
+                state.auth.userData.allMessages = action.payload.data;
                 // state.auth.user.nickName = action.payload.response.nickName;
                 // state.token = action.payload.response.token;
             })
@@ -111,7 +119,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getOutboxMessageById.fulfilled, (state, action) => {
-
+                state.loading = false;
                 state.auth.userData.messageContent.outbox = action.payload.data;
 
             })
@@ -123,6 +131,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllInboxMessage.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.unreadMessages = action.payload.data.messages;
                 state.auth.userData.messages.inbox = action.payload.data.messages;
                 state.auth.userData.totalHits = action.payload.data.totalHits;
             })
@@ -134,6 +144,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getNextInboxLimit.fulfilled, (state, action) => {
+                state.loading = false;
+
                 state.auth.userData.messages.inbox = action.payload.data.messages;
                 state.auth.userData.page = action.payload.data.page;
                 state.auth.userData.totalHits = action.payload.data.totalHits;
@@ -146,6 +158,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getPrevInboxLimit.fulfilled, (state, action) => {
+                state.loading = false;
+
                 state.auth.userData.messages.inbox = action.payload.data.messages;
                 state.auth.userData.page = action.payload.data.page;
                 state.auth.userData.totalHits = action.payload.data.totalHits;
@@ -158,6 +172,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(changeStatusReadMessage.fulfilled, (state, action) => {
+                state.loading = false;
+
                 // state.auth.userData.unReadMessages = action.payload.data;
                 // console.log(state.auth.userData.unReadMessages);
             })
@@ -169,6 +185,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getInboxMessageById.fulfilled, (state, action) => {
+                state.loading = false;
 
                 state.auth.userData.messageContent.inbox = action.payload.data;
             })
@@ -180,9 +197,22 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(sendMessage.fulfilled, (state, action) => {
+                state.loading = false;
+
                 // state.auth.userData.messages.outbox = [...state.auth.userData.messages.outbox, action.payload.data.message]
             })
             .addCase(sendMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(deleteMessage.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteMessage.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload);
+            })
+            .addCase(deleteMessage.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             }).addCase(getAllUsers.pending, (state, action) => {
@@ -190,6 +220,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllUsers.fulfilled, (state, action) => {
+                state.loading = false;
 
                 state.auth.userData.allUsers = action.payload.data;
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
@@ -205,7 +236,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getUserByNickName.fulfilled, (state, action) => {
-                console.log(action.payload);
+                state.loading = false;
+
                 state.auth.userData.findFriend = [action.payload.data];
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
@@ -220,6 +252,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getUserById.fulfilled, (state, action) => {
+                state.loading = false;
+
                 state.auth.userData.info = [action.payload.data];
                 state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
@@ -233,6 +267,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllFriends.fulfilled, (state, action) => {
+                state.loading = false;
+
                 state.auth.userData.friends = action.payload.data;
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
@@ -246,7 +282,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(addFriend.fulfilled, (state, action) => {
-                console.log(action.payload);
+                state.loading = false;
+
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
                 // state.token = action.payload.response.token;
@@ -268,6 +305,11 @@ export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
+export const { setModal } = networkSlice.actions;
+export const getModal = state => state.network.modal;
+export const getAllUserMassages = state => state.network.auth.userData.allMessages;
+export const getUserUnreadMessages = state => state.network.auth.userData.unreadMessages;
+export const getLoading = state => state.network.loading;
 export const getUserEmail = state => state.network.email;
 export const getError = state => state.network.error;
 export const gettotalHits = state => state.network.auth.userData.totalHits;
@@ -282,7 +324,6 @@ export const getUserOutbox = state => state.network.auth.userData.messages.outbo
 export const getUserInbox = state => state.network.auth.userData.messages.inbox
 export const getInboxContent = state => state.network.auth.userData.messageContent.inbox
 export const getOutboxContent = state => state.network.auth.userData.messageContent.outbox
-export const getUserUnreadMessages = state => state.network.auth.userData.unReadMessages;
 export const getReadMessages = state => state.network.auth.userData.readMessages;
 export const getFindFriend = state => state.network.auth.userData.findFriend;
 export const getUserFriends = state => state.network.auth.userData.friends;

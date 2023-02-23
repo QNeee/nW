@@ -18,6 +18,7 @@ import { UserFriends } from "./UserFriends/UserFriends";
 import { FindedFriends } from "./FindedFriends/FindedFriends";
 import { Profiles } from "./Profiles/Profiles";
 import { Verification } from "./Verification/Verification";
+import { getAllMessages } from "Redux/messageOperaions";
 export const App = () => {
   const token = useSelector(getToken);
   const logged = useSelector(getIsLoggedIn);
@@ -26,6 +27,7 @@ export const App = () => {
   useEffect(() => {
     if (logged)
       dispatch(refresh())
+
   }, [dispatch, logged])
   return (
 

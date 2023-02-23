@@ -30,4 +30,6 @@ color:black;
     color:white;
   }
 `;
-export const MainContainer = styled.div`width:1200px`;
+export const MainContainer = styled.div`
+position: relative;
+width:1200px`;

@@ -114,4 +114,15 @@ export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread',
         return rejectWithValue(error);
     }
 })
+export const deleteMessage = createAsyncThunk('messages/delete', async (id, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.delete(`messages/inbox/${id}`);
+        dispatch(getAllInboxMessage());
+        return result;
+    } catch (error) {
 
+        return rejectWithValue(error);
+    }
+})
