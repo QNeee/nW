@@ -1,16 +1,10 @@
-import { getAllUserMassages, getPage, getUserId, getUserInbox, getUserInfo, getUserMessagesCount } from "Redux/networkSlice"
+import { getAllUserMassages, getUserInfo } from "Redux/networkSlice"
 import { Aside, PhotoDiv, LinkWrapper, SideLink } from "./Sidebar.styled"
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { getAllInboxMessage, getAllMessages } from "Redux/messageOperaions";
+import { useSelector } from "react-redux";
 export const Sidebar = () => {
     const allUserMessages = useSelector(getAllUserMassages);
-    const unreadMessages = allUserMessages.filter(item => !item.read.marked);
+    const unreadMessages = allUserMessages.filter(item => item.view.inbox).filter(item => !item.read.marked);
     const userInfo = useSelector(getUserInfo);
-    const userInbox = useSelector(getUserInbox);
-    const unReadMessage = userInbox.filter(item => item.read.marked === false);
-    const page = useSelector(getPage);
     return < Aside >
         {
             userInfo.map(item => <div key={item._id}><PhotoDiv>

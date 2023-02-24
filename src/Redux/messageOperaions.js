@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-import { getUserInbox, setDataToSendLength, setInboxMessages, setPage } from './networkSlice';
+import { setDataToSendLength, setPage } from './networkSlice';
 import { getUserById } from './userOperaions';
 axios.defaults.baseURL = 'http://localhost:10000/api';
 const setToken = token => {

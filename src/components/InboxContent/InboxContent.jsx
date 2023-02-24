@@ -1,14 +1,15 @@
 
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getInboxMessageById, } from "Redux/messageOperaions";
 import { useDispatch, useSelector } from "react-redux";
-import { getInboxContent, getModal, setModal } from "Redux/networkSlice";
+import { getInboxContent, getModal, setAnswerData, setModal } from "Redux/networkSlice";
 import { ContentContainer, InboxContentContainer, Span, P, ButtonContainer } from "./InboxContent.styled";
 import { ModalWindow } from "components/Modal/Modal";
 
 export const InboxContent = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { pathname } = useLocation();
     const modal = useSelector(getModal);
     const splitId = pathname.split('/')
@@ -19,7 +20,8 @@ export const InboxContent = () => {
             dispatch(getInboxMessageById(id));
     }, [dispatch, id])
     const onClickAnswer = () => {
-
+        dispatch(setAnswerData(inboxContent.message.sender))
+        navigate('/home/messages');
     }
     const onClickDelete = () => {
         dispatch(setModal({ id: id, open: true }));

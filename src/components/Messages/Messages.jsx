@@ -1,12 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "Redux/messageOperaions";
-import { getUserNickName } from "Redux/networkSlice";
+import { getAnswerData, getUserNickName, setAnswerData } from "Redux/networkSlice";
 import { useLocation, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { FormDiv, LinkDiv, MessageLink, MainContainer } from "./Messages.styled";
 import "../../index.css"
 export const Messages = () => {
-    const [form, setForm] = useState({ nickName: '', content: '' });
+
+    const dispatch = useDispatch();
+    const answerData = useSelector(getAnswerData);
+    const [form, setForm] = useState(
+        { nickName: '', content: '' });
     const inputHandler = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({
@@ -15,7 +19,6 @@ export const Messages = () => {
 
         }));
     }
-    const dispatch = useDispatch();
     const userNickName = useSelector(getUserNickName);
     const { pathname } = useLocation();
     const onSubmit = (e) => {
@@ -23,9 +26,10 @@ export const Messages = () => {
         const newMessage = {
             sender: userNickName,
             content: form.content,
-            receiver: form.nickName
+            receiver: answerData === '' ? form.nickName : answerData
         }
         dispatch(sendMessage(newMessage));
+        dispatch(setAnswerData(''));
         setForm({ nickName: '', content: '' });
     }
     return <MainContainer><LinkDiv><MessageLink to='/home/messages/outbox'>Outbox</MessageLink>
@@ -35,7 +39,7 @@ export const Messages = () => {
             <div className="form-right-decoration"></div>
             <div className="circle"></div>
             <div className="form-inner">
-                <input type="text" name="nickName" onChange={inputHandler} value={form.nickName} autoComplete="off" placeholder="Nickname" />
+                <input type="text" name="nickName" onChange={inputHandler} value={answerData === '' ? form.nickName : answerData} autoComplete="off" placeholder="Nickname" />
                 <textarea type="text" name="content" onChange={inputHandler} value={form.content} autoComplete="off" placeholder="message" ></textarea>
                 <button className="gradient-button" type="submit" value="Отправить" >Send</button>
             </div>

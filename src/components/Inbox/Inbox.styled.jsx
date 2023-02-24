@@ -20,3 +20,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 `;
+export const Span = styled.span`
+color:white;
+background: green;
+`;

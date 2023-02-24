@@ -1,7 +1,7 @@
 import { Modal, Backdrop, ButtonContainer } from "./Modal.styled"
-import { getDataToSendLength, getModal, getUserInbox, setDataToSendLength, setModal } from "Redux/networkSlice";
+import { getModal, setModal } from "Redux/networkSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMessage, getAllInboxMessage } from "Redux/messageOperaions";
+import { deleteMessage } from "Redux/messageOperaions";
 import { useNavigate } from "react-router-dom";
 export const ModalWindow = () => {
     const dispatch = useDispatch();

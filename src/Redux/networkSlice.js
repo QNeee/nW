@@ -22,6 +22,9 @@ const initialState = {
             page: 1,
             totalHits: null,
             dataToSendLength: null,
+            answerData: '',
+            onlyUnread: false,
+            onlyRead: false,
         },
     },
     email: null,
@@ -46,6 +49,21 @@ const networkSlice = createSlice({
 
             state.auth.userData.dataToSendLength = action.payload;
         },
+        setAnswerData: (state, action) => {
+            state.auth.userData.answerData = action.payload;
+        },
+        setOnlyUnread: (state, action) => {
+            state.auth.userData.onlyRead = false;
+            state.auth.userData.onlyUnread = action.payload;
+        },
+        setOnlyRead: (state, action) => {
+            state.auth.userData.onlyUnread = false;
+            state.auth.userData.onlyRead = action.payload;
+        },
+        setReturn: (state, action) => {
+            state.auth.userData.onlyUnread = false;
+            state.auth.userData.onlyRead = false;
+        }
     },
     extraReducers: builder => {
         builder.addCase(register.pending, (state, action) => {
@@ -282,7 +300,10 @@ export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
-export const { setModal, setPage, setDataToSendLength } = networkSlice.actions;
+export const { setModal, setPage, setDataToSendLength, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const getOnlyRead = state => state.network.auth.userData.onlyRead;
+export const getOnlyUnread = state => state.network.auth.userData.onlyUnread;
+export const getAnswerData = state => state.network.auth.userData.answerData;
 export const getDataToSendLength = state => state.network.auth.userData.dataToSendLength;
 export const getModal = state => state.network.modal;
 export const getAllUserMassages = state => state.network.auth.userData.allMessages;
