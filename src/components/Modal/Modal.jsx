@@ -1,16 +1,24 @@
 import { Modal, Backdrop, ButtonContainer } from "./Modal.styled"
-import { getModal, setModal } from "Redux/networkSlice";
+import { getModal, setModal, setReturn } from "Redux/networkSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMessage } from "Redux/messageOperaions";
-import { useNavigate } from "react-router-dom";
+import { deleteInboxMessage, deleteOutboxMessage } from "Redux/messageOperaions";
+import { useNavigate, useLocation } from "react-router-dom";
 export const ModalWindow = () => {
+    const { pathname } = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const modal = useSelector(getModal);
     const onClickYes = async () => {
-        dispatch(deleteMessage(modal.id))
+        if (pathname === `/home/messages/inbox/${modal.id}`) {
+            dispatch(deleteInboxMessage(modal.id))
+            navigate('/home/messages/inbox');
+            dispatch(setReturn());
+        }
+        if (pathname === `/home/messages/outbox/${modal.id}`) {
+            dispatch(deleteOutboxMessage(modal.id))
+            navigate('/home/messages/outbox');
+        }
         dispatch(setModal({ id: '', open: false }));
-        navigate('/home/messages/inbox');
     }
     const onClickNo = () => {
         dispatch(setModal({ id: '', open: false }));

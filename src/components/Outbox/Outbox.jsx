@@ -13,7 +13,9 @@ export const Outbox = () => {
         dispatch(getAllOutboxMessages())
     }, [dispatch])
     return <div>
-        {pathname === "/home/messages/outbox" && userOutbox.length > 0 ? userOutbox.map(item => <OutboxContainer key={item._id}><div><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></div><div><Link to={`/home/messages/outbox/${item._id}`}>message</Link></div><div>{item.sendedTime}</div></OutboxContainer>) : <Container>{loading ? 'loading...' : 'No outbox messages'}</Container>}
+        {pathname === "/home/messages/outbox" && userOutbox.length > 0 && userOutbox.map(item => <OutboxContainer key={item._id}><div><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></div><div><Link to={`/home/messages/outbox/${item._id}`}>message</Link></div><div>{item.sendedTime}</div></OutboxContainer>)}
+        {loading && <Container>loading...</Container>}
+        {userOutbox.length === 0 && !loading && <Container>No outbox messages</Container>}
         <Outlet />
     </div>
 }

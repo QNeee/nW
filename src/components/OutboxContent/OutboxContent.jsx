@@ -1,12 +1,15 @@
 
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getOutboxMessageById } from "Redux/messageOperaions";
 import { useDispatch, useSelector } from "react-redux";
-import { getOutboxContent } from "Redux/networkSlice";
+import { getModal, getOutboxContent, setModal } from "Redux/networkSlice";
 import { ContentContainer, Div } from "./OutboxContent.styled";
+import { ModalWindow } from "components/Modal/Modal";
 
 export const OutboxContent = () => {
+    const modal = useSelector(getModal);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { pathname } = useLocation();
     const splitId = pathname.split('/')
@@ -16,8 +19,17 @@ export const OutboxContent = () => {
         if (id)
             dispatch(getOutboxMessageById(id))
     }, [dispatch, id])
+    const onClickDelete = () => {
+        dispatch(setModal({ id: id, open: true }));
+    }
+    const onClickReturn = () => {
+        navigate('/home/messages/outbox');
+    }
+
     return <ContentContainer>
+        <button type="button" onClick={onClickReturn}>return to Inbox</button>
         {Object.values(outBoxContent).length > 0 && <Div>{outBoxContent.message.content}</Div>}
-        <button type="button">Delete Message</button>
+        <button onClick={onClickDelete} type="button">Delete Message</button>
+        {modal.open && <ModalWindow />}
     </ContentContainer>
 }

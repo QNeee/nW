@@ -101,7 +101,7 @@ export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread',
         return rejectWithValue(error);
     }
 })
-export const deleteMessage = createAsyncThunk('messages/delete', async (id, { getState, dispatch, rejectWithValue }) => {
+export const deleteInboxMessage = createAsyncThunk('messages/inbox/delete', async (id, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
         const userId = state.network.auth.user.id;
@@ -120,6 +120,18 @@ export const deleteMessage = createAsyncThunk('messages/delete', async (id, { ge
         dispatch(getAllInboxMessage(data));
         dispatch(getUserById(userId));
         dispatch(getAllMessages());
+        return result;
+    } catch (error) {
+
+        return rejectWithValue(error);
+    }
+})
+export const deleteOutboxMessage = createAsyncThunk('messages/outbox/delete', async (id, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.delete(`messages/outbox/${id}`);
+        dispatch(getAllOutboxMessages());
         return result;
     } catch (error) {
 

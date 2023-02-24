@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends } from './friendsOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteMessage } from './messageOperaions';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage } from './messageOperaions';
 import { getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
 
@@ -200,14 +200,24 @@ const networkSlice = createSlice({
             .addCase(sendMessage.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            }).addCase(deleteMessage.pending, (state, action) => {
+            }).addCase(deleteInboxMessage.pending, (state, action) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(deleteMessage.fulfilled, (state, action) => {
+            .addCase(deleteInboxMessage.fulfilled, (state, action) => {
                 state.loading = false;
             })
-            .addCase(deleteMessage.rejected, (state, action) => {
+            .addCase(deleteInboxMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(deleteOutboxMessage.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteOutboxMessage.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(deleteOutboxMessage.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             }).addCase(getAllUsers.pending, (state, action) => {

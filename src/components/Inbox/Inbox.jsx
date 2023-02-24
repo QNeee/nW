@@ -61,12 +61,12 @@ export const Inbox = () => {
         dispatch(setReturn());
     }
     return <div>
-        <button type="button" onClick={onClickUnread}>Only Unread </button>
-        <button type="button" onClick={onClickRead}>Only Read </button>
-        {read && !unread && <button type="button" onClick={onClickReturn}>return to inbox</button>}
-        {!read && unread && < button type="button" onClick={onClickReturn}>return to inbox</button>
-        }
-
+        {pathname === "/home/messages/inbox" && page === 1 && dataToSet.length > 0 && <button type="button" onClick={onClickUnread}>Only Unread </button>}
+        {pathname === "/home/messages/inbox" && page === 1 && dataToSet.length > 0 && <button type="button" onClick={onClickRead}>Only Read </button>}
+        {read && !unread && pathname === "/home/messages/inbox" && page === 1 && <button type="button" onClick={onClickReturn}>return</button>}
+        {!read && unread && pathname === "/home/messages/inbox" && page === 1 && < button type="button" onClick={onClickReturn}>return</button>}
+        {read && !unread && pathname === "/home/messages/inbox" && data.length === 0 && <div>no read messages found</div>}
+        {!read && unread && pathname === "/home/messages/inbox" && data.length === 0 && <div>no unread messages found</div>}
         {pathname === "/home/messages/inbox" && !read && !unread && dataToSet.map(item => <InboxContainer key={item._id}><MessageContainer><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></MessageContainer><MessageContainer><Link to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</Link></MessageContainer><MessageContainer>{item.sendedTime}</MessageContainer></InboxContainer>)}
         {pathname === "/home/messages/inbox" && !read && unread && data.map(item => <InboxContainer key={item._id}><MessageContainer><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></MessageContainer><MessageContainer><Link to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</Link></MessageContainer><MessageContainer>{item.sendedTime}</MessageContainer></InboxContainer>)}
         {pathname === "/home/messages/inbox" && read && !unread && data.map(item => <InboxContainer key={item._id}><MessageContainer><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></MessageContainer><MessageContainer><Link to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</Link></MessageContainer><MessageContainer>{item.sendedTime}</MessageContainer></InboxContainer>)}
@@ -79,6 +79,7 @@ export const Inbox = () => {
             </div>
         }
         {loading && <Container>loading...</Container>}
-        {userInbox.length === 0 && !loading && <Container>No inbox messages</Container>}
+        {userInbox.length === 0 && !loading && !read && !unread && < Container > No inbox messages</Container>
+        }
     </div >
 }
