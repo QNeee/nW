@@ -7,7 +7,7 @@ padding-left:40px;
 padding-right: 40px;
 justify-content: space-between;
 border-bottom: 1px solid blue;
-background-color: ${props => props.prop !== true && "grey"};
+/* background-color: ${props => props.prop !== true && "grey"}; */
 `;
 export const Container = styled.div`
 margin-top:80px;

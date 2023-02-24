@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends } from './friendsOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, getNextInboxLimit, getPrevInboxLimit, deleteMessage } from './messageOperaions';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteMessage } from './messageOperaions';
 import { getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
 
@@ -20,7 +20,8 @@ const initialState = {
             findFriend: [],
             allUsers: [],
             page: 1,
-            totalHits: null
+            totalHits: null,
+            dataToSendLength: null,
         },
     },
     email: null,
@@ -35,10 +36,16 @@ const networkSlice = createSlice({
     initialState,
     reducers: {
         setModal: (state, action) => {
-            console.log(action.payload);
             state.modal.id = action.payload.id;
             state.modal.open = action.payload.open;
-        }
+        },
+        setPage: (state, action) => {
+            state.auth.userData.page = action.payload;
+        },
+        setDataToSendLength: (state, action) => {
+
+            state.auth.userData.dataToSendLength = action.payload;
+        },
     },
     extraReducers: builder => {
         builder.addCase(register.pending, (state, action) => {
@@ -132,39 +139,10 @@ const networkSlice = createSlice({
             })
             .addCase(getAllInboxMessage.fulfilled, (state, action) => {
                 state.loading = false;
-                state.auth.userData.unreadMessages = action.payload.data.messages;
                 state.auth.userData.messages.inbox = action.payload.data.messages;
                 state.auth.userData.totalHits = action.payload.data.totalHits;
             })
             .addCase(getAllInboxMessage.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            }).addCase(getNextInboxLimit.pending, (state, action) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getNextInboxLimit.fulfilled, (state, action) => {
-                state.loading = false;
-
-                state.auth.userData.messages.inbox = action.payload.data.messages;
-                state.auth.userData.page = action.payload.data.page;
-                state.auth.userData.totalHits = action.payload.data.totalHits;
-            })
-            .addCase(getNextInboxLimit.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            }).addCase(getPrevInboxLimit.pending, (state, action) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getPrevInboxLimit.fulfilled, (state, action) => {
-                state.loading = false;
-
-                state.auth.userData.messages.inbox = action.payload.data.messages;
-                state.auth.userData.page = action.payload.data.page;
-                state.auth.userData.totalHits = action.payload.data.totalHits;
-            })
-            .addCase(getPrevInboxLimit.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             }).addCase(changeStatusReadMessage.pending, (state, action) => {
@@ -210,7 +188,6 @@ const networkSlice = createSlice({
             })
             .addCase(deleteMessage.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload);
             })
             .addCase(deleteMessage.rejected, (state, action) => {
                 state.loading = false;
@@ -305,7 +282,8 @@ export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
-export const { setModal } = networkSlice.actions;
+export const { setModal, setPage, setDataToSendLength } = networkSlice.actions;
+export const getDataToSendLength = state => state.network.auth.userData.dataToSendLength;
 export const getModal = state => state.network.modal;
 export const getAllUserMassages = state => state.network.auth.userData.allMessages;
 export const getUserUnreadMessages = state => state.network.auth.userData.unreadMessages;

@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getAllInboxMessage, sendMessage } from "Redux/messageOperaions";
+import { sendMessage } from "Redux/messageOperaions";
 import { getUserNickName } from "Redux/networkSlice";
 import { useLocation, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { FormDiv, LinkDiv, MessageLink, MainContainer } from "./Messages.styled";
 import "../../index.css"
-import { useEffect } from "react";
 export const Messages = () => {
     const [form, setForm] = useState({ nickName: '', content: '' });
     const inputHandler = (e) => {
