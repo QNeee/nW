@@ -6,7 +6,6 @@ import { Link, useLocation, Outlet } from "react-router-dom";
 import { Container, InboxContainer, MessageContainer } from "./Inbox.styled";
 import { getUserById } from "Redux/userOperaions";
 export const Inbox = () => {
-    let array = [];
     let dataToSet = [];
     let page = useSelector(getPage);
     const loading = useSelector(getLoading);
@@ -15,6 +14,8 @@ export const Inbox = () => {
     const allUserMessages = useSelector(getAllUserMassages);
     const count = useSelector(getUserMessagesCount);
     const userInbox = useSelector(getUserInbox);
+    const unreadMessages = allUserMessages.filter(item => !item.read.marked);
+    console.log(unreadMessages.length);
     dataToSet = [...userInbox];
     dataToSet.length = dataToSet.length > skip ? skip : dataToSet.length;
     const { pathname } = useLocation();

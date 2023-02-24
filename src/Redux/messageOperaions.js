@@ -94,7 +94,7 @@ export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread',
         const state = getState();
         setToken(state.network.token);
         const result = await axios.patch(`messages/inbox/${data._id}`, dataToPatch);
-        dispatch(getAllInboxMessage());
+        dispatch(getAllMessages());
         return result;
     } catch (error) {
 
@@ -117,9 +117,9 @@ export const deleteMessage = createAsyncThunk('messages/delete', async (id, { ge
         if (dataLength === 0 && page !== 1) {
             dispatch(setPage(page - 1));
         }
-        // dispatch(getAllMessages());
         dispatch(getAllInboxMessage(data));
         dispatch(getUserById(userId));
+        dispatch(getAllMessages());
         return result;
     } catch (error) {
 
