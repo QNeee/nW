@@ -19,17 +19,24 @@ justify-content: space-around;
 padding-top:50px;
 `;
 export const MessageLink = styled(Link)`
-border-color: red;
-border : 2px solid black;
-border-radius: 4px;
-text-decoration: none;
-padding:3px;
-color:black;
- &.active, :hover ,:focus{
-  background-color:blue;
-    color:white;
+ text-decoration: none;
+  display: inline-block;
+    color: red;
+  padding: 20px 30px;
+  margin: 10px 20px;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-image: linear-gradient(to right, #9EEFE1 0%, #4830F0 51%, #9EEFE1 100%);
+  background-size: 200% auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+  transition: .5s;
+  &:hover{
+    background-position: right center;
   }
 `;
+
 export const MainContainer = styled.div`
 position: relative;
-width:1200px`;
+width:1280px`;

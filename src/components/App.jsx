@@ -28,7 +28,6 @@ export const App = () => {
       dispatch(refresh())
   }, [dispatch, logged])
   return (
-
     <Routes>
       <Route path="/" element={!token ? < AuthPage /> : <Navigate to='/home' />} >
         <Route path="register" element={<AuthPage />} />

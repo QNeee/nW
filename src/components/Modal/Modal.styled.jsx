@@ -4,7 +4,7 @@ padding:35px;
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index:100;
+  z-index:122;
   transform: translate(-50%, -50%);
   color: #52555f;
   background-color: #fff;
@@ -26,3 +26,8 @@ display: flex;
 justify-content: space-around;
 align-items: center;
 `    ;
+export const Span = styled.span`
+display: flex;
+justify-content: center;
+align-items: center;
+`;

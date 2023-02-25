@@ -4,8 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getOutboxMessageById } from "Redux/messageOperaions";
 import { useDispatch, useSelector } from "react-redux";
 import { getModal, getOutboxContent, setModal } from "Redux/networkSlice";
-import { ContentContainer, Div } from "./OutboxContent.styled";
+import { Button } from "components/App.styled";
 import { ModalWindow } from "components/Modal/Modal";
+import { ButtonContainer, ContentContainer, InboxContentContainer, P, SpanFirst, SpanSecond } from "components/InboxContent/InboxContent.styled";
 
 export const OutboxContent = () => {
     const modal = useSelector(getModal);
@@ -26,10 +27,9 @@ export const OutboxContent = () => {
         navigate('/home/messages/outbox');
     }
 
-    return <ContentContainer>
-        <button type="button" onClick={onClickReturn}>return to Inbox</button>
-        {Object.values(outBoxContent).length > 0 && <Div>{outBoxContent.message.content}</Div>}
-        <button onClick={onClickDelete} type="button">Delete Message</button>
+    return <div>
+        <Button type="button" onClick={onClickReturn}>return to Outbox</Button>
+        {Object.values(outBoxContent).length > 0 && !modal.open && <><InboxContentContainer><SpanFirst>From:</SpanFirst><SpanSecond>{outBoxContent.message.sender}</SpanSecond><SpanFirst>Time:</SpanFirst><SpanSecond>{outBoxContent.message.sendedTime}</SpanSecond></InboxContentContainer><ContentContainer><P>{outBoxContent.message.content}</P></ContentContainer><ButtonContainer><Button onClick={onClickDelete} type="button">Delete Message</Button></ButtonContainer></>}
         {modal.open && <ModalWindow />}
-    </ContentContainer>
+    </div>
 }

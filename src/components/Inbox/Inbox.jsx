@@ -2,8 +2,9 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { getAllInboxMessage, getAllMessages } from "Redux/messageOperaions";
 import { getAllUserMassages, getLoading, getOnlyRead, getOnlyUnread, getPage, getUserId, getUserInbox, getUserMessagesCount, setOnlyRead, setOnlyUnread, setPage, setReturn } from "Redux/networkSlice";
-import { Link, useLocation, Outlet } from "react-router-dom";
-import { Container, InboxContainer, MessageContainer, Span } from "./Inbox.styled";
+import { useLocation, Outlet } from "react-router-dom";
+import { Container, InboxContainer, Span, ButtonContainer, MessageContainerFirst, MessageContainerSecond, MessageContainerThird, StyledLink } from "./Inbox.styled";
+import { Button } from "components/App.styled";
 import { getUserById } from "Redux/userOperaions";
 import { useState } from "react";
 export const Inbox = () => {
@@ -61,25 +62,26 @@ export const Inbox = () => {
         dispatch(setReturn());
     }
     return <div>
-        {pathname === "/home/messages/inbox" && page === 1 && dataToSet.length > 0 && <button type="button" onClick={onClickUnread}>Only Unread </button>}
-        {pathname === "/home/messages/inbox" && page === 1 && dataToSet.length > 0 && <button type="button" onClick={onClickRead}>Only Read </button>}
-        {read && !unread && pathname === "/home/messages/inbox" && page === 1 && <button type="button" onClick={onClickReturn}>return</button>}
-        {!read && unread && pathname === "/home/messages/inbox" && page === 1 && < button type="button" onClick={onClickReturn}>return</button>}
-        {read && !unread && pathname === "/home/messages/inbox" && data.length === 0 && <div>no read messages found</div>}
-        {!read && unread && pathname === "/home/messages/inbox" && data.length === 0 && <div>no unread messages found</div>}
-        {pathname === "/home/messages/inbox" && !read && !unread && dataToSet.map(item => <InboxContainer key={item._id}><MessageContainer><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></MessageContainer><MessageContainer><Link to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</Link></MessageContainer><MessageContainer>{item.sendedTime}</MessageContainer></InboxContainer>)}
-        {pathname === "/home/messages/inbox" && !read && unread && data.map(item => <InboxContainer key={item._id}><MessageContainer><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></MessageContainer><MessageContainer><Link to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</Link></MessageContainer><MessageContainer>{item.sendedTime}</MessageContainer></InboxContainer>)}
-        {pathname === "/home/messages/inbox" && read && !unread && data.map(item => <InboxContainer key={item._id}><MessageContainer><Link to={`/home/profile/${item.owner}`}>{item.sender}</Link></MessageContainer><MessageContainer><Link to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</Link></MessageContainer><MessageContainer>{item.sendedTime}</MessageContainer></InboxContainer>)}
-
+        <div>
+            {pathname === "/home/messages/inbox" && page === 1 && dataToSet.length > 0 && <Button type="button" onClick={onClickUnread}>Only Unread </Button>}
+            {pathname === "/home/messages/inbox" && page === 1 && dataToSet.length > 0 && <Button type="button" onClick={onClickRead}>Only Read </Button>}
+            {read && !unread && pathname === "/home/messages/inbox" && page === 1 && <Button type="button" onClick={onClickReturn}>return</Button>}
+            {!read && unread && pathname === "/home/messages/inbox" && page === 1 && < Button type="button" onClick={onClickReturn}>return</Button>}
+        </div>
+        {read && !unread && pathname === "/home/messages/inbox" && data.length === 0 && <Container>no read messages found</Container>}
+        {!read && unread && pathname === "/home/messages/inbox" && data.length === 0 && <Container>no unread messages found</Container>}
+        {pathname === "/home/messages/inbox" && !read && !unread && dataToSet.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.owner}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}><>message</>{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
+        {pathname === "/home/messages/inbox" && !read && unread && data.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.owner}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
+        {pathname === "/home/messages/inbox" && read && !unread && data.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.owner}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
         <Outlet />
-        {
-            count.inbox !== 0 && !read && !unread && allUserInbox.length > dataToSet.length && pathname === "/home/messages/inbox" && <div>
-                <button type="button" disabled={page === '1' || page === 1 ? true : false} onClick={onClickPrev}>prev</button>
-                <button type="button" disabled={dataToSet.length === skip && allUserInbox.length / page !== dataToSet.length ? false : true} onClick={onClickNext}>next</button>
-            </div>
+        {count.inbox !== 0 && !read && !unread && allUserInbox.length > dataToSet.length && pathname === "/home/messages/inbox" && <ButtonContainer>
+            <Button type="button" disabled={page === '1' || page === 1 ? true : false} onClick={onClickPrev}>prev</Button>
+            <Button type="button" disabled={dataToSet.length === skip && allUserInbox.length / page !== dataToSet.length ? false : true} onClick={onClickNext}>next</Button>
+        </ButtonContainer>
         }
         {loading && <Container>loading...</Container>}
         {userInbox.length === 0 && !loading && !read && !unread && < Container > No inbox messages</Container>
         }
+
     </div >
 }

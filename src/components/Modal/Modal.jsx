@@ -1,4 +1,5 @@
-import { Modal, Backdrop, ButtonContainer } from "./Modal.styled"
+import { Modal, Backdrop, ButtonContainer, Span } from "./Modal.styled"
+import { Button } from "components/App.styled";
 import { getModal, setModal, setReturn } from "Redux/networkSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteInboxMessage, deleteOutboxMessage } from "Redux/messageOperaions";
@@ -24,8 +25,8 @@ export const ModalWindow = () => {
         dispatch(setModal({ id: '', open: false }));
     }
     return <Backdrop><Modal>
-        <span>Do u rly want to delete?</span>
-        <ButtonContainer><button onClick={onClickYes} type="button">Yes</button>
-            <button onClick={onClickNo} type="button">No</button></ButtonContainer>
+        <Span>Do u rly want to delete?</Span>
+        <ButtonContainer><Button onClick={onClickYes} type="button">Yes</Button>
+            <Button onClick={onClickNo} type="button">No</Button></ButtonContainer>
     </Modal></Backdrop>
 }
