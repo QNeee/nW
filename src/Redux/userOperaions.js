@@ -12,7 +12,6 @@ export const getAllUsers = createAsyncThunk('users', async (data, { getState, re
         const state = getState();
         setToken(state.network.token);
         if (data) {
-            console.log(data);
             const result = await axios.get(`users/?page=${data.page}&skip=${data.skip}`)
             return result;
         }

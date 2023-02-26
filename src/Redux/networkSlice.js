@@ -26,7 +26,7 @@ const initialState = {
             answerData: '',
             onlyUnread: false,
             onlyRead: false,
-            find: false,
+            find: '',
         },
     },
     email: null,
@@ -66,7 +66,7 @@ const networkSlice = createSlice({
             state.auth.userData.onlyUnread = false;
             state.auth.userData.onlyRead = false;
         },
-        setFind: (state, action) => {
+        setFindedUserId: (state, action) => {
             state.auth.userData.find = action.payload;
         }
     },
@@ -305,7 +305,6 @@ const networkSlice = createSlice({
             })
             .addCase(findUserById.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload);
                 state.auth.userData.findFriend = [action.payload.data];
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
@@ -328,7 +327,7 @@ export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
-export const { setModal, setPage, setDataToSendLength, setFind, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const { setModal, setPage, setDataToSendLength, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
 export const getFind = state => state.network.auth.userData.find;
 export const getOnlyRead = state => state.network.auth.userData.onlyRead;
 export const getOnlyUnread = state => state.network.auth.userData.onlyUnread;
