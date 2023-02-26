@@ -77,8 +77,7 @@ export const Inbox = () => {
         {count.inbox !== 0 && !read && !unread && allUserInbox.length > dataToSet.length && pathname === "/home/messages/inbox" && <ButtonContainer>
             <Button type="button" disabled={page === '1' || page === 1 ? true : false} onClick={onClickPrev}>prev</Button>
             <Button type="button" disabled={dataToSet.length === skip && allUserInbox.length / page !== dataToSet.length ? false : true} onClick={onClickNext}>next</Button>
-        </ButtonContainer>
-        }
+        </ButtonContainer>}
         {loading && <Container>loading...</Container>}
         {userInbox.length === 0 && !loading && !read && !unread && < Container > No inbox messages</Container>
         }

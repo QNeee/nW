@@ -13,7 +13,6 @@ export const Profiles = () => {
     useEffect(() => {
         dispatch(getUserById(id));
     }, [dispatch, id])
-    console.log(userInfo);
     return <Container>
         {userInfo.map(item => <div key={item._id}>
             <ul>

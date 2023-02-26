@@ -16,3 +16,18 @@ export const TextDiv = styled.div`
 `
 export const NicknameLick = styled(Link)`
 `;
+export const Li = styled.li`
+
+`;
+export const Peoplelist = styled.ul`
+ align-items: center;
+  display: flex;
+  height: 490px;
+
+`;
+export const ButtonContainer = styled.div`
+margin-top:15px;
+display: flex;
+justify-content: center;
+align-items: center;
+`;

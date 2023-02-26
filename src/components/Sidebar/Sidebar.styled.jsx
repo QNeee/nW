@@ -15,6 +15,7 @@ border-radius: 4px;
 outline: 1px solid tomato;
 &.active,:focus,:hover{
     background-color: red;
+    color:white;
 }
 `;
 

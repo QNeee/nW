@@ -7,10 +7,15 @@ const setToken = token => {
     }
     axios.defaults.headers.common.authorization = '';
 };
-export const getAllUsers = createAsyncThunk('users', async (_, { getState, rejectWithValue }) => {
+export const getAllUsers = createAsyncThunk('users', async (data, { getState, rejectWithValue }) => {
     try {
         const state = getState();
         setToken(state.network.token);
+        if (data) {
+            console.log(data);
+            const result = await axios.get(`users/?page=${data.page}&skip=${data.skip}`)
+            return result;
+        }
         const result = await axios.get('users');
         return result;
     } catch (error) {
@@ -34,6 +39,17 @@ export const getUserByNickName = createAsyncThunk('users/nickname', async (nickN
         const state = getState();
         setToken(state.network.token);
         const result = await axios.get(`users/nickName/${nickName}`);
+        return result;
+    } catch (error) {
+
+        return rejectWithValue(error);
+    }
+})
+export const findUserById = createAsyncThunk('users/find/id', async (id, { getState, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get(`users/find/${id}`);
         return result;
     } catch (error) {
 

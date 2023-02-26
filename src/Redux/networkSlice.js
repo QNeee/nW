@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends } from './friendsOperations';
 import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage } from './messageOperaions';
-import { getAllUsers, getUserById, getUserByNickName } from './userOperaions';
+import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
 
 const initialState = {
@@ -19,12 +19,14 @@ const initialState = {
             friends: [],
             findFriend: [],
             allUsers: [],
+            usersByLimit: [],
             page: 1,
             totalHits: null,
             dataToSendLength: null,
             answerData: '',
             onlyUnread: false,
             onlyRead: false,
+            find: false,
         },
     },
     email: null,
@@ -63,6 +65,9 @@ const networkSlice = createSlice({
         setReturn: (state, action) => {
             state.auth.userData.onlyUnread = false;
             state.auth.userData.onlyRead = false;
+        },
+        setFind: (state, action) => {
+            state.auth.userData.find = action.payload;
         }
     },
     extraReducers: builder => {
@@ -226,11 +231,9 @@ const networkSlice = createSlice({
             })
             .addCase(getAllUsers.fulfilled, (state, action) => {
                 state.loading = false;
-
-                state.auth.userData.allUsers = action.payload.data;
-                // state.auth.userData.messagesCount = action.payload.data.messageCount;
-                // state.auth.user.nickName = action.payload.response.nickName;
-                // state.token = action.payload.response.token;
+                state.auth.userData.allUsers = action.payload.data.allUsersData;
+                state.auth.userData.totalHits = action.payload.data.totalHits;
+                state.auth.userData.page = action.payload.data.page;
             })
             .addCase(getAllUsers.rejected, (state, action) => {
                 state.loading = false;
@@ -296,6 +299,21 @@ const networkSlice = createSlice({
             .addCase(addFriend.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }).addCase(findUserById.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(findUserById.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload);
+                state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(findUserById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
     }
 
@@ -310,7 +328,8 @@ export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
-export const { setModal, setPage, setDataToSendLength, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const { setModal, setPage, setDataToSendLength, setFind, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const getFind = state => state.network.auth.userData.find;
 export const getOnlyRead = state => state.network.auth.userData.onlyRead;
 export const getOnlyUnread = state => state.network.auth.userData.onlyUnread;
 export const getAnswerData = state => state.network.auth.userData.answerData;
@@ -321,7 +340,7 @@ export const getUserUnreadMessages = state => state.network.auth.userData.unread
 export const getLoading = state => state.network.loading;
 export const getUserEmail = state => state.network.email;
 export const getError = state => state.network.error;
-export const gettotalHits = state => state.network.auth.userData.totalHits;
+export const getTotalHits = state => state.network.auth.userData.totalHits;
 export const getPage = state => state.network.auth.userData.page;
 export const getAllUsersData = state => state.network.auth.userData.allUsers;
 export const getIsLoggedIn = state => state.network.isLoggedIn;

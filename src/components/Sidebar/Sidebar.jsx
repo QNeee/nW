@@ -11,7 +11,7 @@ export const Sidebar = () => {
                 <Img src={item.avatarURL} alt={userInfo.nickName} />
             </PhotoDiv> <h3>{item.nickName}</h3></div>)
         }
-        < LinkWrapper >
+        <LinkWrapper>
             <SideLink to="/home/friends">Friends</SideLink>
             <SideLink to="/home/messages">messages {unreadMessages.length > 0 && unreadMessages.length}</SideLink>
         </LinkWrapper >
