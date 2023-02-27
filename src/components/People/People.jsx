@@ -23,7 +23,6 @@ export const People = () => {
     let page = useSelector(getPage);
     const { pathname } = useLocation();
     const userNickname = userInfo.map(item => item.nickName).join('');
-
     useEffect(() => {
         if (userId !== null) {
             const data = {
