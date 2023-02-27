@@ -8,6 +8,7 @@ import { getProfileById, postProfile } from "Redux/profileOperations";
 import { useState } from "react";
 import close from '../../images/close.svg';
 import { Button } from "components/App.styled";
+import { Outlet } from "react-router-dom";
 export const Profile = () => {
     const [modal, setModal] = useState(false);
     const [form, setForm] = useState({
@@ -44,9 +45,9 @@ export const Profile = () => {
         dispatch(getProfileById(id));
         setModal(false);
     }
-    console.log(userProfile);
+    console.log(userProfile.length);
     return <Container>
-        {!firstProfile && userProfile.length === 0 && !modal && <> Hello its u profile,
+        {pathname === '/home/profile' && !firstProfile && userProfile[0] === null && !modal && <> Hello its u profile,
             u need to create <Button onClick={onClick} type="button">create Profile</Button></>}
         {modal && <Modal><CloseSvg onClick={closeModal}>
             <img src={close} alt="close" />
@@ -61,7 +62,7 @@ export const Profile = () => {
                 </InputContainer>
                 <button type="submit">Create</button>
             </Wrapper></Modal>}
-        {userProfile.length > 0 && userProfile.map(item => <div key={item._id}>
+        {userProfile[0] !== null && pathname === '/home/profile' && userProfile.map(item => <div key={item._id}>
             <p>Name : {item.name}</p>
             <p>Surname : {item.surname}</p>
             <p>Age : {item.age}</p>
@@ -69,5 +70,6 @@ export const Profile = () => {
             {item.job && <p>{item.job}</p>}
             {item.education && <p>{item.education}</p>}
         </div>)}
+        <Outlet />
     </Container>
 }
