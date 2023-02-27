@@ -1,5 +1,5 @@
 import { getAllUserMassages, getUserInfo } from "Redux/networkSlice"
-import { Aside, PhotoDiv, LinkWrapper, SideLink, Img } from "./Sidebar.styled"
+import { Aside, PhotoDiv, LinkWrapper, H3, SideLink, Img } from "./Sidebar.styled"
 import { useSelector } from "react-redux";
 export const Sidebar = () => {
     const allUserMessages = useSelector(getAllUserMassages);
@@ -9,7 +9,7 @@ export const Sidebar = () => {
         {
             userInfo.map(item => <div key={item._id}><PhotoDiv>
                 <Img src={item.avatarURL} alt={userInfo.nickName} />
-            </PhotoDiv> <h3>{item.nickName}</h3></div>)
+            </PhotoDiv> <H3>{item.nickName}</H3></div>)
         }
         <LinkWrapper>
             <SideLink to="/home/friends">Friends</SideLink>

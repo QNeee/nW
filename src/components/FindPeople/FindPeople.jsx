@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUsersData, setFindedUserId } from "Redux/networkSlice";
 import { findUserById } from "Redux/userOperaions";
 import { useNavigate } from "react-router-dom";
+import { Button } from "components/App.styled";
 import Notiflix from 'notiflix';
+import { Input } from "./FindPeople.styled";
 export const FindPeople = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({ nickName: '' });
@@ -31,7 +33,7 @@ export const FindPeople = () => {
 
     }
     return <form onSubmit={onSubmit}>
-        <input type="text" name="nickName" onChange={inputHandler} value={form.nickName} />
-        <button type="submit">Find People</button>
+        <Input type="text" name="nickName" onChange={inputHandler} value={form.nickName} />
+        <Button type="submit">Find People</Button>
     </form>
 }

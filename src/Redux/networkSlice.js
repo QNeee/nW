@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
-import { addFriend, getAllFriends } from './friendsOperations';
+import { addFriend, getAllFriends, removeFriend } from './friendsOperations';
 import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage } from './messageOperaions';
 import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
@@ -275,8 +275,8 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllFriends.fulfilled, (state, action) => {
+                console.log(action.payload);
                 state.loading = false;
-
                 state.auth.userData.friends = action.payload.data;
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
@@ -297,6 +297,19 @@ const networkSlice = createSlice({
                 // state.token = action.payload.response.token;
             })
             .addCase(addFriend.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(removeFriend.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(removeFriend.fulfilled, (state, action) => {
+                state.loading = false;
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(removeFriend.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             }).addCase(findUserById.pending, (state, action) => {
