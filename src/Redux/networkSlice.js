@@ -34,7 +34,8 @@ const initialState = {
     token: null,
     error: null,
     loading: false,
-    modal: { id: '', open: false }
+    modal: { id: '', open: false },
+    filter: ''
 };
 const networkSlice = createSlice({
     name: 'network',
@@ -68,7 +69,10 @@ const networkSlice = createSlice({
         },
         setFindedUserId: (state, action) => {
             state.auth.userData.find = action.payload;
-        }
+        },
+        setFilterValue: (state, action) => {
+            state.filter = action.payload;
+        },
     },
     extraReducers: builder => {
         builder.addCase(register.pending, (state, action) => {
@@ -334,13 +338,14 @@ const networkSlice = createSlice({
 const persistConfig = {
     key: 'local-key',
     storage,
-    whitelist: ['token', 'isLoggedIn', 'email'],
+    whitelist: ['token', 'isLoggedIn'],
 };
 export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
-export const { setModal, setPage, setDataToSendLength, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const { setModal, setPage, setDataToSendLength, setFilterValue, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const getFilter = state => state.network.filter;
 export const getFind = state => state.network.auth.userData.find;
 export const getOnlyRead = state => state.network.auth.userData.onlyRead;
 export const getOnlyUnread = state => state.network.auth.userData.onlyUnread;
