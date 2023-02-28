@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
 import { getUserById } from './userOperaions';
+import Notiflix from 'notiflix';
 axios.defaults.baseURL = 'http://localhost:10000/api';
 const setToken = token => {
     if (token) {
@@ -45,11 +46,13 @@ export const postProfile = createAsyncThunk('profiles/post', async (data, { getS
         return rejectWithValue(error);
     }
 })
-export const patchProfile = createAsyncThunk('profiles/patch', async (data, { getState, rejectWithValue }) => {
+export const patchProfile = createAsyncThunk('profiles/patch', async (data, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
         setToken(state.network.token);
         const result = await axios.patch(`profiles/${data.id}`, data.dataToPatch);
+        dispatch(getProfileById(data.id));
+        Notiflix.Notify.success('Changes Saved');
         return result;
     } catch (error) {
 

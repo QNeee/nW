@@ -384,7 +384,6 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(patchProfile.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.loading = false;
                 // state.auth.userData.allProfiles = action.payload.data;
                 // state.auth.userData.findFriend = [action.payload.data];

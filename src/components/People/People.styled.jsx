@@ -79,3 +79,24 @@ export const P = styled.p`
   box-shadow: 0 0 20px rgba(0, 0, 0, .1);
   transition: .5s;
 `;
+export const PeopleButton = styled.button`
+text-decoration: none;
+  display: inline-block;
+    color: Maroon;
+  padding: 20px 30px;
+  margin: 10px 20px;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+    background-image:${props => !props.prop ? 'linear-gradient(to right, #9EEFE1 0%, #4830F0 51%, #9EEFE1 100%)' : 'linear-gradient(to right, #9EEFE1 0%, black 51%, red 100%)'};
+  background-size: 200% auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+  transition: .5s;
+  cursor: pointer;
+  &:hover{
+    color:white;
+    background-position: right center;
+  }
+`;
+

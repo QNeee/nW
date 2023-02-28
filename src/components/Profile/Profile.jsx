@@ -81,6 +81,7 @@ export const Profile = () => {
             dataToPatch
         }
         dispatch(patchProfile(data));
+        setRedactor(false);
     }
     return <Container>
         {pathname === '/home/profile' && firstProfile === 'false' && userProfile[0] === null && !modal && <> Hello its u profile,

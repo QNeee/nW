@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsersData, getFind, getLoading, getPage, getTotalHits, getUserId, getUserInfo, setPage } from "Redux/networkSlice";
 import { getAllUsers } from "Redux/userOperaions";
-import { Container, MainContainer, H1, SearchDiv, H1Container, DivInContainer, TextDiv, NicknameLick, ButtonContainer, P } from "./People.styled";
+import { Container, PeopleButton, MainContainer, H1, SearchDiv, H1Container, DivInContainer, TextDiv, NicknameLick, ButtonContainer, P } from "./People.styled";
 import { useLocation } from "react-router-dom";
 import { Button } from "components/App.styled";
 import { FindPeople } from "components/FindPeople/FindPeople";
@@ -67,7 +67,7 @@ export const People = () => {
         <Container>
             {!find && usersData.length > 0 && usersData.map(item => <DivInContainer key={item._id}>
                 <div><p><img src={item.avatarURL} alt={item.nickName} /></p></div>
-                <TextDiv><NicknameLick to={'/home/profile/' + item._id}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <Button onClick={!usersFriendsData?.find(item1 => item._id === item1) ? () => onClick(item._id) : () => onClickDelete(item._id)} type="button">{!usersFriendsData?.find(item1 => item._id === item1) ? 'Add friend' : 'delete friend'}</Button>}
+                <TextDiv><NicknameLick to={'/home/profile/' + item._id}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton prop={!usersFriendsData?.find(item1 => item._id === item1)} onClick={!usersFriendsData?.find(item1 => item._id === item1) ? () => onClick(item._id) : () => onClickDelete(item._id)} type="button">{!usersFriendsData?.find(item1 => item._id === item1) ? 'Add friend' : 'delete friend'}</PeopleButton>}
             </DivInContainer>)}
         </Container>{totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
             {page !== 1 && !loading && <Button type="button" onClick={onClickPrev}>prev</Button>}

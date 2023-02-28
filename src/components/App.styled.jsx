@@ -13,6 +13,7 @@ export const Button = styled.button`
   background-size: 200% auto;
   box-shadow: 0 0 20px rgba(0, 0, 0, .1);
   transition: .5s;
+  /* background-color:${props => props.prop === false ? "red" : 'black'}; */
   cursor: pointer;
   &:hover{
     background-position: right center;

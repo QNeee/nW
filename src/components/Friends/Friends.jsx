@@ -13,7 +13,7 @@ export const Friends = () => {
             dispatch(getAllFriends());
     }, [dispatch, userId])
     return <Container>
-        <div>
+        <div>Find Friend
             <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
         </div>
         <Outlet />
