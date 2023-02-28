@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends, removeFriend } from './friendsOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage } from './messageOperaions';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages } from './messageOperaions';
 import { getAllProfiles, getProfileById, patchProfile, postProfile } from './profileOperations';
 import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
@@ -30,6 +30,9 @@ const initialState = {
             find: '',
             profile: [],
             allProfiles: [],
+            dialogues: [],
+            dialogue: [],
+            sortedMessages: [],
         },
     },
     email: null,
@@ -39,7 +42,6 @@ const initialState = {
     loading: false,
     modal: { id: '', open: false },
     filter: '',
-    firstProfile: false
 };
 const networkSlice = createSlice({
     name: 'network',
@@ -394,6 +396,22 @@ const networkSlice = createSlice({
             .addCase(patchProfile.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }).addCase(getAllSortedMessages.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllSortedMessages.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.sortedMessages = action.payload.data;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getAllSortedMessages.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
     }
 
@@ -402,13 +420,16 @@ const networkSlice = createSlice({
 const persistConfig = {
     key: 'local-key',
     storage,
-    whitelist: ['token', 'isLoggedIn', 'firstProfile'],
+    whitelist: ['token', 'isLoggedIn'],
 };
 export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
 export const { setModal, setPage, setDataToSendLength, setFilterValue, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const getSortedMessages = state => state.network.auth.userData.sortedMessages;
+export const getAllDialogues = state => state.network.auth.userData.dialogues;
+export const getUserDialogue = state => state.network.auth.userData.dialogue;
 export const getFirstProfile = state => state.network.firstProfile;
 export const getProfile = state => state.network.auth.userData.profile;
 export const getFilter = state => state.network.filter;

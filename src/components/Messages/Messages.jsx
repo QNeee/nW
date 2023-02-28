@@ -36,10 +36,11 @@ export const Messages = () => {
     useEffect(() => {
         if (pathname === '/home/messages' && userId !== null) {
             dispatch(getAllMessages())
+
         }
     }, [dispatch, pathname, userId])
     return <MainContainer>{(pathname === '/home/messages' || pathname === '/home/messages/inbox' || pathname === '/home/messages/outbox') && <LinkDiv><MessageLink to='/home/messages/outbox'>Outbox</MessageLink>
-        <MessageLink to='/home/messages/inbox'>Inbox</MessageLink></LinkDiv>}
+        <MessageLink to='/home/messages/dialogues'>Dialogues</MessageLink><MessageLink to='/home/messages/inbox'>Inbox</MessageLink></LinkDiv>}
         {pathname === "/home/messages" && <FormDiv><form className="decor" onSubmit={onSubmit}>
             <div className="form-left-decoration"></div>
             <div className="form-right-decoration"></div>

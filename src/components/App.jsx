@@ -16,6 +16,8 @@ import { InboxContent } from "./InboxContent/InboxContent";
 import { UserFriends } from "./UserFriends/UserFriends";
 import { Profiles } from "./Profiles/Profiles";
 import { Verification } from "./Verification/Verification";
+import { Dialogues } from "./Dialogues/Dialogues";
+import { Dialogue } from "./Dialogue/Dialogue";
 export const App = () => {
   const token = useSelector(getToken);
   const logged = useSelector(getIsLoggedIn);
@@ -43,6 +45,8 @@ export const App = () => {
           <Route path="inbox" element={<Inbox />} >
             <Route path=":id" element={<InboxContent />} />
           </Route>
+          <Route path="dialogues" element={<Dialogues />} />
+          <Route path="dialogues/:id" element={<Dialogue />} />
         </Route>
         <Route path="profile" element={<Profile />} >
           <Route path=":id" element={<Profiles />} />

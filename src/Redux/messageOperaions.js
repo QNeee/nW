@@ -20,6 +20,17 @@ export const getAllMessages = createAsyncThunk('messages', async (_, { getState,
         return rejectWithValue(error);
     }
 })
+export const getAllSortedMessages = createAsyncThunk('messages/sort', async (_, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get('messages?sorted');
+        return result;
+    } catch (error) {
+
+        return rejectWithValue(error);
+    }
+})
 export const sendMessage = createAsyncThunk('messages/send', async (data, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
