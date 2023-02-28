@@ -13,7 +13,7 @@ height: 300px;
 export const Container = styled.div`
 /* margin-left:${props => !props.prop ? '-300px' : '300px'}; */
 display: flex;
-justify-content: ${props => !props.prop ? 'left' : 'right'};
+justify-content: ${props => props.prop ? 'left' : 'right'};
 align-items: center;
 `;
 export const ContainerInContainer = styled.div`

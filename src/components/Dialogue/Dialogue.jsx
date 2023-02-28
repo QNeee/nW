@@ -27,8 +27,8 @@ export const Dialogue = () => {
     const receiver = pathname.split('/')[4];
     useEffect(() => {
         if (userId !== null)
-            dispatch(getAllSortedMessages())
-    }, [dispatch, userId])
+            dispatch(getAllSortedMessages(receiver))
+    }, [dispatch, userId, receiver])
     const inputHandler = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({
@@ -51,6 +51,7 @@ export const Dialogue = () => {
 
     const sortedMessages = useSelector(getSortedMessages);
 
+    // const alo = sortedMessages.map(item => console.log(item));
     return <><DialogueContainer id="main">
         {sortedMessages.map(item => <Container prop={!item.view.inbox} key={item._id}><ContainerInContainer>{item.content}</ContainerInContainer></Container>)}
     </DialogueContainer>

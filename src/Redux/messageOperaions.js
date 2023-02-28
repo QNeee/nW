@@ -20,11 +20,16 @@ export const getAllMessages = createAsyncThunk('messages', async (_, { getState,
         return rejectWithValue(error);
     }
 })
-export const getAllSortedMessages = createAsyncThunk('messages/sort', async (_, { getState, dispatch, rejectWithValue }) => {
+export const getAllSortedMessages = createAsyncThunk('messages/sort', async (data, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
         setToken(state.network.token);
-        const result = await axios.get('messages?sorted');
+        if (data) {
+            console.log(data);
+            const result = await axios.get(`messages/sorted?sorted=${data}`);
+            return result;
+        }
+        const result = await axios.get(`messages/sorted`);
         return result;
     } catch (error) {
 
@@ -37,7 +42,7 @@ export const sendMessage = createAsyncThunk('messages/send', async (data, { getS
         setToken(state.network.token);
         const result = await axios.post('messages/send', data);
         dispatch(getUserById(state.network.auth.user.id));
-        dispatch(getAllSortedMessages());
+        dispatch(getAllSortedMessages(data.receiver));
         return result;
     } catch (error) {
 

@@ -402,6 +402,7 @@ const networkSlice = createSlice({
             })
             .addCase(getAllSortedMessages.fulfilled, (state, action) => {
                 state.loading = false;
+                console.log(action.payload);
                 state.auth.userData.sortedMessages = action.payload.data;
                 // state.auth.userData.allProfiles = action.payload.data;
                 // state.auth.userData.findFriend = [action.payload.data];
