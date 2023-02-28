@@ -55,3 +55,7 @@ export const Label = styled.label`
 width:100%;
 margin-bottom: 30px;
 `;
+export const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 15px;
+`;

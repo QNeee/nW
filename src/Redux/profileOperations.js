@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
+import { getUserById } from './userOperaions';
 axios.defaults.baseURL = 'http://localhost:10000/api';
 const setToken = token => {
     if (token) {
@@ -30,11 +31,14 @@ export const getProfileById = createAsyncThunk('profiles/id', async (id, { getSt
         return rejectWithValue(error);
     }
 })
-export const postProfile = createAsyncThunk('profiles/post', async (data, { getState, rejectWithValue }) => {
+export const postProfile = createAsyncThunk('profiles/post', async (data, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
+        const id = state.network.auth.user.id;
         setToken(state.network.token);
         const result = await axios.post('profiles/', data);
+        dispatch(getUserById(id));
+        dispatch(getProfileById(id));
         return result;
     } catch (error) {
 
@@ -45,7 +49,7 @@ export const patchProfile = createAsyncThunk('profiles/patch', async (data, { ge
     try {
         const state = getState();
         setToken(state.network.token);
-        const result = await axios.patch(`profiles/${data.id}`);
+        const result = await axios.patch(`profiles/${data.id}`, data.dataToPatch);
         return result;
     } catch (error) {
 
