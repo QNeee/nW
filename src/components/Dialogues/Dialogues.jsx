@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getAllSortedMessages } from "Redux/messageOperaions";
-import { getAllUserMassages, getUserId } from "Redux/networkSlice";
+import { getAllUserMassages } from "Redux/networkSlice";
 export const Dialogues = () => {
     const dispatch = useDispatch();
     useEffect(() => {

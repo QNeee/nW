@@ -37,6 +37,7 @@ export const sendMessage = createAsyncThunk('messages/send', async (data, { getS
         setToken(state.network.token);
         const result = await axios.post('messages/send', data);
         dispatch(getUserById(state.network.auth.user.id));
+        dispatch(getAllSortedMessages());
         return result;
     } catch (error) {
 
