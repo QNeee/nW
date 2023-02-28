@@ -45,7 +45,6 @@ export const Profile = () => {
         dispatch(getProfileById(id));
         setModal(false);
     }
-    console.log(userProfile.length);
     return <Container>
         {pathname === '/home/profile' && !firstProfile && userProfile[0] === null && !modal && <> Hello its u profile,
             u need to create <Button onClick={onClick} type="button">create Profile</Button></>}
