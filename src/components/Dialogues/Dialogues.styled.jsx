@@ -26,5 +26,5 @@ export const NickLink = styled(Link)`
 color:white;
 `;
 export const ItemContainer = styled.div`
-
+display: flex;
 `;

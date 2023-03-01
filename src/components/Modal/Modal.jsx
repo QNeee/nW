@@ -9,6 +9,7 @@ export const ModalWindow = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const modal = useSelector(getModal);
+    console.log(modal.id)
     const onClickYes = async () => {
         if (pathname === `/home/messages/inbox/${modal.id}`) {
             dispatch(deleteInboxMessage(modal.id))
@@ -18,6 +19,11 @@ export const ModalWindow = () => {
         if (pathname === `/home/messages/outbox/${modal.id}`) {
             dispatch(deleteOutboxMessage(modal.id))
             navigate('/home/messages/outbox');
+        }
+        if (pathname === `/home/messages/dialogues/${modal.id}`) {
+            console.log('alo');
+            // dispatch(deleteOutboxMessage(modal.id))
+            navigate('/home/messages/dialogues');
         }
         dispatch(setModal({ id: '', open: false }));
     }

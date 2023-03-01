@@ -1,11 +1,12 @@
-import { getSortedMessages, getUserId, getUserNickName } from "Redux/networkSlice"
+import { getModal, getSortedMessages, getUserFriends, getUserId, getUserNickName, setModal } from "Redux/networkSlice"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAllSortedMessages, sendMessage } from "Redux/messageOperaions";
-import { Container, FormContainer, Form, DialogueContainer, ContainerInContainer, Input } from "./Dialogue.styled";
+import { Container, NicknamesDiv, ButtonWrapper, TimeContainer, TimeMessage, FormContainer, Form, DialogueContainer, ContainerInContainer, Input } from "./Dialogue.styled";
 import { Button } from "components/App.styled";
 import { useState } from "react";
+import { ModalWindow } from "components/Modal/Modal";
 
 
 export const Dialogue = () => {
@@ -20,8 +21,10 @@ export const Dialogue = () => {
             behavior: "smooth"
         });
     }
+    const modal = useSelector(getModal);
     const dispatch = useDispatch();
     const userNickName = useSelector(getUserNickName);
+    const friends = useSelector(getUserFriends)
     const [form, setForm] = useState({ message: '' });
     const userId = useSelector(getUserId);
     const { pathname } = useLocation();
@@ -54,13 +57,25 @@ export const Dialogue = () => {
     const onClickReturn = () => {
         navigate('/home/messages/dialogues')
     }
-
-    return <><Button onClick={onClickReturn}>Return to Dialogues</Button><DialogueContainer id="main">
-        {sortedMessages.map(item => <Container prop={!item.view.inbox} key={item._id}><ContainerInContainer>{item.content}</ContainerInContainer></Container>)}
+    const onClickDelete = () => {
+        const id = friends.filter(item => item.nickName === receiver).map(item => item.nickName).join('');
+        dispatch(setModal({ id: id, open: true }));
+    }
+    const date = (date) => {
+        const messageDate = date.split('T')[0];
+        return messageDate
+    }
+    const time = (date) => {
+        const messageTime = date.split('T')[1].split('.')[0];
+        return messageTime;
+    }
+    return <><ButtonWrapper><Button type="button" onClick={onClickReturn}>Return to Dialogues</Button><Button type="button" onClick={onClickDelete}>Delete Dialog</Button></ButtonWrapper><NicknamesDiv><div>{receiver}</div><div>{userNickName}</div></NicknamesDiv><DialogueContainer id="main">
+        {sortedMessages.map(item => <Container prop={!item.view.inbox} key={item._id}><ContainerInContainer>{item.content}<TimeMessage><TimeContainer>{date(item.sendedDate)}</TimeContainer><div>{time(item.sendedDate)}</div></TimeMessage></ContainerInContainer></Container>)}
     </DialogueContainer>
         <FormContainer><Form onSubmit={onSubmit}>
             <Input placeholder={"ENTER YOUR MESSAGE"} type="text" name="message" value={form.message} onChange={inputHandler} />
             <Button type="submit">Send Message</Button>
         </Form></FormContainer>
+        {modal.open && <ModalWindow />}
     </>
 }

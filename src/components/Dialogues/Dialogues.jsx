@@ -9,6 +9,7 @@ export const Dialogues = () => {
     const nicknamesInbox = userInbox.map(item => item.sender);
     const nickNames = [...inboxNicknames, ...nicknamesInbox];
     const uniqueNicknames = [...new Set(nickNames)]
+    console.log(uniqueNicknames);
     return <div><H2Container><h2>Dialogues</h2></H2Container><DialoguesContainer>
         {uniqueNicknames.map(item => <DialogueContainer key={item}><ItemContainer><NickLink to={item}>{item}</NickLink></ItemContainer></DialogueContainer>)}</DialoguesContainer>
     </div>
