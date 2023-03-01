@@ -13,7 +13,7 @@ export const Outbox = () => {
         dispatch(getAllOutboxMessages())
     }, [dispatch])
     return <div>
-        {pathname === "/home/messages/outbox" && userOutbox.length > 0 && userOutbox.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.owner}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/outbox/${item._id}`}>message</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
+        {pathname === "/home/messages/outbox" && userOutbox.length > 0 && userOutbox.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.find}`}>{item.receiver}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/outbox/${item._id}`}>message</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
         {loading && <Container>loading...</Container>}
         {userOutbox.length === 0 && !loading && <Container>No outbox messages</Container>}
         <Outlet />

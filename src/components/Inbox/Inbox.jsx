@@ -61,6 +61,7 @@ export const Inbox = () => {
     const onClickReturn = () => {
         dispatch(setReturn());
     }
+
     return <div>
         <div>
             {pathname === "/home/messages/inbox" && page === 1 && dataToSet.length > 0 && <Button type="button" onClick={onClickUnread}>Only Unread </Button>}
@@ -70,9 +71,9 @@ export const Inbox = () => {
         </div>
         {read && !unread && pathname === "/home/messages/inbox" && data.length === 0 && <Container>no read messages found</Container>}
         {!read && unread && pathname === "/home/messages/inbox" && data.length === 0 && <Container>no unread messages found</Container>}
-        {pathname === "/home/messages/inbox" && !read && !unread && dataToSet.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.owner}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}><>message</>{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
-        {pathname === "/home/messages/inbox" && !read && unread && data.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.owner}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
-        {pathname === "/home/messages/inbox" && read && !unread && data.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.owner}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
+        {pathname === "/home/messages/inbox" && !read && !unread && dataToSet.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.find}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}><>message</>{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
+        {pathname === "/home/messages/inbox" && !read && unread && data.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.find}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
+        {pathname === "/home/messages/inbox" && read && !unread && data.map(item => <InboxContainer key={item._id}><MessageContainerFirst><StyledLink to={`/home/profile/${item.find}`}>{item.sender}</StyledLink></MessageContainerFirst><MessageContainerSecond><StyledLink to={`/home/messages/inbox/${item._id}`}>message{item.read.marked === false ? <Span>(new)</Span> : null}</StyledLink></MessageContainerSecond><MessageContainerThird>{item.sendedDate}    {item.sendedTime}</MessageContainerThird></InboxContainer>)}
         <Outlet />
         {count.inbox !== 0 && !read && !unread && allUserInbox.length > dataToSet.length && pathname === "/home/messages/inbox" && <ButtonContainer>
             <Button type="button" disabled={page === '1' || page === 1 ? true : false} onClick={onClickPrev}>prev</Button>

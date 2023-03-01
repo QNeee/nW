@@ -1,7 +1,7 @@
 import { getSortedMessages, getUserId, getUserNickName } from "Redux/networkSlice"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAllSortedMessages, sendMessage } from "Redux/messageOperaions";
 import { Container, FormContainer, Form, DialogueContainer, ContainerInContainer, Input } from "./Dialogue.styled";
 import { Button } from "components/App.styled";
@@ -10,6 +10,7 @@ import { useState } from "react";
 
 export const Dialogue = () => {
     const div = document.getElementById('main');
+    const navigate = useNavigate();
     const slowScreen = () => {
         const { height: cardHeight } = div
             .firstElementChild.getBoundingClientRect();
@@ -50,9 +51,11 @@ export const Dialogue = () => {
     }
 
     const sortedMessages = useSelector(getSortedMessages);
+    const onClickReturn = () => {
+        navigate('/home/messages/dialogues')
+    }
 
-    // const alo = sortedMessages.map(item => console.log(item));
-    return <><DialogueContainer id="main">
+    return <><Button onClick={onClickReturn}>Return to Dialogues</Button><DialogueContainer id="main">
         {sortedMessages.map(item => <Container prop={!item.view.inbox} key={item._id}><ContainerInContainer>{item.content}</ContainerInContainer></Container>)}
     </DialogueContainer>
         <FormContainer><Form onSubmit={onSubmit}>

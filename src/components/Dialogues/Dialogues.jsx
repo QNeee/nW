@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { getAllUserMassages } from "Redux/networkSlice";
+import { H2Container, NickLink, DialoguesContainer, DialogueContainer, ItemContainer } from "./Dialogues.styled";
 export const Dialogues = () => {
-    // const dispatch = useDispatch();
     const messages = useSelector(getAllUserMassages);
     const userInbox = messages.filter(item => item.view.inbox);
     const userOutbox = messages.filter(item => item.view.outbox);
@@ -10,7 +9,7 @@ export const Dialogues = () => {
     const nicknamesInbox = userInbox.map(item => item.sender);
     const nickNames = [...inboxNicknames, ...nicknamesInbox];
     const uniqueNicknames = [...new Set(nickNames)]
-    return <div>dialogues
-        {uniqueNicknames.map(item => <div key={item}><Link to={item}>{item}</Link></div>)}
+    return <div><H2Container><h2>Dialogues</h2></H2Container><DialoguesContainer>
+        {uniqueNicknames.map(item => <DialogueContainer key={item}><ItemContainer><NickLink to={item}>{item}</NickLink></ItemContainer></DialogueContainer>)}</DialoguesContainer>
     </div>
 }

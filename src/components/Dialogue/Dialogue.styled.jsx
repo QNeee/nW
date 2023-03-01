@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 
 export const DialogueContainer = styled.div`
 overflow-y: scroll;
-margin-top:100px;
 outline:1px solid tomato;
 background-color: yellow;
 height: 300px;

@@ -26,10 +26,10 @@ export const OutboxContent = () => {
     const onClickReturn = () => {
         navigate('/home/messages/outbox');
     }
-
+    console.log(outBoxContent);
     return <div>
         <Button type="button" onClick={onClickReturn}>return to Outbox</Button>
-        {Object.values(outBoxContent).length > 0 && !modal.open && <><InboxContentContainer><SpanFirst>From:</SpanFirst><SpanSecond>{outBoxContent.message.sender}</SpanSecond><SpanFirst>Time:</SpanFirst><SpanSecond>{outBoxContent.message.sendedTime}</SpanSecond></InboxContentContainer><ContentContainer><P>{outBoxContent.message.content}</P></ContentContainer><ButtonContainer><Button onClick={onClickDelete} type="button">Delete Message</Button></ButtonContainer></>}
+        {Object.values(outBoxContent).length > 0 && !modal.open && <><InboxContentContainer><SpanFirst>To:</SpanFirst><SpanSecond>{outBoxContent.message.receiver}</SpanSecond><SpanFirst>Time:</SpanFirst><SpanSecond>{outBoxContent.message.sendedDate}</SpanSecond></InboxContentContainer><ContentContainer><P>{outBoxContent.message.content}</P></ContentContainer><ButtonContainer><Button onClick={onClickDelete} type="button">Delete Message</Button></ButtonContainer></>}
         {modal.open && <ModalWindow />}
     </div>
 }

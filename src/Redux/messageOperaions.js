@@ -25,7 +25,6 @@ export const getAllSortedMessages = createAsyncThunk('messages/sort', async (dat
         const state = getState();
         setToken(state.network.token);
         if (data) {
-            console.log(data);
             const result = await axios.get(`messages/sorted?sorted=${data}`);
             return result;
         }
