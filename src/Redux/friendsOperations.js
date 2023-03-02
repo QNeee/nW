@@ -79,8 +79,8 @@ export const verifyFriend = createAsyncThunk('friends/verify', async (token, { g
         // const userId = state.network.auth.user.id;
         setToken(state.network.token);
         const result = await axios.get(`friends/verify/${token}`);
-        // dispatch(getUserById(userId));
-        // Notiflix.Notify.success('Removed');
+        Notiflix.Notify.success('added');
+        dispatch(getAllFriends());
         return result;
     } catch (error) {
         return rejectWithValue(error);

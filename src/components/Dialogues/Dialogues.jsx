@@ -12,7 +12,7 @@ export const Dialogues = () => {
         }
     }, [dispatch, userId])
     const friends = useSelector(getUserFriends);
-    const friendsName = friends.map(item => item.nickName);
+    const friendsName = friends.filter(item => item.verify === true).map(item => item.nickName);
     return <div><H2Container><h2>Dialogues</h2></H2Container><DialoguesContainer>
         {friendsName.length > 0 ? friendsName.map(item => <DialogueContainer key={item}><ItemContainer><NickLink to={item}>{item}</NickLink></ItemContainer></DialogueContainer>) : <div>No dialogues there , add friends to make a dialogue</div>}</DialoguesContainer>
     </div>

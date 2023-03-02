@@ -14,9 +14,9 @@ export const UserFriends = () => {
     const onClickDelete = (e) => {
         dispatch(removeFriend(e));
     }
-    return <>{filteredFriends.length > 0 && <FindDiv>Find Friend
+    return <><FindDiv>Find Friend
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
-    </FindDiv>}<FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><p><Link to={`/home/profile/${item.find}`}>{item.nickName}</Link></p><p><img src={item.avatarURL} alt={item.nickName} /></p>
+    </FindDiv><FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><p><Link to={`/home/profile/${item.find}`}>{item.nickName}</Link></p><p><img src={item.avatarURL} alt={item.nickName} /></p>
         <Button onClick={() => onClickDelete(item.find)} type="button">Delete</Button></FriendsDiv>) : <div>No friends</div>}
         </FriendsContainer></>
 }
