@@ -15,8 +15,8 @@ export const addFriend = createAsyncThunk('friends/add', async (data, { getState
         const userId = state.network.auth.user.id;
         setToken(state.network.token);
         const result = await axios.post('friends/', data);
-        dispatch(getUserById(userId));
-        dispatch(getAllFriends());
+        await dispatch(getUserById(userId));
+        await dispatch(getAllFriends());
         Notiflix.Notify.success('Added');
         return result;
 
@@ -65,8 +65,8 @@ export const removeFriend = createAsyncThunk('friends/remove', async (id, { getS
         const userId = state.network.auth.user.id;
         setToken(state.network.token);
         const result = await axios.delete(`friends/${id}`);
-        dispatch(getUserById(userId));
-        dispatch(getAllFriends());
+        await dispatch(getUserById(userId));
+        await dispatch(getAllFriends());
         Notiflix.Notify.success('Removed');
         return result;
     } catch (error) {
@@ -76,11 +76,10 @@ export const removeFriend = createAsyncThunk('friends/remove', async (id, { getS
 export const verifyFriend = createAsyncThunk('friends/verify', async (token, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
-        // const userId = state.network.auth.user.id;
         setToken(state.network.token);
         const result = await axios.get(`friends/verify/${token}`);
+        await dispatch(getAllFriends());
         Notiflix.Notify.success('added');
-        dispatch(getAllFriends());
         return result;
     } catch (error) {
         return rejectWithValue(error);

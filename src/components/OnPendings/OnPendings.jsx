@@ -13,8 +13,8 @@ export const OnPendings = () => {
     const onClickAccept = (e) => {
         dispatch(verifyFriend(e))
     }
-    const onClickDecline = (e) => {
-        dispatch(removeFriend(e));
+    const onClickDecline = async (e) => {
+        dispatch(removeFriend(e))
     }
     return <>{filteredFriends.length > 0 && <FindDiv>Find Friend
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />

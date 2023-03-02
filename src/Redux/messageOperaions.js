@@ -40,8 +40,8 @@ export const sendMessage = createAsyncThunk('messages/send', async (data, { getS
         const state = getState();
         setToken(state.network.token);
         const result = await axios.post('messages/send', data);
-        dispatch(getUserById(state.network.auth.user.id));
-        dispatch(getAllSortedMessages(data.receiver));
+        await dispatch(getUserById(state.network.auth.user.id));
+        await dispatch(getAllSortedMessages(data.receiver));
         return result;
     } catch (error) {
 
@@ -96,7 +96,7 @@ export const getInboxMessageById = createAsyncThunk('messages/inbox/:id', async 
         const state = getState();
         setToken(state.network.token);
         const result = await axios.get(`messages/outbox/${id}`);
-        dispatch(changeStatusReadMessage(readMessage));
+        await dispatch(changeStatusReadMessage(readMessage));
         return result;
     } catch (error) {
 
@@ -110,7 +110,7 @@ export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread',
         const state = getState();
         setToken(state.network.token);
         const result = await axios.patch(`messages/inbox/${data._id}`, dataToPatch);
-        dispatch(getAllMessages());
+        await dispatch(getAllMessages());
         return result;
     } catch (error) {
 
@@ -133,9 +133,9 @@ export const deleteInboxMessage = createAsyncThunk('messages/inbox/delete', asyn
         if (dataLength === 0 && page !== 1) {
             dispatch(setPage(page - 1));
         }
-        dispatch(getAllInboxMessage(data));
-        dispatch(getUserById(userId));
-        dispatch(getAllMessages());
+        await dispatch(getAllInboxMessage(data));
+        await dispatch(getUserById(userId));
+        await dispatch(getAllMessages());
         return result;
     } catch (error) {
 
@@ -147,7 +147,7 @@ export const deleteOutboxMessage = createAsyncThunk('messages/outbox/delete', as
         const state = getState();
         setToken(state.network.token);
         const result = await axios.delete(`messages/outbox/${id}`);
-        dispatch(getAllOutboxMessages());
+        await dispatch(getAllOutboxMessages());
         return result;
     } catch (error) {
 

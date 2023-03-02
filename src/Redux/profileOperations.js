@@ -38,8 +38,8 @@ export const postProfile = createAsyncThunk('profiles/post', async (data, { getS
         const id = state.network.auth.user.id;
         setToken(state.network.token);
         const result = await axios.post('profiles/', data);
-        dispatch(getUserById(id));
-        dispatch(getProfileById(id));
+        await dispatch(getUserById(id));
+        await dispatch(getProfileById(id));
         return result;
     } catch (error) {
 
@@ -51,7 +51,7 @@ export const patchProfile = createAsyncThunk('profiles/patch', async (data, { ge
         const state = getState();
         setToken(state.network.token);
         const result = await axios.patch(`profiles/${data.id}`, data.dataToPatch);
-        dispatch(getProfileById(data.id));
+        await dispatch(getProfileById(data.id));
         Notiflix.Notify.success('Changes Saved');
         return result;
     } catch (error) {
