@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
-import { addFriend, getAllFriends, getOnPendingFriends, getYourPendings, removeFriend } from './friendsOperations';
+import { addFriend, getAllFriends, getOnPendingFriends, getYourPendings, removeFriend, verifyFriend } from './friendsOperations';
 import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages, getAllUserDialogues } from './messageOperaions';
 import { getAllProfiles, getProfileById, patchProfile, postProfile } from './profileOperations';
 import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
@@ -468,6 +468,21 @@ const networkSlice = createSlice({
                 // state.token = action.payload.response.token;
             })
             .addCase(getYourPendings.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(verifyFriend.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(verifyFriend.fulfilled, (state, action) => {
+                state.loading = false;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(verifyFriend.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
