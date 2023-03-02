@@ -1,21 +1,23 @@
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFriends } from "Redux/friendsOperations";
-import { Container } from "./Friends.styled";
-import { getFilter, getUserId, setFilterValue } from "Redux/networkSlice";
+import { Container, NavContainer, Nav } from "./Friends.styled";
+import { getUserId } from "Redux/networkSlice";
 export const Friends = () => {
     const dispatch = useDispatch();
-    const filter = useSelector(getFilter);
     const userId = useSelector(getUserId);
     useEffect(() => {
         if (userId)
             dispatch(getAllFriends());
     }, [dispatch, userId])
     return <Container>
-        <div>Find Friend
-            <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
-        </div>
+        <NavContainer>
+            <Nav>
+                <NavLink to={'/home/friends/your-friends'}>Your Friends</NavLink>
+                <NavLink to={'/home/friends/on-pending'}>On Pending</NavLink>
+            </Nav>
+        </NavContainer>
         <Outlet />
     </Container>
 }

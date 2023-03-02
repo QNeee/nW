@@ -154,3 +154,15 @@ export const deleteOutboxMessage = createAsyncThunk('messages/outbox/delete', as
         return rejectWithValue(error);
     }
 })
+
+export const getAllUserDialogues = createAsyncThunk('messages/dialog/', async (_, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.get(`messages/dialog`);
+        return result;
+    } catch (error) {
+
+        return rejectWithValue(error);
+    }
+})

@@ -20,11 +20,6 @@ export const ModalWindow = () => {
             dispatch(deleteOutboxMessage(modal.id))
             navigate('/home/messages/outbox');
         }
-        if (pathname === `/home/messages/dialogues/${modal.id}`) {
-            console.log('alo');
-            // dispatch(deleteOutboxMessage(modal.id))
-            navigate('/home/messages/dialogues');
-        }
         dispatch(setModal({ id: '', open: false }));
     }
     const onClickNo = () => {

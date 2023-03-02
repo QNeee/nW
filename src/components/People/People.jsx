@@ -1,7 +1,7 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsersData, getFind, getLoading, getPage, getTotalHits, getUserId, getUserInfo, setPage } from "Redux/networkSlice";
+import { getAllUsersData, getFind, getLoading, getPage, getTotalHits, getUserFriends, getUserId, getUserInfo, setPage } from "Redux/networkSlice";
 import { getAllUsers } from "Redux/userOperaions";
 import { Container, PeopleButton, MainContainer, H1, SearchDiv, H1Container, DivInContainer, TextDiv, NicknameLick, ButtonContainer, P } from "./People.styled";
 import { useLocation } from "react-router-dom";
@@ -48,17 +48,38 @@ export const People = () => {
         page++;
         dispatch(setPage(page));
     }
-    const onClick = (e) => {
+    const friends = useSelector(getUserFriends);
+    const foo = (nickName) => {
 
-        const friend = {
-            id: e
+        if (friends.length > 0) {
+            const need = friends.filter(item => item.nickName === nickName).filter(item => item.owner === userId);
+            const need1 = need.map(item => item.verify).join('');
+            if (need1 === 'false') {
+                return 'pending'
+            }
+            if (need1 === 'true') {
+                return 'delete friend'
+            }
         }
-        dispatch(addFriend(friend));
+        return 'add friend'
     }
-    const onClickDelete = (e) => {
+    const onClickGeneral = (e, nickName, id) => {
+        if (e.target.textContent === 'pending') return;
+        if (friends.length > 0) {
+            const need = friends.filter(item => item.nickName === nickName).filter(item => item.owner === userId);
+            const need1 = need.map(item => item.verify).join('');
+            if (need1 === 'true') {
+                console.log('delete')
+                return dispatch(removeFriend(id));
+            }
+        }
+        const friend = {
+            id: id
+        }
+        console.log('add')
+        return dispatch(addFriend(friend));
+    }
 
-        dispatch(removeFriend(e));
-    }
     return <MainContainer>
         <H1Container>
             <H1>Peoples</H1>
@@ -67,11 +88,13 @@ export const People = () => {
         <Container>
             {!find && usersData.length > 0 && usersData.map(item => <DivInContainer key={item._id}>
                 <div><p><img src={item.avatarURL} alt={item.nickName} /></p></div>
-                <TextDiv><NicknameLick to={'/home/profile/' + item._id}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton prop={!usersFriendsData?.find(item1 => item._id === item1)} onClick={!usersFriendsData?.find(item1 => item._id === item1) ? () => onClick(item._id) : () => onClickDelete(item._id)} type="button">{!usersFriendsData?.find(item1 => item._id === item1) ? 'Add friend' : 'delete friend'}</PeopleButton>}
+                <TextDiv><NicknameLick to={'/home/profile/' + item._id}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton id="people" prop={!usersFriendsData?.find(item1 => item._id === item1)} onClick={(e) => onClickGeneral(e, item.nickName, item._id)} type="button">{foo(item.nickName)}</PeopleButton>}
             </DivInContainer>)}
-        </Container>{totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
-            {page !== 1 && !loading && <Button type="button" onClick={onClickPrev}>prev</Button>}
-            {!loading && usersData.length === skip && <Button type="button" onClick={onClickNext}>next</Button>}
-        </ButtonContainer>}
-    </MainContainer>
+        </Container>{
+            totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
+                {page !== 1 && !loading && <Button type="button" onClick={onClickPrev}>prev</Button>}
+                {!loading && usersData.length === skip && <Button type="button" onClick={onClickNext}>next</Button>}
+            </ButtonContainer>
+        }
+    </MainContainer >
 }

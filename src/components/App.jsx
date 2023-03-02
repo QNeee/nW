@@ -18,6 +18,7 @@ import { Profiles } from "./Profiles/Profiles";
 import { Verification } from "./Verification/Verification";
 import { Dialogues } from "./Dialogues/Dialogues";
 import { Dialogue } from "./Dialogue/Dialogue";
+import { OnPendings } from "./OnPendings/OnPendings";
 export const App = () => {
   const token = useSelector(getToken);
   const logged = useSelector(getIsLoggedIn);
@@ -36,7 +37,8 @@ export const App = () => {
       <Route path="/home" element={token ? <Layout /> : <Navigate to='/' />}>
         <Route index element={<People />} />
         <Route path="friends" element={<Friends />} >
-          <Route index element={<UserFriends />} />
+          <Route path="your-friends" element={<UserFriends />} />
+          <Route path="on-pending" element={<OnPendings />} />
         </Route>
         <Route path="messages" element={<Messages />} >
           <Route path="outbox" element={<Outbox />} >

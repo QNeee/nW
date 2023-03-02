@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
-import { addFriend, getAllFriends, removeFriend } from './friendsOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages } from './messageOperaions';
+import { addFriend, getAllFriends, getOnPendingFriends, getYourPendings, removeFriend } from './friendsOperations';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages, getAllUserDialogues } from './messageOperaions';
 import { getAllProfiles, getProfileById, patchProfile, postProfile } from './profileOperations';
 import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
@@ -33,6 +33,9 @@ const initialState = {
             dialogues: [],
             dialogue: [],
             sortedMessages: [],
+            friendsOnPending: [],
+            yourPendings: [],
+            friendsVerifyData: []
         },
     },
     email: null,
@@ -42,6 +45,7 @@ const initialState = {
     loading: false,
     modal: { id: '', open: false },
     filter: '',
+    friendsList: '',
 };
 const networkSlice = createSlice({
     name: 'network',
@@ -79,6 +83,13 @@ const networkSlice = createSlice({
         setFilterValue: (state, action) => {
             state.filter = action.payload;
         },
+        setMessageClear: (state, action) => {
+            state.auth.userData.sortedMessages = [];
+        },
+        setFriendsList: (state, action) => {
+
+            state.friendsList = action.payload;
+        }
     },
     extraReducers: builder => {
         builder.addCase(register.pending, (state, action) => {
@@ -101,7 +112,7 @@ const networkSlice = createSlice({
             state.auth.user.email = action.payload.user.email;
             state.auth.user.nickName = action.payload.user.nickName;
             state.auth.user.id = action.payload.user.id;
-            state.email = null;
+            state.email = action.payload.user.email;
         }).addCase(login.rejected, (state, action) => {
             state.error = action.payload;
             state.loading = false;
@@ -300,7 +311,6 @@ const networkSlice = createSlice({
             })
             .addCase(addFriend.fulfilled, (state, action) => {
                 state.loading = false;
-
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
                 // state.auth.user.nickName = action.payload.response.nickName;
                 // state.token = action.payload.response.token;
@@ -412,6 +422,54 @@ const networkSlice = createSlice({
             .addCase(getAllSortedMessages.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }).addCase(getAllUserDialogues.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllUserDialogues.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.dialogues = action.payload.data;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getAllUserDialogues.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getOnPendingFriends.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getOnPendingFriends.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.friendsOnPending = action.payload.data;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getOnPendingFriends.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getYourPendings.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getYourPendings.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.yourPendings = action.payload.data;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getYourPendings.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
     }
 
@@ -420,13 +478,17 @@ const networkSlice = createSlice({
 const persistConfig = {
     key: 'local-key',
     storage,
-    whitelist: ['token', 'isLoggedIn'],
+    whitelist: ['token', 'isLoggedIn', 'email'],
 };
 export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
-export const { setModal, setPage, setDataToSendLength, setFilterValue, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const { setModal, setFriendsList, setMessageClear, setPage, setDataToSendLength, setFilterValue, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const getFriendsVerifyData = state => state.network.auth.userData.friendsVerifyData;
+export const getFriendList = state => state.network.friendsList;
+export const getFriendsOnPending = state => state.network.auth.userData.friendsOnPending;
+export const getAllYourPendings = state => state.network.auth.userData.yourPendings;
 export const getSortedMessages = state => state.network.auth.userData.sortedMessages;
 export const getAllDialogues = state => state.network.auth.userData.dialogues;
 export const getUserDialogue = state => state.network.auth.userData.dialogue;

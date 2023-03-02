@@ -1,4 +1,4 @@
-import { getModal, getSortedMessages, getUserFriends, getUserId, getUserNickName, setModal } from "Redux/networkSlice"
+import { getModal, getSortedMessages, getUserId, getUserNickName, setMessageClear } from "Redux/networkSlice"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,21 +10,11 @@ import { ModalWindow } from "components/Modal/Modal";
 
 
 export const Dialogue = () => {
-    const div = document.getElementById('main');
     const navigate = useNavigate();
-    const slowScreen = () => {
-        const { height: cardHeight } = div
-            .firstElementChild.getBoundingClientRect();
 
-        window.scrollBy({
-            top: cardHeight * 2,
-            behavior: "smooth"
-        });
-    }
     const modal = useSelector(getModal);
     const dispatch = useDispatch();
     const userNickName = useSelector(getUserNickName);
-    const friends = useSelector(getUserFriends)
     const [form, setForm] = useState({ message: '' });
     const userId = useSelector(getUserId);
     const { pathname } = useLocation();
@@ -50,17 +40,14 @@ export const Dialogue = () => {
         }
         dispatch(sendMessage(newMessage));
         setForm({ message: '' });
-        slowScreen();
     }
 
     const sortedMessages = useSelector(getSortedMessages);
     const onClickReturn = () => {
+        dispatch(setMessageClear());
         navigate('/home/messages/dialogues')
     }
-    const onClickDelete = () => {
-        const id = friends.filter(item => item.nickName === receiver).map(item => item.nickName).join('');
-        dispatch(setModal({ id: id, open: true }));
-    }
+
     const date = (date) => {
         const messageDate = date.split('T')[0];
         return messageDate
@@ -69,7 +56,7 @@ export const Dialogue = () => {
         const messageTime = date.split('T')[1].split('.')[0];
         return messageTime;
     }
-    return <><ButtonWrapper><Button type="button" onClick={onClickReturn}>Return to Dialogues</Button><Button type="button" onClick={onClickDelete}>Delete Dialog</Button></ButtonWrapper><NicknamesDiv><div>{receiver}</div><div>{userNickName}</div></NicknamesDiv><DialogueContainer id="main">
+    return <><ButtonWrapper><Button type="button" onClick={onClickReturn}>Return to Dialogues</Button></ButtonWrapper><NicknamesDiv><div>{receiver}</div><div>{userNickName}</div></NicknamesDiv><DialogueContainer id="main">
         {sortedMessages.map(item => <Container prop={!item.view.inbox} key={item._id}><ContainerInContainer>{item.content}<TimeMessage><TimeContainer>{date(item.sendedDate)}</TimeContainer><div>{time(item.sendedDate)}</div></TimeMessage></ContainerInContainer></Container>)}
     </DialogueContainer>
         <FormContainer><Form onSubmit={onSubmit}>
