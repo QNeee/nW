@@ -40,7 +40,7 @@ export const Photos = () => {
     return <><Container>{pathname === '/home/photos' && <div>
         <input type="file" onChange={inputHandler} />
     </div>}
-        {!modal.open && <PhotosGallery>
+        {!modal.open && (pathname === '/home/photos' || pathname === `/home/profile/${data}/photos`) && <PhotosGallery>
             {photosData.length > 0 ? photosData.map(item =>
                 <PhotoItem onClick={(e) => onClickPhoto(item.photoURL)} key={item._id}><img src={item.photoURL} alt='zalypa' height="250" width="250" /></PhotoItem>
             ) : <div>No photos </div>}
