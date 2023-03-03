@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link, Outlet } from "react-router-dom";
+import { getAllFriends } from "Redux/friendsOperations";
 import { getProfile, getUserId } from "Redux/networkSlice";
 import { getProfileById } from "Redux/profileOperations";
 export const Profiles = () => {
@@ -10,14 +11,19 @@ export const Profiles = () => {
     const userId = useSelector(getUserId)
     const id = splitId[3];
     const userProfile = useSelector(getProfile);
-    console.log(id);
+    const data = pathname.split('/')[3];
     useEffect(() => {
-        if (pathname === `/home/profile/${id}` && userId != null) {
-            dispatch(getProfileById(id));
+        if (userId !== null) {
+            if (pathname === `/home/profile/${id}`) {
+                dispatch(getProfileById(id));
+            }
+            if (pathname === `/home/profile/${data}/friends`) {
+                dispatch(getAllFriends(data));
+            }
         }
-    }, [dispatch, id, pathname, userId])
+    }, [dispatch, id, pathname, userId, data])
 
-    return <div>
+    return <>{pathname === `/home/profile/${id}` && <div>
         {userProfile[0] === null && <div>
             user dont have profile
         </div>}
@@ -28,7 +34,9 @@ export const Profiles = () => {
             {item.phone && <p>{item.phone}</p>}
             {item.job && <p>{item.job}</p>}
             {item.education && <p>{item.education}</p>}
+            <Link to={pathname + "/photos"}>Photos</Link>
+            <Link to={pathname + "/friends"}>Friends</Link>
         </div>)}
-    </div>
+    </div>}<Outlet /></>
 
 }

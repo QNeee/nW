@@ -25,11 +25,17 @@ export const addFriend = createAsyncThunk('friends/add', async (data, { getState
         return rejectWithValue(error);
     }
 })
-export const getAllFriends = createAsyncThunk('friends/get', async (_, { getState, dispatch, rejectWithValue }) => {
+export const getAllFriends = createAsyncThunk('friends/get', async (data, { getState, dispatch, rejectWithValue }) => {
     try {
         const state = getState();
         setToken(state.network.token);
+        if (data) {
+            console.log(data);
+            const result = await axios.get(`friends/?${data}`);
+            return result;
+        }
         const result = await axios.get('friends');
+        console.log('aaa');
         return result;
     } catch (error) {
 

@@ -53,7 +53,10 @@ export const App = () => {
           <Route path="dialogues/:id" element={<Dialogue />} />
         </Route>
         <Route path="profile" element={<Profile />} >
-          <Route path=":id" element={<Profiles />} />
+          <Route path=":id" element={<Profiles />} >
+            <Route path="photos" element={<Photos />} />
+            <Route path="friends" element={<UserFriends />} />
+          </Route>
         </Route>
         <Route path="photos" element={<Photos />}>
           <Route path=":id" element={<Photo />} />

@@ -12,19 +12,21 @@ export const Home = () => {
     const findUser = pathname.split('/');
     const findUserId = findUser[3];
     const dispatch = useDispatch();
+    const data = pathname.split('/')[3];
     useEffect(() => {
         if (userId !== null) {
             if (pathname !== '/home/messages' && pathname !== '/home/messages/inbox') {
                 dispatch(getAllMessages());
             }
-            if (pathname !== '/home/friends' && pathname !== '/home/friends/your-friends' && pathname !== '/home/friends/on-pending') {
+            if (pathname !== '/home/friends' && pathname !== '/home/friends/your-friends' && pathname !== '/home/friends/on-pending'
+                && pathname !== `/home/profile/${data}/friends`) {
                 dispatch(getAllFriends());
             }
             if (pathname !== `/home/profile${findUserId}` && pathname !== '/home/messages/inbox') {
                 dispatch(getUserById(userId));
             }
         }
-    }, [dispatch, userId, pathname, findUserId])
+    }, [dispatch, userId, pathname, findUserId, data])
     return <div>
         <Sidebar />
     </div>

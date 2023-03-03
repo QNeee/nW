@@ -32,6 +32,17 @@ export const getAllUserPhotos = createAsyncThunk('photos/get', async (_, { getSt
         return rejectWithValue(error);
     }
 })
+export const getAllAnotherUserPhotos = createAsyncThunk('photos/another', async (query, { getState, dispatch, rejectWithValue }) => {
+    const state = getState();
+    const token = state.network.token;
+    setToken(token);
+    try {
+        const { data } = await axios.get(`/photos?${query}`);
+        return data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+})
 export const getUserPhotoById = createAsyncThunk('photos/id', async (id, { getState, dispatch, rejectWithValue }) => {
     const state = getState();
     const token = state.network.token;

@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends, getOnPendingFriends, getYourPendings, removeFriend, verifyFriend } from './friendsOperations';
 import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages, getAllUserDialogues } from './messageOperaions';
-import { addPhoto, getAllUserPhotos, getUserPhotoById, postComment, postLike, unLike } from './photosOperations';
+import { addPhoto, getAllAnotherUserPhotos, getAllUserPhotos, getUserPhotoById, postComment, postLike, unLike } from './photosOperations';
 import { getAllProfiles, getProfileById, patchProfile, postProfile } from './profileOperations';
 import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
@@ -40,6 +40,7 @@ const initialState = {
             userPhotos: [],
             userPhoto: [],
             likesPhotoNames: [],
+            anotherUserPhotos: [],
         },
     },
     email: null,
@@ -510,9 +511,10 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllUserPhotos.fulfilled, (state, action) => {
-                state.loading = false;
-                state.auth.userData.userPhotos = action.payload;
                 console.log(action.payload);
+                state.loading = false;
+
+                state.auth.userData.userPhotos = action.payload;
                 // state.auth.userData.allProfiles = action.payload.data;
                 // state.auth.userData.findFriend = [action.payload.data];
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
@@ -589,6 +591,22 @@ const networkSlice = createSlice({
             .addCase(unLike.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }).addCase(getAllAnotherUserPhotos.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllAnotherUserPhotos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.anotherUserPhotos = action.payload;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getAllAnotherUserPhotos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
     }
 
@@ -599,11 +617,13 @@ const persistConfig = {
     storage,
     whitelist: ['token', 'isLoggedIn', 'email'],
 };
+
 export const networkReducer = persistReducer(
     persistConfig,
     networkSlice.reducer
 );
 export const { setModal, setFriendsList, setMessageClear, setPage, setDataToSendLength, setFilterValue, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const getAnotherUserPhotos = state => state.network.auth.userData.anotherUserPhotos;
 export const getUserLikesNames = state => state.network.auth.userData.likesPhotoNames;
 export const getUserPhoto = state => state.network.auth.userData.userPhoto;
 export const getUserPhotos = state => state.network.auth.userData.userPhotos;

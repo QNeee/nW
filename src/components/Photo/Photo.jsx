@@ -16,8 +16,6 @@ export const Photo = () => {
     const comments = userPhoto.map(item => item.comments);
     const checkLikeBackground = userPhoto?.map(item => item.likes)[0];
     const checkLikeColor = checkLikeBackground?.find(item => item.name === nickName);
-    console.log(checkLikeColor);
-    // console.log(checkLikeBackground);
     const inputHandlerRegister = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({

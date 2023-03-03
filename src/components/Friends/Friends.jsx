@@ -9,7 +9,6 @@ export const Friends = () => {
     const dispatch = useDispatch();
     const userId = useSelector(getUserId);
     const { pathname } = useLocation();
-    console.log(pathname);
     useEffect(() => {
         if (userId !== null)
             dispatch(getAllFriends());
