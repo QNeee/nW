@@ -19,6 +19,8 @@ import { Verification } from "./Verification/Verification";
 import { Dialogues } from "./Dialogues/Dialogues";
 import { Dialogue } from "./Dialogue/Dialogue";
 import { OnPendings } from "./OnPendings/OnPendings";
+import { Photos } from "./Photos/Photos";
+import { Photo } from "./Photo/Photo";
 export const App = () => {
   const token = useSelector(getToken);
   const logged = useSelector(getIsLoggedIn);
@@ -52,6 +54,9 @@ export const App = () => {
         </Route>
         <Route path="profile" element={<Profile />} >
           <Route path=":id" element={<Profiles />} />
+        </Route>
+        <Route path="photos" element={<Photos />}>
+          <Route path=":id" element={<Photo />} />
         </Route>
       </Route>
     </Routes>

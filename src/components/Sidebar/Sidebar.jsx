@@ -13,7 +13,8 @@ export const Sidebar = () => {
         }
         <LinkWrapper>
             <SideLink to="/home/friends">Friends</SideLink>
-            <SideLink to="/home/messages">messages {unreadMessages.length > 0 && unreadMessages.length}</SideLink>
+            <SideLink to="/home/messages">Messages {unreadMessages.length > 0 && unreadMessages.length}</SideLink>
+            <SideLink to="/home/photos">Photos</SideLink>
         </LinkWrapper >
     </Aside >
 }

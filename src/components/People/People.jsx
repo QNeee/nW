@@ -87,17 +87,17 @@ export const People = () => {
             <H1>Peoples</H1>
         </H1Container>
         <SearchDiv><FindPeople /></SearchDiv>
-        {!loading && <Container>
+        <Container>
             {!find && usersData.length > 0 && usersData.map(item => <DivInContainer key={item._id}>
                 <div><p><img src={item.avatarURL} alt={item.nickName} /></p></div>
-                <TextDiv><NicknameLick to={'/home/profile/' + item._id}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton id="people" onClick={(e) => onClickGeneral(e, item.nickName, item._id)} type="button">{foo(item.nickName)}</PeopleButton>}
+                <TextDiv><NicknameLick to={'/home/profile/' + item._id}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton disabled={!loading ? false : true} id="people" onClick={(e) => onClickGeneral(e, item.nickName, item._id)} type="button">{foo(item.nickName)}</PeopleButton>}
             </DivInContainer>)}
-        </Container>}{
+        </Container>{
             totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
                 {page !== 1 && !loading && <Button type="button" onClick={onClickPrev}>prev</Button>}
-                {!loading && usersData.length === skip && <Button type="button" onClick={onClickNext}>next</Button>}
+                {usersData.length === skip && <Button type="button" onClick={onClickNext}>next</Button>}
             </ButtonContainer>
         }
-        {loading && <Container>loading...</Container>}
+        {/* {loading && <Container>loading...</Container>} */}
     </MainContainer >
 }

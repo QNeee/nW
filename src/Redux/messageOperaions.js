@@ -110,7 +110,6 @@ export const changeStatusReadMessage = createAsyncThunk('messages/inbox/unread',
         const state = getState();
         setToken(state.network.token);
         const result = await axios.patch(`messages/inbox/${data._id}`, dataToPatch);
-        await dispatch(getAllMessages());
         return result;
     } catch (error) {
 

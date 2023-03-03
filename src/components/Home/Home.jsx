@@ -17,7 +17,7 @@ export const Home = () => {
             if (pathname !== '/home/messages' && pathname !== '/home/messages/inbox') {
                 dispatch(getAllMessages());
             }
-            if (pathname !== '/home/friends') {
+            if (pathname !== '/home/friends' && pathname !== '/home/friends/your-friends' && pathname !== '/home/friends/on-pending') {
                 dispatch(getAllFriends());
             }
             if (pathname !== `/home/profile${findUserId}` && pathname !== '/home/messages/inbox') {

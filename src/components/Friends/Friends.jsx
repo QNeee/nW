@@ -1,14 +1,17 @@
 import { useEffect } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFriends } from "Redux/friendsOperations";
-import { Container, NavContainer, Nav } from "./Friends.styled";
+import { Container, NavContainer, Nav, NavItem, ImgDiv } from "./Friends.styled";
 import { getLoading, getUserFriends, getUserId } from "Redux/networkSlice";
+import close from '../../images/zaglywka.jpg';
 export const Friends = () => {
     const dispatch = useDispatch();
     const userId = useSelector(getUserId);
+    const { pathname } = useLocation();
+    console.log(pathname);
     useEffect(() => {
-        if (userId)
+        if (userId !== null)
             dispatch(getAllFriends());
     }, [dispatch, userId])
     const loading = useSelector(getLoading);
@@ -17,10 +20,11 @@ export const Friends = () => {
     return <Container>
         <NavContainer>
             <Nav>
-                <NavLink to={'/home/friends/your-friends'}>Your Friends</NavLink>
-                <NavLink to={'/home/friends/on-pending'}>On Pending {onPending.length > 0 && (onPending.length)}</NavLink>
+                <NavItem to={'/home/friends/your-friends'}>Your Friends</NavItem>
+                <NavItem to={'/home/friends/on-pending'}>On Pending {onPending.length > 0 && (onPending.length)}</NavItem>
             </Nav>
         </NavContainer>
+        {pathname === '/home/friends' && <ImgDiv><img src={close} alt="close" width='500px' /></ImgDiv>}
         {!loading && < Outlet />}
     </Container>
 }

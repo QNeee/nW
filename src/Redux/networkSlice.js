@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends, getOnPendingFriends, getYourPendings, removeFriend, verifyFriend } from './friendsOperations';
 import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages, getAllUserDialogues } from './messageOperaions';
+import { addPhoto, getAllUserPhotos, getUserPhotoById, postComment, postLike, unLike } from './photosOperations';
 import { getAllProfiles, getProfileById, patchProfile, postProfile } from './profileOperations';
 import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
@@ -35,7 +36,10 @@ const initialState = {
             sortedMessages: [],
             friendsOnPending: [],
             yourPendings: [],
-            friendsVerifyData: []
+            friendsVerifyData: [],
+            userPhotos: [],
+            userPhoto: [],
+            likesPhotoNames: [],
         },
     },
     email: null,
@@ -44,6 +48,7 @@ const initialState = {
     error: null,
     loading: false,
     modal: { id: '', open: false },
+    setPhotoId: '',
     filter: '',
     friendsList: '',
 };
@@ -485,6 +490,105 @@ const networkSlice = createSlice({
             .addCase(verifyFriend.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }).addCase(addPhoto.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addPhoto.fulfilled, (state, action) => {
+                state.loading = false;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(addPhoto.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getAllUserPhotos.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllUserPhotos.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.userPhotos = action.payload;
+                console.log(action.payload);
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getAllUserPhotos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(getUserPhotoById.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserPhotoById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.auth.userData.userPhoto = [action.payload];
+                console.log(action.payload);
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(getUserPhotoById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(postComment.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(postComment.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload);
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(postComment.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(postLike.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(postLike.fulfilled, (state, action) => {
+                console.log(action.payload)
+                state.loading = false;
+                state.auth.userData.likesPhotoNames = action.payload.likes;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(postLike.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(unLike.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(unLike.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload.likes);
+                state.auth.userData.likesPhotoNames = action.payload.likes;
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(unLike.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
     }
 
@@ -500,6 +604,10 @@ export const networkReducer = persistReducer(
     networkSlice.reducer
 );
 export const { setModal, setFriendsList, setMessageClear, setPage, setDataToSendLength, setFilterValue, setFindedUserId, setAnswerData, setReturn, setOnlyRead, setOnlyUnread } = networkSlice.actions;
+export const getUserLikesNames = state => state.network.auth.userData.likesPhotoNames;
+export const getUserPhoto = state => state.network.auth.userData.userPhoto;
+export const getUserPhotos = state => state.network.auth.userData.userPhotos;
+export const getUserToken = state => state.network.token;
 export const getFriendsVerifyData = state => state.network.auth.userData.friendsVerifyData;
 export const getFriendList = state => state.network.friendsList;
 export const getFriendsOnPending = state => state.network.auth.userData.friendsOnPending;
