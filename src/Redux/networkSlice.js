@@ -130,6 +130,7 @@ const networkSlice = createSlice({
             state.token = null;
             state.isLoggedIn = false;
             state.loading = false;
+            state.email = null;
         }).addCase(logOut.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;

@@ -21,7 +21,7 @@ export const addFriend = createAsyncThunk('friends/add', async (data, { getState
         return result;
 
     } catch (error) {
-
+        Notiflix.Notify.failure(error.message);
         return rejectWithValue(error);
     }
 })
@@ -76,6 +76,7 @@ export const removeFriend = createAsyncThunk('friends/remove', async (id, { getS
         Notiflix.Notify.success('Removed');
         return result;
     } catch (error) {
+        Notiflix.Notify.failure(error);
         return rejectWithValue(error);
     }
 })
@@ -88,6 +89,7 @@ export const verifyFriend = createAsyncThunk('friends/verify', async (token, { g
         Notiflix.Notify.success('added');
         return result;
     } catch (error) {
+        Notiflix.Notify.failure(error);
         return rejectWithValue(error);
     }
 })

@@ -67,7 +67,7 @@ export const People = () => {
             const need = friends.filter(item => item.nickName === nickName).filter(item => item.owner === userId);
             const need1 = need.map(item => item.verify).join('');
             if (need1 === 'true') {
-
+                console.log('delete');
                 return dispatch(removeFriend(id));
             }
             if (need1 === 'false' && tokenNeed.length !== 0) {
