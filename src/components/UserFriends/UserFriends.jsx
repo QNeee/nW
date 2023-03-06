@@ -9,7 +9,6 @@ export const UserFriends = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userFriends = useSelector(getUserFriends);
-    console.log(userFriends);
     const filter = useSelector(getFilter);
     const userId = useSelector(getUserId);
     const modal = useSelector(getModal);
