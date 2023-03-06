@@ -94,10 +94,12 @@ export const unLike = createAsyncThunk('photos/unLike', async (like, { getState,
 export const deletePhoto = createAsyncThunk('photos/delete', async (id, { getState, dispatch, rejectWithValue }) => {
     const state = getState();
     const token = state.network.token;
+    const userId = state.network.auth.user.id;
     setToken(token);
     try {
         const { data } = await axios.delete(`/photos/${id}`);
         await dispatch(getAllUserPhotos());
+        await dispatch(getUserById(userId));
         return data;
     } catch (error) {
         return rejectWithValue(error);

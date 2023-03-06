@@ -92,7 +92,7 @@ export const Profile = () => {
                 <InputContainer>
                     <Label>Name<Input type="text" name="name" required={true} value={form.name} onChange={inputHandler} /></Label>
                     <Label>Surname<Input type="text" name="surname" required={true} value={form.surname} onChange={inputHandler} /></Label>
-                    <Label>Age<Input type="number" name="age" required={true} value={form.age} onChange={inputHandler} /></Label>
+                    <Label>Age<Input type="date" name="age" required={true} value={form.age} onChange={inputHandler} /></Label>
                     <Label>Job<Input type="text" name="job" value={form.job} onChange={inputHandler} /></Label>
                     <Label>Phone<Input type="text" name="phone" value={form.phone} onChange={inputHandler} /></Label>
                     <Label>Education<Input type="text" name="education" value={form.education} onChange={inputHandler} /></Label>

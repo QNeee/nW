@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FriendsContainer, NickItem, NickContainer, FriendsMainContainer, FindDiv, FriendsDiv } from "./UserFriends.styled";
 import { Button } from "components/App.styled";
 import { ModalWindow } from "components/Modal/Modal";
+import noAvatar from '../../images/NoAvatar.webp';
 export const UserFriends = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ export const UserFriends = () => {
     console.log(filteredFriends);
     return <><FriendsMainContainer><FindDiv>Find Friend
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
-    </FindDiv>{!modal.open && <FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><NickContainer><NickItem to={`/home/profile/${item.find}`}>{item.nickName}</NickItem></NickContainer><img src={item.avatarURL} alt={item.nickName} width='250' height='250' />
+    </FindDiv>{!modal.open && <FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><NickContainer><NickItem to={`/home/profile/${item.find}`}>{item.nickName}</NickItem></NickContainer><img src={item.avatarURL ? item.avatarURL : noAvatar} alt={item.nickName} width='250' height='250' />
         {item.find !== userId && <Button onClick={() => onClickDelete(item.find)} type="button">Delete</Button>}
         {item.find !== userId && <Button onClick={() => onClickMessages(item.nickName)} type="button">Messages</Button>}
 

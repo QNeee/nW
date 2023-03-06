@@ -89,8 +89,8 @@ export const People = () => {
             {!find && usersData.length > 0 && usersData.map(item => <DivInContainer key={item._id}>
                 <div><p><img onClick={() => onClickPeople(item.avatarURL)} src={item.avatarURL ? item.avatarURL : noAvatar} alt={item.nickName} width="100" height='100' /></p></div>
                 <TextDiv><NicknameLick to={item._id !== userId ? '/home/profile/' + item._id : '/home/profile'}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton disabled={!loading ? false : true} id="people" onClick={(e) => onClickGeneral(e, item.email, item._id)} type="button">{
-                    userTempFriends[0].includes(item.email) ? 'pending' :
-                        userFriendsId[0].includes(item.email) ? 'delete friend' : 'add friend'
+                    userTempFriends[0]?.includes(item.email) ? 'pending' :
+                        userFriendsId[0]?.includes(item.email) ? 'delete friend' : 'add friend'
                 }</PeopleButton>}
             </DivInContainer>)}
         </Container>{

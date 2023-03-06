@@ -303,6 +303,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllFriends.fulfilled, (state, action) => {
+                console.log(action.payload);
                 state.loading = false;
                 state.auth.userData.friends = action.payload.data;
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;

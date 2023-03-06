@@ -15,10 +15,10 @@ align-items: center;
 `;
 export const DialogueContainer = styled.div`
 margin-bottom:30px;
-height: 50px;
-width:100%;
-background-color: blue;
+height: 400px;
+width:300px;
 display: flex;
+background-color: blue;
 justify-content: center;
 align-items: center;
 `;
@@ -27,4 +27,11 @@ color:white;
 `;
 export const ItemContainer = styled.div`
 display: flex;
+`;
+export const ItemDiv = styled.div`
+font-size: 40px;
+padding-top:15px;
+display: flex;
+justify-content: center;
+align-items: center;
 `;
