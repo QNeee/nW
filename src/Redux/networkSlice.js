@@ -3,8 +3,8 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { login, logOut, refresh, register } from './authOperations';
 import { addFriend, getAllFriends, getOnPendingFriends, getYourPendings, removeFriend, verifyFriend } from './friendsOperations';
-import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages, getAllUserDialogues } from './messageOperaions';
-import { addPhoto, getAllAnotherUserPhotos, getAllUserPhotos, getUserPhotoById, postComment, postLike, unLike } from './photosOperations';
+import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages, getAllUserDialogues, makeDialogReadStatus } from './messageOperaions';
+import { addPhoto, deletePhoto, getAllAnotherUserPhotos, getAllUserPhotos, getUserPhotoById, patchAvatar, postComment, postLike, unLike } from './photosOperations';
 import { getAllProfiles, getProfileById, patchProfile, postProfile } from './profileOperations';
 import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
@@ -41,6 +41,7 @@ const initialState = {
             userPhoto: [],
             likesPhotoNames: [],
             anotherUserPhotos: [],
+            patchedDialogues: [],
         },
     },
     email: null,
@@ -203,8 +204,7 @@ const networkSlice = createSlice({
             .addCase(changeStatusReadMessage.fulfilled, (state, action) => {
                 state.loading = false;
 
-                // state.auth.userData.unReadMessages = action.payload.data;
-                // console.log(state.auth.userData.unReadMessages);
+
             })
             .addCase(changeStatusReadMessage.rejected, (state, action) => {
                 state.loading = false;
@@ -512,7 +512,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllUserPhotos.fulfilled, (state, action) => {
-                console.log(action.payload);
+
                 state.loading = false;
 
                 state.auth.userData.userPhotos = action.payload;
@@ -532,7 +532,7 @@ const networkSlice = createSlice({
             .addCase(getUserPhotoById.fulfilled, (state, action) => {
                 state.loading = false;
                 state.auth.userData.userPhoto = [action.payload];
-                console.log(action.payload);
+
                 // state.auth.userData.allProfiles = action.payload.data;
                 // state.auth.userData.findFriend = [action.payload.data];
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
@@ -548,7 +548,7 @@ const networkSlice = createSlice({
             })
             .addCase(postComment.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload);
+
                 // state.auth.userData.allProfiles = action.payload.data;
                 // state.auth.userData.findFriend = [action.payload.data];
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
@@ -563,7 +563,7 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(postLike.fulfilled, (state, action) => {
-                console.log(action.payload)
+
                 state.loading = false;
                 state.auth.userData.likesPhotoNames = action.payload.likes;
                 // state.auth.userData.allProfiles = action.payload.data;
@@ -581,7 +581,7 @@ const networkSlice = createSlice({
             })
             .addCase(unLike.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload.likes);
+
                 state.auth.userData.likesPhotoNames = action.payload.likes;
                 // state.auth.userData.allProfiles = action.payload.data;
                 // state.auth.userData.findFriend = [action.payload.data];
@@ -606,6 +606,51 @@ const networkSlice = createSlice({
                 // state.token = action.payload.response.token;
             })
             .addCase(getAllAnotherUserPhotos.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(makeDialogReadStatus.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(makeDialogReadStatus.fulfilled, (state, action) => {
+
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(makeDialogReadStatus.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(deletePhoto.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deletePhoto.fulfilled, (state, action) => {
+
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(deletePhoto.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(patchAvatar.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(patchAvatar.fulfilled, (state, action) => {
+
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(patchAvatar.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

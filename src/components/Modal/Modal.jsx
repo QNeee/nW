@@ -4,12 +4,12 @@ import { getModal, setModal, setReturn } from "Redux/networkSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteInboxMessage, deleteOutboxMessage } from "Redux/messageOperaions";
 import { useNavigate, useLocation } from "react-router-dom";
+import { removeFriend } from "Redux/friendsOperations";
 export const ModalWindow = () => {
     const { pathname } = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const modal = useSelector(getModal);
-    console.log(modal.id)
     const onClickYes = async () => {
         if (pathname === `/home/messages/inbox/${modal.id}`) {
             dispatch(deleteInboxMessage(modal.id))
@@ -19,6 +19,9 @@ export const ModalWindow = () => {
         if (pathname === `/home/messages/outbox/${modal.id}`) {
             dispatch(deleteOutboxMessage(modal.id))
             navigate('/home/messages/outbox');
+        }
+        if (pathname === `/home/friends/your-friends`) {
+            dispatch(removeFriend(modal.id));
         }
         dispatch(setModal({ id: '', open: false }));
     }

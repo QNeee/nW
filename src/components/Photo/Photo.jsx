@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserId, getUserNickName, getUserPhoto } from "Redux/networkSlice";
 import { getUserPhotoById, postComment, postLike, unLike } from "Redux/photosOperations";
-import { PhotoContainer, LikeImg, CommentContainer, LeaveCommentContainer, DateContainer, LikeContainer } from "./Photo.styled";
+import { PhotoContainer, LikeImg, MainContainer, CommentsCount, CommentContainer, LeaveCommentContainer, DateContainer, LikeContainer } from "./Photo.styled";
 import like from '../../images/like.png';
+import { Button } from "components/App.styled";
 export const Photo = () => {
     const [form, setForm] = useState({ content: '' })
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const userPhoto = useSelector(getUserPhoto);
     const { pathname } = useLocation();
@@ -50,12 +52,19 @@ export const Photo = () => {
 
         return dispatch(postLike(like));
     }
-    return <div>Photo
-
+    const onClickReturn = (e) => {
+        if (e !== userId) {
+            return navigate(`/home/profile/${e}/photos`)
+        }
+        return navigate('/home/photos')
+    }
+    return <MainContainer>
         {userPhoto?.length > 0 && userPhoto.map(item =>
+
             <PhotoContainer key={item._id}>
+                <Button onClick={() => onClickReturn(item.owner)} type="button">Return</Button>
                 <div>
-                    <img src={item.photoURL} alt={item.name} width="1000" />
+                    <img src={item.photoURL} alt={item.name} width="500" height='500' />
                 </div>
                 <LikeContainer>
                     <div>
@@ -66,7 +75,7 @@ export const Photo = () => {
                     </div>
                 </LikeContainer>
             </PhotoContainer>)}
-        {comments[0]?.length > 0 && <div>Comments: {comments[0].length} </div>}
+        {comments[0]?.length > 0 && <CommentsCount>Comments: {comments[0].length} </CommentsCount>}
         {comments[0]?.length > 0 ? comments[0].map(item => <div key={item._id}>
             <CommentContainer>
                 <p>{item.name}</p>
@@ -83,7 +92,7 @@ export const Photo = () => {
             {userPhoto?.length > 0 && <p>Leave Comment</p>}
             {userPhoto?.length > 0 && <form onSubmit={onSubmit}>
                 <textarea onChange={inputHandlerRegister} name='content' value={form.content} />
-                <button type="submit">send</button>
+                <Button type="submit">send</Button>
             </form>}</LeaveCommentContainer>
-    </div >
+    </MainContainer >
 }

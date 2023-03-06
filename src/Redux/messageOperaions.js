@@ -25,7 +25,10 @@ export const getAllSortedMessages = createAsyncThunk('messages/sort', async (dat
         const state = getState();
         setToken(state.network.token);
         if (data) {
+            console.log(data);
             const result = await axios.get(`messages/sorted?sorted=${data}`);
+            await dispatch(makeDialogReadStatus(data));
+            await dispatch(getAllMessages());
             return result;
         }
         const result = await axios.get(`messages/sorted`);
@@ -159,6 +162,17 @@ export const getAllUserDialogues = createAsyncThunk('messages/dialog/', async (_
         const state = getState();
         setToken(state.network.token);
         const result = await axios.get(`messages/dialog`);
+        return result;
+    } catch (error) {
+
+        return rejectWithValue(error);
+    }
+})
+export const makeDialogReadStatus = createAsyncThunk('messages/dialog/patch', async (dialogue, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.patch(`messages/dialog/${dialogue}`);
         return result;
     } catch (error) {
 

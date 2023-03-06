@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
+import { getUserById } from './userOperaions';
 axios.defaults.baseURL = 'http://localhost:10000/api';
 const setToken = token => {
     if (token) {
@@ -85,6 +86,33 @@ export const unLike = createAsyncThunk('photos/unLike', async (like, { getState,
     try {
         const { data } = await axios.post(`/photos/unLike`, like);
         await dispatch(getUserPhotoById(like.id));
+        return data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+})
+export const deletePhoto = createAsyncThunk('photos/delete', async (id, { getState, dispatch, rejectWithValue }) => {
+    const state = getState();
+    const token = state.network.token;
+    setToken(token);
+    try {
+        const { data } = await axios.delete(`/photos/${id}`);
+        await dispatch(getAllUserPhotos());
+        return data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+})
+export const patchAvatar = createAsyncThunk('photos/patchAvatar', async (file, { getState, dispatch, rejectWithValue }) => {
+    const state = getState();
+    const token = state.network.token;
+    const id = state.network.auth.user.id;
+    setToken(token);
+    try {
+        console.log(file);
+        const { data } = await axios.patch(`/photos/${file}`);
+        await dispatch(getAllUserPhotos());
+        await dispatch(getUserById(id));
         return data;
     } catch (error) {
         return rejectWithValue(error);

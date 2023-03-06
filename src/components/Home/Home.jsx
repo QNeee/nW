@@ -13,9 +13,10 @@ export const Home = () => {
     const findUserId = findUser[3];
     const dispatch = useDispatch();
     const data = pathname.split('/')[3];
+    const dialogName = pathname.split('/')[4];
     useEffect(() => {
         if (userId !== null) {
-            if (pathname !== '/home/messages' && pathname !== '/home/messages/inbox') {
+            if (pathname !== '/home/messages' && pathname !== '/home/messages/inbox' && pathname !== `/home/messages/dialogues/${dialogName}`) {
                 dispatch(getAllMessages());
             }
             if (pathname !== '/home/friends' && pathname !== '/home/friends/your-friends' && pathname !== '/home/friends/on-pending'
@@ -26,7 +27,7 @@ export const Home = () => {
                 dispatch(getUserById(userId));
             }
         }
-    }, [dispatch, userId, pathname, findUserId, data])
+    }, [dispatch, userId, pathname, findUserId, data, dialogName])
     return <div>
         <Sidebar />
     </div>

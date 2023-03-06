@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "components/App.styled";
 import { FindPeople } from "components/FindPeople/FindPeople";
 import { addFriend, getAllFriends, removeFriend } from "Redux/friendsOperations";
+import noAvatar from '../../images/NoAvatar.webp';
 export const People = () => {
     const navigate = useNavigate();
     const loading = useSelector(getLoading);
@@ -24,8 +25,6 @@ export const People = () => {
     const userNickname = userInfo.map(item => item.nickName).join('');
     const userTempFriends = userInfo.map(item => item.tempFriends);
     const userFriendsId = userInfo.map(item => item.friendsId);
-    // console.log(userTempFriends);
-    // console.log(userFriendsId);
     useEffect(() => {
         if (userId !== null) {
             const data = {
@@ -52,17 +51,6 @@ export const People = () => {
         page++;
         dispatch(setPage(page));
     }
-    // const foo = (email) => {
-    //     const userTempFriends = userInfo.map(item => item.tempFriends);
-    //     const userFriendsId = userInfo.map(item => item.friendsId);
-    //     if (userTempFriends[0].includes(email)) {
-    //         return 'pending'
-    //     }
-    //     if (userFriendsId[0].includes(email)) {
-    //         return 'delete friend'
-    //     }
-    //     return 'add friend'
-    // }
     const onClickGeneral = (e, email, id) => {
         const data = {
             page,
@@ -72,23 +60,26 @@ export const People = () => {
         const userFriendsId = userInfo.map(item => item.friendsId);
         const tokenNeed = friends.filter(item => item.verificationToken);
         if (userFriendsId[0].includes(email)) {
-            console.log('remove')
             dispatch(removeFriend(id));
             return dispatch(getAllUsers(data));
         }
         if (userTempFriends[0].includes(email) && tokenNeed.length !== 0) {
-            console.log('navigate');
             return navigate('/home/friends/on-pending')
         }
         if (e.target.textContent === 'pending') return;
         const friend = {
             id: id
         }
-        console.log('add')
         dispatch(addFriend(friend));
         return dispatch(getAllUsers(data));
     }
-
+    const onClickPeople = (name) => {
+        if (name === null) return;
+        const url = name.split('/')[4];
+        console.log(url);
+        navigate(`/home/photos/${url}`)
+    }
+    console.log(userId);
     return <MainContainer>
         <H1Container>
             <H1>Peoples</H1>
@@ -96,8 +87,8 @@ export const People = () => {
         <SearchDiv><FindPeople /></SearchDiv>
         <Container>
             {!find && usersData.length > 0 && usersData.map(item => <DivInContainer key={item._id}>
-                <div><p><img src={item.avatarURL} alt={item.nickName} /></p></div>
-                <TextDiv><NicknameLick to={'/home/profile/' + item._id}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton disabled={!loading ? false : true} id="people" onClick={(e) => onClickGeneral(e, item.email, item._id)} type="button">{
+                <div><p><img onClick={() => onClickPeople(item.avatarURL)} src={item.avatarURL ? item.avatarURL : noAvatar} alt={item.nickName} width="100" height='100' /></p></div>
+                <TextDiv><NicknameLick to={item._id !== userId ? '/home/profile/' + item._id : '/home/profile'}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton disabled={!loading ? false : true} id="people" onClick={(e) => onClickGeneral(e, item.email, item._id)} type="button">{
                     userTempFriends[0].includes(item.email) ? 'pending' :
                         userFriendsId[0].includes(item.email) ? 'delete friend' : 'add friend'
                 }</PeopleButton>}

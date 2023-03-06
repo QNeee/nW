@@ -1,20 +1,31 @@
 import { useSelector, useDispatch } from "react-redux";
-import { getFilter, getUserFriends, setFilterValue } from "Redux/networkSlice";
-import { Link } from "react-router-dom";
-import { FriendsContainer, FindDiv, FriendsDiv } from "./UserFriends.styled";
+import { getFilter, getModal, getUserFriends, getUserId, setFilterValue, setModal } from "Redux/networkSlice";
+import { useNavigate } from "react-router-dom";
+import { FriendsContainer, NickItem, NickContainer, FriendsMainContainer, FindDiv, FriendsDiv } from "./UserFriends.styled";
 import { Button } from "components/App.styled";
-import { removeFriend } from "Redux/friendsOperations";
+import { ModalWindow } from "components/Modal/Modal";
 export const UserFriends = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const userFriends = useSelector(getUserFriends);
     const filter = useSelector(getFilter);
+    const userId = useSelector(getUserId);
+    const modal = useSelector(getModal);
     const filteredFriends = userFriends.filter(item => item.verify === true).filter(item => item.nickName.toLowerCase().includes(filter.toLowerCase()))
     const onClickDelete = (e) => {
-        dispatch(removeFriend(e));
+        dispatch(setModal({ id: e, open: true }));
     }
-    return <><FindDiv>Find Friend
+    const onClickMessages = (e) => {
+        navigate(`/home/messages/dialogues/${e}`)
+    }
+    return <><FriendsMainContainer><FindDiv>Find Friend
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
-    </FindDiv>{<FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><p><Link to={`/home/profile/${item.find}`}>{item.nickName}</Link></p><p><img src={item.avatarURL} alt={item.nickName} /></p>
-        <Button onClick={() => onClickDelete(item.find)} type="button">Delete</Button></FriendsDiv>) : <div>No friends</div>}
-    </FriendsContainer>}</>
+    </FindDiv>{!modal.open && <FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><p><NickContainer><NickItem to={`/home/profile/${item.find}`}>{item.nickName}</NickItem></NickContainer></p><p><img src={item.avatarURL} alt={item.nickName} width='250' height='250' /></p>
+        {item.find !== userId && <Button onClick={() => onClickDelete(item.find)} type="button">Delete</Button>}
+        {item.find !== userId && <Button onClick={() => onClickMessages(item.nickName)} type="button">Messages</Button>}
+
+    </FriendsDiv>) : <div>No friends</div>}
+    </FriendsContainer>}</FriendsMainContainer>
+        {modal.open && <ModalWindow />}
+    </>
 }

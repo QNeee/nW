@@ -13,7 +13,7 @@ export const SideLink = styled(Link)`
 text-decoration: none;
 margin-bottom:16px;
 width:100%;
-color:yellow;
+color:black;
 border-radius: 4px;
 outline: 1px solid tomato;
 &.active,:focus,:hover{
@@ -30,4 +30,5 @@ padding-top: 30px;
 export const Img = styled.img`
 display: block;
 width: 100%;
+cursor:pointer;
 `;

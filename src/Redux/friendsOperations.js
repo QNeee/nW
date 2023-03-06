@@ -35,7 +35,6 @@ export const getAllFriends = createAsyncThunk('friends/get', async (data, { getS
             return result;
         }
         const result = await axios.get('friends');
-        console.log('aaa');
         return result;
     } catch (error) {
 

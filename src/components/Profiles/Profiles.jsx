@@ -1,9 +1,10 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation, Link, Outlet } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import { getAllFriends } from "Redux/friendsOperations";
 import { getProfile, getUserId } from "Redux/networkSlice";
 import { getProfileById } from "Redux/profileOperations";
+import { LinkItem } from "./Profiles.styled";
 export const Profiles = () => {
     const dispatch = useDispatch();
     const { pathname } = useLocation();
@@ -34,8 +35,8 @@ export const Profiles = () => {
             {item.phone && <p>{item.phone}</p>}
             {item.job && <p>{item.job}</p>}
             {item.education && <p>{item.education}</p>}
-            <Link to={pathname + "/photos"}>Photos</Link>
-            <Link to={pathname + "/friends"}>Friends</Link>
+            <LinkItem to={pathname + "/photos"}>Photos</LinkItem>
+            <LinkItem to={pathname + "/friends"}>Friends</LinkItem>
         </div>)}
     </div>}<Outlet /></>
 

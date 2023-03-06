@@ -19,7 +19,7 @@ export const OnPendings = () => {
     }
     return <><FriendsContainer><FindDiv>Find Friend
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
-    </FindDiv>{!loading && filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><p><Link to={`/home/profile/${item.find}`}>{item.nickName}</Link></p><p><img src={item.avatarURL} alt={item.nickName} /></p>
+    </FindDiv>{!loading && filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><p><Link to={`/home/profile/${item.find}`}>{item.nickName}</Link></p><p><img src={item.avatarURL} alt={item.nickName} width='250' height='250' /></p>
         {!loading && <Button onClick={() => onClickAccept(item.verificationToken)} type="button">Accept</Button>}
         <Button onClick={() => onClickDecline(item.find)} type="button">Decline</Button></FriendsDiv>) : <div>No friends</div>}
     </FriendsContainer></>
