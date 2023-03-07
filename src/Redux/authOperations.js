@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-axios.defaults.baseURL = 'localhost:10000/api';
+axios.defaults.baseURL = 'https://nw.onrender.com/api';
 const setToken = token => {
     if (token) {
         return axios.defaults.headers.common.authorization = `Bearer ${token}`;
