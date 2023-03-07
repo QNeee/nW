@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getUserId, getUserNickName, getUserPhoto } from "Redux/networkSlice";
 import { getUserPhotoById, postComment, postLike, unLike } from "Redux/photosOperations";
-import { PhotoContainer, LikeImg, MainContainer, CommentsCount, CommentContainer, LeaveCommentContainer, DateContainer, LikeContainer } from "./Photo.styled";
+import { PhotoContainer, TextComment, CommentForm, LikeImg, NickItem, DateItem, ItemContent, MainContainer, CommentsCount, CommentContainer, LeaveCommentContainer, DateContainer, LikeContainer } from "./Photo.styled";
 import like from '../../images/like.png';
 import { Button } from "components/App.styled";
 export const Photo = () => {
@@ -75,24 +75,24 @@ export const Photo = () => {
                     </div>
                 </LikeContainer>
             </PhotoContainer>)}
-        {comments[0]?.length > 0 && <CommentsCount>Comments: {comments[0].length} </CommentsCount>}
+        {comments[0]?.length > 0 && <CommentsCount><h2>Comments:  {comments[0].length}</h2></CommentsCount>}
         {comments[0]?.length > 0 ? comments[0].map(item => <div key={item._id}>
             <CommentContainer>
-                <p>{item.name}</p>
-                <p>{item.content}</p>
+                <NickItem>{item.name}</NickItem>
+                <ItemContent>{item.content}</ItemContent>
                 <DateContainer>
-                    <p>{item.sendedDate.split('T')[0]}</p>
-                    <p>{item.sendedDate.split('T')[1].split('.')[0]}</p>
+                    <DateItem>{item.sendedDate.split('T')[0]}</DateItem>
+                    <DateItem>{item.sendedDate.split('T')[1].split('.')[0]}</DateItem>
                 </DateContainer>
             </CommentContainer>
         </div>)
 
             : <LeaveCommentContainer>no comments</LeaveCommentContainer>}
         <LeaveCommentContainer>
-            {userPhoto?.length > 0 && <p>Leave Comment</p>}
-            {userPhoto?.length > 0 && <form onSubmit={onSubmit}>
-                <textarea onChange={inputHandlerRegister} name='content' value={form.content} />
+            {userPhoto?.length > 0 && <h2>Leave Comment</h2>}
+            {userPhoto?.length > 0 && <CommentForm onSubmit={onSubmit}>
+                <TextComment onChange={inputHandlerRegister} name='content' value={form.content} />
                 <Button type="submit">send</Button>
-            </form>}</LeaveCommentContainer>
+            </CommentForm>}</LeaveCommentContainer>
     </MainContainer >
 }

@@ -13,16 +13,23 @@ export const FriendsContainer = styled.div`
     align-items: center;
 `;
 export const FriendsDiv = styled.div`
+margin-top:100px;
 display: flex;
 flex-direction: column;
 justify-content: center;
+outline: 1px solid black;
+`;
+export const Img = styled.img`
+margin-bottom: 60px;
+margin-left:auto;
+margin-right: auto;
 `;
 export const NickItem = styled(Link)`
   text-decoration: none;
   display: inline-block;
     color: red;
   padding: 20px 30px;
-  margin: 10px 20px;
+margin-bottom: 45px;
   border-radius: 10px;
   font-family: 'Montserrat', sans-serif;
   text-transform: uppercase;
