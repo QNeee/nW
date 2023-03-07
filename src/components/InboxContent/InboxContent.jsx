@@ -7,7 +7,7 @@ import { getInboxContent, getModal, getPage, setAnswerData, setModal, setReturn 
 import { ContentContainer, InboxContentContainer, P, ButtonContainer, SpanSecond, SpanFirst } from "./InboxContent.styled";
 import { Button } from "components/App.styled";
 import { ModalWindow } from "components/Modal/Modal";
-
+import { time } from "func";
 export const InboxContent = () => {
     let page = useSelector(getPage);
     const skip = 5;
@@ -40,7 +40,7 @@ export const InboxContent = () => {
     }
     return <div>
         <Button type="button" onClick={onClickReturn}>return to Inbox</Button>
-        {Object.values(inboxContent).length > 0 && !modal.open && <><InboxContentContainer><SpanFirst>From:</SpanFirst><SpanSecond>{inboxContent.message.sender}</SpanSecond><SpanFirst>Time:</SpanFirst><SpanSecond>{inboxContent.message.sendedTime}</SpanSecond></InboxContentContainer><ContentContainer><P>{inboxContent.message.content}</P></ContentContainer><ButtonContainer><Button onClick={onClickDelete} type="button">Delete Message</Button><Button onClick={onClickAnswer} type="button">Answer</Button></ButtonContainer></>}
+        {Object.values(inboxContent).length > 0 && !modal.open && <><InboxContentContainer><SpanFirst>From:</SpanFirst><SpanSecond>{inboxContent.message.sender}</SpanSecond><SpanFirst>Time:</SpanFirst><SpanSecond>{time(inboxContent.message.sendedDate)}</SpanSecond></InboxContentContainer><ContentContainer><P>{inboxContent.message.content}</P></ContentContainer><ButtonContainer><Button onClick={onClickDelete} type="button">Delete Message</Button><Button onClick={onClickAnswer} type="button">Answer</Button></ButtonContainer></>}
         {modal.open && <ModalWindow />}
     </div>
 }

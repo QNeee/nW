@@ -25,6 +25,7 @@ export const People = () => {
     const userNickname = userInfo.map(item => item.nickName).join('');
     const userTempFriends = userInfo.map(item => item.tempFriends);
     const userFriendsId = userInfo.map(item => item.friendsId);
+    const filteredUsersData = usersData.filter(item => item.verify)
     useEffect(() => {
         if (userId !== null) {
             const data = {
@@ -76,17 +77,15 @@ export const People = () => {
     const onClickPeople = (name) => {
         if (name === null) return;
         const url = name.split('/')[4];
-        console.log(url);
         navigate(`/home/photos/${url}`)
     }
-    console.log(userId);
     return <MainContainer>
         <H1Container>
             <H1>Peoples</H1>
         </H1Container>
         <SearchDiv><FindPeople /></SearchDiv>
         <Container>
-            {!find && usersData.length > 0 && usersData.map(item => <DivInContainer key={item._id}>
+            {!find && filteredUsersData.length > 0 && filteredUsersData.map(item => <DivInContainer key={item._id}>
                 <div><p><img onClick={() => onClickPeople(item.avatarURL)} src={item.avatarURL ? item.avatarURL : noAvatar} alt={item.nickName} width="100" height='100' /></p></div>
                 <TextDiv><NicknameLick to={item._id !== userId ? '/home/profile/' + item._id : '/home/profile'}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton disabled={!loading ? false : true} id="people" onClick={(e) => onClickGeneral(e, item.email, item._id)} type="button">{
                     userTempFriends[0]?.includes(item.email) ? 'pending' :

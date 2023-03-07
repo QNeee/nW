@@ -7,6 +7,7 @@ import { Container, NicknamesDiv, ButtonWrapper, TimeContainer, TimeMessage, For
 import { Button } from "components/App.styled";
 import { useState } from "react";
 import { ModalWindow } from "components/Modal/Modal";
+import { time, date } from "func";
 
 
 
@@ -49,14 +50,6 @@ export const Dialogue = () => {
         navigate('/home/messages/dialogues')
     }
 
-    const date = (date) => {
-        const messageDate = date.split('T')[0];
-        return messageDate
-    }
-    const time = (date) => {
-        const messageTime = date.split('T')[1].split('.')[0];
-        return messageTime;
-    }
     return <><ButtonWrapper><Button type="button" onClick={onClickReturn}>Return to Dialogues</Button></ButtonWrapper><NicknamesDiv><div>{receiver}</div><div>{userNickName}</div></NicknamesDiv><DialogueContainer id="main">
         {sortedMessages.map(item => <Container prop={!item.view.inbox} key={item._id}><ContainerInContainer>{item.content}<TimeMessage><TimeContainer>{date(item.sendedDate)}</TimeContainer><div>{time(item.sendedDate)}</div></TimeMessage></ContainerInContainer></Container>)}
     </DialogueContainer>

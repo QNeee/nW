@@ -19,7 +19,6 @@ export const UserFriends = () => {
     const onClickMessages = (e) => {
         navigate(`/home/messages/dialogues/${e}`)
     }
-    console.log(filteredFriends);
     return <><FriendsMainContainer><FindDiv>Find Friend
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
     </FindDiv>{!modal.open && <FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><NickContainer><NickItem to={`/home/profile/${item.find}`}>{item.nickName}</NickItem></NickContainer><img src={item.avatarURL ? item.avatarURL : noAvatar} alt={item.nickName} width='250' height='250' />

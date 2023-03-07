@@ -33,13 +33,21 @@ export const ItemDiv = styled.div`
 font-size: 40px;
 padding-top:15px;
 display: flex;
-justify-content: space-between;
-align-items: center;
+justify-content: center;
+margin-left:500px;
 `;
 export const Div = styled.div`
 color:white;
 background-color: red;
+margin-left:auto;
+margin-right: auto;
 `;
 export const MainDiv = styled.div`
 display: flex;
+`;
+export const FindDiv = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top:30px;
 `;

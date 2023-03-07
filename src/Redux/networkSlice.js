@@ -227,7 +227,6 @@ const networkSlice = createSlice({
             })
             .addCase(sendMessage.fulfilled, (state, action) => {
                 state.loading = false;
-
                 // state.auth.userData.messages.outbox = [...state.auth.userData.messages.outbox, action.payload.data.message]
             })
             .addCase(sendMessage.rejected, (state, action) => {
@@ -303,7 +302,6 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(getAllFriends.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.loading = false;
                 state.auth.userData.friends = action.payload.data;
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;
@@ -644,7 +642,6 @@ const networkSlice = createSlice({
                 state.error = null;
             })
             .addCase(patchAvatar.fulfilled, (state, action) => {
-
                 // state.auth.userData.allProfiles = action.payload.data;
                 // state.auth.userData.findFriend = [action.payload.data];
                 // state.auth.userData.messagesCount = action.payload.data.messageCount;

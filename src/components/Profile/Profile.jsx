@@ -8,6 +8,7 @@ import { useState } from "react";
 import close from '../../images/close.svg';
 import { Button } from "components/App.styled";
 import { Outlet } from "react-router-dom";
+import Notiflix from 'notiflix';
 export const Profile = () => {
     const [modal, setModal] = useState(false);
     const [form, setForm] = useState({
@@ -39,6 +40,8 @@ export const Profile = () => {
     }
     const onSubmit = (e) => {
         e.preventDefault();
+        const checkAge = form.age;
+        if (checkAge.split('-')[0].length > 4) return Notiflix.Notify.failure('wrong field age : year');
         setForm({
             name: '', surname: '', age: '', education: '', job: '', phone: ''
         });

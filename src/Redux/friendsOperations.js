@@ -30,7 +30,6 @@ export const getAllFriends = createAsyncThunk('friends/get', async (data, { getS
         const state = getState();
         setToken(state.network.token);
         if (data) {
-            console.log(data);
             const result = await axios.get(`friends/?${data}`);
             return result;
         }

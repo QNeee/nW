@@ -111,7 +111,6 @@ export const patchAvatar = createAsyncThunk('photos/patchAvatar', async (file, {
     const id = state.network.auth.user.id;
     setToken(token);
     try {
-        console.log(file);
         const { data } = await axios.patch(`/photos/${file}`);
         await dispatch(getAllUserPhotos());
         await dispatch(getUserById(id));

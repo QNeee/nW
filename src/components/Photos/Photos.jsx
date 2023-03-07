@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAnotherUserPhotos, getModal, getUserId, getUserPhotos } from "Redux/networkSlice";
 import { addPhoto, deletePhoto, getAllAnotherUserPhotos, getAllUserPhotos, patchAvatar } from "Redux/photosOperations";
-import { PhotosGallery, InputFile, AddPhotoContainer, PhotoItem, Container, PhotoContainer, ButtonWrapper } from "./Photos.styled";
+import { PhotosGallery, AddPhotoContainer, Label, PhotoItem, Container, PhotoContainer, ButtonWrapper } from "./Photos.styled";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import { Button } from "components/App.styled";
 export const Photos = () => {
@@ -42,7 +42,9 @@ export const Photos = () => {
         dispatch(patchAvatar(e));
     }
     return <><Container>{pathname === '/home/photos' && <AddPhotoContainer>
-        <InputFile type="file" onChange={inputHandler} />
+        {/* <InputFile type="file" onChange={inputHandler} /> */}
+        <Label htmlFor="uploadbtn">Upload Photo<div></div></Label>
+        <input style={{ opacity: '0', zIndex: '-1' }} type="file" name="upload" id="uploadbtn" onChange={inputHandler} />
     </AddPhotoContainer>}
         {!modal.open && (pathname === '/home/photos' || pathname === `/home/profile/${data}/photos`) && <PhotosGallery>
             {photosData.length > 0 ? photosData.map(item => <PhotoContainer key={item._id}>

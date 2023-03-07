@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllUserDialogues } from "Redux/messageOperaions";
 import { getAllUserMassages, getAllUsersData, getFilter, getUserFriends, getUserId, setFilterValue } from "Redux/networkSlice";
-import { H2Container, ItemDiv, NickLink, DialoguesContainer, DialogueContainer, Div, ItemContainer } from "./Dialogues.styled";
+import { H2Container, ItemDiv, FindDiv, NickLink, DialoguesContainer, DialogueContainer, Div, ItemContainer } from "./Dialogues.styled";
 import noAvatar from '../../images/NoAvatar.webp';
 import { getAllUsers } from "Redux/userOperaions";
 export const Dialogues = () => {
@@ -27,9 +27,9 @@ export const Dialogues = () => {
         if (unreadMessages.length > 0) return '       (' + unreadMessages.length + 'new)';
     }
 
-    return <div>Find Dialog<div>
+    return <div><FindDiv>Find Dialog
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
-    </div><H2Container><h2>Dialogues</h2></H2Container><DialoguesContainer >
+    </FindDiv><H2Container><h2>Dialogues</h2></H2Container><DialoguesContainer >
             {filteredFriendsName?.length > 0 ? filteredFriendsName.map(item => <DialogueContainer prop={count++} key={item._id}><ItemContainer><NickLink to={item.nickName}><img src={users.filter(item1 => item1.nickName === item.nickName).map(item2 => item2.avatarURL ? item2.avatarURL : noAvatar).join('')} alt={'dada'} width="300" height='300' /><ItemDiv>{item.nickName}</ItemDiv></NickLink></ItemContainer><Div>{func(item.nickName)}</Div></DialogueContainer>) : <div>No dialogues there , add friends to make a dialogue</div>}</DialoguesContainer>
     </div>
 }

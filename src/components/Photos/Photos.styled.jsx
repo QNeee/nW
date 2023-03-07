@@ -60,3 +60,17 @@ export const InputFile = styled.input`
     background-position: right center;
   }
 `;
+export const Label = styled.label`
+    display: block;
+    width: 300px;
+  background-image: linear-gradient(to right, #9EEFE1 0%, #4830F0 51%, #9EEFE1 100%);
+  background-size: 200% auto;
+    padding: 10px;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Tahoma;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+`;
