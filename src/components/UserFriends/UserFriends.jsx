@@ -22,9 +22,10 @@ export const UserFriends = () => {
     return <><FriendsMainContainer><FindDiv>Find Friend
         <input value={filter} onChange={(e) => dispatch(setFilterValue(e.target.value))} />
     </FindDiv>{!modal.open && <FriendsContainer>{filteredFriends.length > 0 ? filteredFriends.map(item => <FriendsDiv key={item._id}><NickContainer><NickItem to={`/home/profile/${item.find}`}>{item.nickName}</NickItem></NickContainer><img src={item.avatarURL ? item.avatarURL : noAvatar} alt={item.nickName} width='250' height='250' />
-        {item.find !== userId && <Button onClick={() => onClickDelete(item.find)} type="button">Delete</Button>}
-        {item.find !== userId && <Button onClick={() => onClickMessages(item.nickName)} type="button">Messages</Button>}
-
+        {item.owner === userId && <div>
+            {<Button onClick={() => onClickDelete(item.find)} type="button">Delete</Button>}
+            {<Button onClick={() => onClickMessages(item.nickName)} type="button">Messages</Button>}
+        </div>}
     </FriendsDiv>) : <div>No friends</div>}
     </FriendsContainer>}</FriendsMainContainer>
         {modal.open && <ModalWindow />}
