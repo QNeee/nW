@@ -32,8 +32,12 @@ export const Photos = () => {
         dispatch(addPhoto(file));
     }
     const onClickPhoto = (e) => {
-        const url = e.split('/')[4];
-        navigate(`/home/photos/${url}`)
+        if (pathname === '/home/photos') {
+            const url = e.split('/')[4];
+            return navigate(`/home/photos/${url}`)
+        }
+        const url = e.split('//')[2];
+        return navigate(`/home/photos/${url}`)
     }
     const onClickDelete = (e) => {
         dispatch(deletePhoto(e));
