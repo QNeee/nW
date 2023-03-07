@@ -48,7 +48,7 @@ export const Photos = () => {
     </AddPhotoContainer>}
         {!modal.open && (pathname === '/home/photos' || pathname === `/home/profile/${data}/photos`) && <PhotosGallery>
             {photosData.length > 0 ? photosData.map(item => <PhotoContainer key={item._id}>
-                <PhotoItem onClick={(e) => onClickPhoto(item.photoURL)}><img src={item.photoURL} alt='zalypa' height="250" width="250" />
+                <PhotoItem onClick={(e) => onClickPhoto(item.photoURL)}><img src={item.photoURL} alt={item.photoURL} height="250" width="250" />
                 </PhotoItem>
                 {item.owner === userId && <ButtonWrapper>
                     <Button onClick={() => onClickDelete(item.name)} type="button">delete</Button>
