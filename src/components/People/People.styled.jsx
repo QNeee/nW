@@ -99,4 +99,9 @@ text-decoration: none;
     background-position: right center;
   }
 `;
-
+export const Status = styled.div`
+width: 30px;
+height: 30px;
+border-radius: 50%;
+background-color:${props => props.prop === 'offline' ? 'red' : 'green'};
+`;

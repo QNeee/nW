@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsersData, getFind, getLoading, getPage, getTotalHits, getUserFriends, getUserId, getUserInfo, setPage } from "Redux/networkSlice";
 import { getAllUsers } from "Redux/userOperaions";
-import { Container, PeopleButton, MainContainer, H1, SearchDiv, H1Container, DivInContainer, TextDiv, NicknameLick, ButtonContainer, P } from "./People.styled";
+import { Container, PeopleButton, MainContainer, H1, Status, SearchDiv, H1Container, DivInContainer, TextDiv, NicknameLick, ButtonContainer, P } from "./People.styled";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "components/App.styled";
 import { FindPeople } from "components/FindPeople/FindPeople";
@@ -25,7 +25,8 @@ export const People = () => {
     const userNickname = userInfo.map(item => item.nickName).join('');
     const userTempFriends = userInfo.map(item => item.tempFriends);
     const userFriendsId = userInfo.map(item => item.friendsId);
-    const filteredUsersData = usersData.filter(item => item.verify)
+    const filteredUsersData = usersData.filter(item => item.verify);
+
     useEffect(() => {
         if (userId !== null) {
             const data = {
@@ -79,6 +80,7 @@ export const People = () => {
         const url = name.split('/')[4];
         navigate(`/home/photos/${url}`)
     }
+    console.log(usersData);
     return <MainContainer>
         <H1Container>
             <H1>Peoples</H1>
@@ -87,16 +89,16 @@ export const People = () => {
         <Container>
             {!find && filteredUsersData.length > 0 && filteredUsersData.map(item => <DivInContainer key={item._id}>
                 <div><p><img onClick={() => onClickPeople(item.avatarURL)} src={item.avatarURL ? item.avatarURL : noAvatar} alt={item.nickName} width="100" height='100' /></p></div>
-                <TextDiv><NicknameLick to={item._id !== userId ? '/home/profile/' + item._id : '/home/profile'}><h2>{item.nickName}</h2></NicknameLick></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton disabled={!loading ? false : true} id="people" onClick={(e) => onClickGeneral(e, item.email, item._id)} type="button">{
+                <TextDiv><NicknameLick to={item._id !== userId ? '/home/profile/' + item._id : '/home/profile'}><h2>{item.nickName}</h2></NicknameLick><Status prop={item.status}></Status></TextDiv>{item.nickName === userNickname ? <P>its U</P> : <PeopleButton disabled={!loading ? false : true} id="people" onClick={(e) => onClickGeneral(e, item.email, item._id)} type="button">{
                     userTempFriends[0]?.includes(item.email) ? 'pending' :
                         userFriendsId[0]?.includes(item.email) ? 'delete friend' : 'add friend'
                 }</PeopleButton>}
             </DivInContainer>)}
-        </Container>{
-            totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
-                {page !== 1 && !loading && <Button type="button" onClick={onClickPrev}>prev</Button>}
-                {usersData.length === skip && <Button type="button" onClick={onClickNext}>next</Button>}
-            </ButtonContainer>
+        </Container>
+        {!loading && totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
+            {page !== 1 && <Button type="button" onClick={onClickPrev}>prev</Button>}
+            {totalHits / page !== skip && usersData.length === skip && <Button type="button" onClick={onClickNext}>next</Button>}
+        </ButtonContainer>
         }
         {/* {loading && <Container>loading...</Container>} */}
     </MainContainer >

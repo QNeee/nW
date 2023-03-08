@@ -29,6 +29,7 @@ export const App = () => {
   useEffect(() => {
     if (logged)
       dispatch(refresh())
+
   }, [dispatch, logged])
   return (
     <Routes>
