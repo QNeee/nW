@@ -3,11 +3,9 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFriends } from "Redux/friendsOperations";
 import { getAllMessages } from "Redux/messageOperaions";
-import { getUserEmail, getUserId } from "Redux/networkSlice";
+import { getUserId, getUserToken } from "Redux/networkSlice";
 import { useLocation } from "react-router-dom";
-import { getUserById } from "Redux/userOperaions";
-import { io } from 'socket.io-client'
-import { host } from "host";
+import { changeOnlineStatus, getUserById } from "Redux/userOperaions";
 export const Home = () => {
 
     const { pathname } = useLocation();
@@ -17,22 +15,30 @@ export const Home = () => {
     const dispatch = useDispatch();
     const data = pathname.split('/')[3];
     const dialogName = pathname.split('/')[4];
-    const email = useSelector(getUserEmail);
-    const socket = io(host);
-    useEffect(() => {
-        let count = 0;
-        socket.emit('userStatus', { email, status: 'online' });
-        const intervalId = setInterval(() => {
-            count++
-            if (count === 10) {
-                socket.emit('userStatus', { email, status: 'offline' })
-                clearInterval(intervalId);
-                return;
-            }
-        }, 5000);
+    const token = useSelector(getUserToken);
+    // useEffect(() => {
+    //     let count = 0;
+    //     socket.emit('userStatus', { email, status: 'online' });
+    //     const intervalId = setInterval(() => {
+    //         count++
+    //         if (count === 10) {
+    //             socket.emit('userStatus', { email, status: 'offline' })
+    //             clearInterval(intervalId);
+    //             return;
+    //         }
+    //     }, 5000);
 
 
-    })
+    // })
+    // useEffect(() => {
+    //     window.addEventListener('unload', () => {
+    //         const data = {
+    //             token,
+    //             status: 'offline'
+    //         }
+    //         dispatch(changeOnlineStatus(data));
+    //     })
+    // })
     useEffect(() => {
         if (userId !== null) {
             if (pathname !== '/home/messages' && pathname !== '/home/messages/inbox' && pathname !== `/home/messages/dialogues/${dialogName}`) {
@@ -47,8 +53,13 @@ export const Home = () => {
             }
         }
     }, [dispatch, userId, pathname, findUserId, data, dialogName])
+
     window.onunload = () => {
-        socket.emit('userStatus', { email, status: 'offline' })
+        const offline = {
+            token,
+            status: 'offline'
+        }
+        dispatch(changeOnlineStatus(offline));
     }
     return <div>
         <Sidebar />

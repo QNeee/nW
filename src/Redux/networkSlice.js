@@ -6,7 +6,7 @@ import { addFriend, getAllFriends, getOnPendingFriends, getYourPendings, removeF
 import { getAllOutboxMessages, getAllMessages, sendMessage, getOutboxMessageById, getInboxMessageById, getAllInboxMessage, changeStatusReadMessage, deleteInboxMessage, deleteOutboxMessage, getAllSortedMessages, getAllUserDialogues, makeDialogReadStatus } from './messageOperaions';
 import { addPhoto, deletePhoto, getAllAnotherUserPhotos, getAllUserPhotos, getUserPhotoById, patchAvatar, postComment, postLike, unLike } from './photosOperations';
 import { getAllProfiles, getProfileById, patchProfile, postProfile } from './profileOperations';
-import { findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
+import { changeOnlineStatus, findUserById, getAllUsers, getUserById, getUserByNickName } from './userOperaions';
 
 
 const initialState = {
@@ -649,6 +649,20 @@ const networkSlice = createSlice({
                 // state.token = action.payload.response.token;
             })
             .addCase(patchAvatar.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(changeOnlineStatus.pending, (state, action) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(changeOnlineStatus.fulfilled, (state, action) => {
+                // state.auth.userData.allProfiles = action.payload.data;
+                // state.auth.userData.findFriend = [action.payload.data];
+                // state.auth.userData.messagesCount = action.payload.data.messageCount;
+                // state.auth.user.nickName = action.payload.response.nickName;
+                // state.token = action.payload.response.token;
+            })
+            .addCase(changeOnlineStatus.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

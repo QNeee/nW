@@ -56,3 +56,14 @@ export const findUserById = createAsyncThunk('users/find/id', async (id, { getSt
         return rejectWithValue(error);
     }
 })
+export const changeOnlineStatus = createAsyncThunk('users/online', async (data, { getState, dispatch, rejectWithValue }) => {
+    try {
+        const state = getState();
+        setToken(state.network.token);
+        const result = await axios.post('users/status', data);
+        return result;
+    } catch (error) {
+
+        return rejectWithValue(error);
+    }
+})
