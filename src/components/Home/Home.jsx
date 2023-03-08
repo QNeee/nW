@@ -61,6 +61,14 @@ export const Home = () => {
         }
         dispatch(changeOnlineStatus(offline));
     }
+    // window.addEventListener('onunload', () => {
+    //     const offline = {
+    //         token,
+    //         status: 'offline'
+    //     }
+    //     dispatch(changeOnlineStatus(offline));
+    // })
+
     return <div>
         <Sidebar />
     </div>
