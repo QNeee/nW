@@ -18,9 +18,9 @@ export const Home = () => {
     const data = pathname.split('/')[3];
     const dialogName = pathname.split('/')[4];
     const email = useSelector(getUserEmail);
-    let count = 0;
+    const socket = io(host);
     useEffect(() => {
-        const socket = io(host);
+        let count = 0;
         socket.emit('userStatus', { email, status: 'online' });
         const intervalId = setInterval(() => {
             count++
@@ -47,6 +47,9 @@ export const Home = () => {
             }
         }
     }, [dispatch, userId, pathname, findUserId, data, dialogName])
+    window.onunload = () => {
+        socket.emit('userStatus', { email, status: 'offline' })
+    }
     return <div>
         <Sidebar />
     </div>
