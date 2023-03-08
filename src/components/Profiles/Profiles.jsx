@@ -32,9 +32,9 @@ export const Profiles = () => {
             <p>Name : {item.name}</p>
             <p>Surname : {item.surname}</p>
             <p>Age : {item.age}</p>
-            {item.phone && <p>{item.phone}</p>}
-            {item.job && <p>{item.job}</p>}
-            {item.education && <p>{item.education}</p>}
+            {item.phone && <p>Phone: {item.phone}</p>}
+            {item.job && <p>Job: {item.job}</p>}
+            {item.education && <p>Education: {item.education}</p>}
             <LinkItem to={pathname + "/photos"}>Photos</LinkItem>
             <LinkItem to={pathname + "/friends"}>Friends</LinkItem>
         </div>)}
