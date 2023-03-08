@@ -7,6 +7,7 @@ import { getUserEmail, getUserId } from "Redux/networkSlice";
 import { useLocation } from "react-router-dom";
 import { getUserById } from "Redux/userOperaions";
 import { io } from 'socket.io-client'
+import { host } from "host";
 export const Home = () => {
 
     const { pathname } = useLocation();
@@ -18,13 +19,12 @@ export const Home = () => {
     const dialogName = pathname.split('/')[4];
     const email = useSelector(getUserEmail);
     let count = 0;
-    const host = ('http://localhost:10000');
     useEffect(() => {
         const socket = io(host);
         socket.emit('userStatus', { email, status: 'online' });
         const intervalId = setInterval(() => {
             count++
-            if (count === 2) {
+            if (count === 10) {
                 socket.emit('userStatus', { email, status: 'offline' })
                 clearInterval(intervalId);
                 return;
