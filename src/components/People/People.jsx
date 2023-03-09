@@ -80,7 +80,6 @@ export const People = () => {
         const url = name.split('/')[4];
         navigate(`/home/photos/${url}`)
     }
-    console.log(usersData);
     return <MainContainer>
         <H1Container>
             <H1>Peoples</H1>
