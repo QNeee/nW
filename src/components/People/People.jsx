@@ -95,7 +95,7 @@ export const People = () => {
                 }</PeopleButton>}
             </DivInContainer>)}
         </Container>
-        {!loading && totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
+        {totalHits !== null && totalHits > usersData.length && pathname === "/home" && <ButtonContainer>
             {page !== 1 && <Button type="button" onClick={onClickPrev}>prev</Button>}
             {totalHits / page !== skip && usersData.length === skip && <Button type="button" onClick={onClickNext}>next</Button>}
         </ButtonContainer>
